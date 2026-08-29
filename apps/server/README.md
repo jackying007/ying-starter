@@ -9,13 +9,13 @@
 ### 2. 初始化超级管理员
 
 ```bash
-pnpm ts-node scripts/generate-super-admin
+pnpm tsx scripts/generate-super-admin
 ```
 
 ### 3. 后台权限同步
 
 ```bash
-pnpm ts-node scripts/sync-permission
+pnpm tsx scripts/sync-permission
 ```
 
 后面每次修改 `packages/permission` 包都需要打包并重新执行脚本同步权限进数据库
@@ -41,7 +41,7 @@ pnpm web-push generate-vapid-keys
 当修改了实体类后，可以使用自动生成命令来比较当前实体与数据库实际结构的差异，然后生成相应的迁移文件：
 
 ```bash
-pnpm typeorm-ts-node-commonjs migration:generate ./migrations/[迁移名称] -d ./typeorm.config.ts
+pnpm typeorm migration:generate ./migrations/[迁移名称] -d ./typeorm.config.ts
 ```
 
 手动创建（create）
@@ -49,7 +49,7 @@ pnpm typeorm-ts-node-commonjs migration:generate ./migrations/[迁移名称] -d 
 如果需要手动编写 SQL 或逻辑，可以先创建一个空的迁移模板：
 
 ```bash
-pnpm typeorm-ts-node-commonjs migration:create ./migrations/[迁移名称]
+pnpm typeorm migration:create ./migrations/[迁移名称]
 ```
 
 ### 2. 执行 Migration
@@ -57,7 +57,7 @@ pnpm typeorm-ts-node-commonjs migration:create ./migrations/[迁移名称]
 生成好迁移文件后，就可以把这些变更应用到数据库中。使用以下命令来运行所有尚未执行的迁移：
 
 ```bash
-pnpm typeorm-ts-node-commonjs migration:run -d ./typeorm.config.ts
+pnpm typeorm migration:run -d ./typeorm.config.ts
 ```
 
 ### 3. 回退 Migration
@@ -65,5 +65,5 @@ pnpm typeorm-ts-node-commonjs migration:run -d ./typeorm.config.ts
 如果需要回滚最近一次的迁移操作，可以使用：
 
 ```bash
-pnpm typeorm-ts-node-commonjs migration:revert -d ./typeorm.config.ts
+pnpm typeorm migration:revert -d ./typeorm.config.ts
 ```

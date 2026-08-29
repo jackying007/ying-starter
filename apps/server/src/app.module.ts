@@ -27,7 +27,7 @@ import { ClientModule } from '@/business/client/client.module'
     I18nModule.forRoot({
       fallbackLanguage: clientLanguagesConfig.fallbackLng,
       loaderOptions: {
-        path: join(__dirname, './i18n/'),
+        path: join(import.meta.dirname, './i18n/'),
         watch: true
       },
       resolvers: [

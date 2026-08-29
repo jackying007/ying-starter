@@ -11,7 +11,7 @@ import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, Pu
 import { SetPushTaskDto, SendPushTemplateDto } from '@ying/dto'
 
 import { PushService } from '@/common/modules/push/push.service'
-import { RedisToken, RedisObjs } from '@/common/modules/redis/constant'
+import { RedisToken, type RedisObjs } from '@/common/modules/redis/constant'
 
 import type { TNotificationJobs } from './notification.consumer'
 

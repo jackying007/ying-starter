@@ -13,7 +13,7 @@ import {
 } from '@ying/dto'
 import { SysRoleEntity, SysUserEntity } from '@ying/entity'
 import { comparePass, generatePass } from '@/common/utils'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
 

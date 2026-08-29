@@ -4,8 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc.js'
+import timezone from 'dayjs/plugin/timezone.js'
 import { access, mkdir, appendFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { inspect } from 'node:util'
@@ -144,7 +144,7 @@ export class AppLogger extends ConsoleLogger {
       logMessage += `\nStack trace: ${stack}`
     }
     logMessage += '\n\n'
-    const logFilePath = join(__dirname, `../logs`, `${time.format('YYYY-MM-DD')}.log`)
+    const logFilePath = join(import.meta.dirname, `../logs`, `${time.format('YYYY-MM-DD')}.log`)
     const logDir = dirname(logFilePath)
 
     try {

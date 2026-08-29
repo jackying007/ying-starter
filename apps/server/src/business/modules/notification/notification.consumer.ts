@@ -8,7 +8,7 @@ import { WebPushError } from 'web-push'
 import { PushRecordStatus, PushTaskStatus } from '@ying/shared'
 import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/entity'
 
-import { RedisToken, RedisObjs } from '@/common/modules/redis/constant'
+import { RedisToken, type RedisObjs } from '@/common/modules/redis/constant'
 
 import { NotificationService } from './notification.service'
 

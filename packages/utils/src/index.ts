@@ -1,4 +1,3 @@
 export * from './other'
 export * as formatNumber from './format-number'
-export * from './ms'
 export * from './log'

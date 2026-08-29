@@ -6,7 +6,7 @@ export default defineConfig(options => ({
     index: './src/index.ts'
   },
   outDir: 'dist',
-  format: ['cjs', 'esm'],
+  format: 'esm',
   dts: false,
   clean: !options.watch,
   treeshake: true,

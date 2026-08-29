@@ -18,7 +18,7 @@ import { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/d
 
 import { ClientScope, Public, UID } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
-import { RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 
 import { FeedbackService } from '@/business/modules/feedback'
 import { VisitorService } from '@/business/modules/notification'

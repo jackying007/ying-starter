@@ -3,15 +3,16 @@ import { JwtService } from '@nestjs/jwt'
 import { ConfigType } from '@nestjs/config'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import ms from 'ms'
 
-import { ms, unique } from '@ying/utils'
+import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
 import { AdminLoginDto } from '@ying/dto'
 import { SysPermissionEntity, SysUserEntity } from '@ying/entity'
 
 import { authConfig } from '@/config'
 import { comparePass } from '@/common/utils'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 
 type VerifiedData = TAdminPayload & {
   iat?: any
@@ -39,11 +40,11 @@ export class SysAuthService {
     const payload: TAdminPayload = {
       id: user.id
     }
-    const accessToken = this.jwtService.sign(payload, {
+    const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.authConf.adminAccessTokenSecret,
       expiresIn: this.authConf.adminAccessTokenExpiresIn
     })
-    const refreshToken = this.jwtService.sign(payload, {
+    const refreshToken = await this.jwtService.signAsync(payload, {
       secret: this.authConf.adminRefreshTokenSecret,
       expiresIn: this.authConf.adminRefreshTokenExpiresIn
     })
@@ -108,7 +109,7 @@ export class SysAuthService {
       delete payload.iat
       delete payload.exp
 
-      const accessToken = this.jwtService.sign(payload, {
+      const accessToken = await this.jwtService.signAsync(payload, {
         secret: this.authConf.adminAccessTokenSecret,
         expiresIn: this.authConf.adminAccessTokenExpiresIn
       })

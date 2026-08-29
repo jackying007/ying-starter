@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 // import { InjectDataSource } from '@nestjs/typeorm'
 // import { DataSource } from 'typeorm'
-import { RedisToken, RedisKey, RedisObjs } from '@/common/modules/redis/constant'
+import { RedisToken, RedisKey, type RedisObjs } from '@/common/modules/redis/constant'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
 
 @Injectable()

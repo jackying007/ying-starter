@@ -5,8 +5,8 @@ import { ConfigType } from '@nestjs/config'
 import { DataSource, Repository } from 'typeorm'
 import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
+import ms from 'ms'
 
-import { ms } from '@ying/utils'
 import { UserEntity } from '@ying/entity'
 import {
   ClientLoginDto,
@@ -18,7 +18,7 @@ import {
 import { ClientAuthVo, ClientLoginVo, wrapBaseVo } from '@ying/vo'
 
 import { authConfig } from '@/config'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 import { MailService } from '@/common/modules/mail/mail.service'
 import { generatePass } from '@/common/utils'
 
@@ -116,11 +116,11 @@ export class AuthService {
     const payload: TClientPayload = {
       id: user.id
     }
-    const accessToken = this.jwtService.sign(payload, {
+    const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.authConf.clientAccessTokenSecret,
       expiresIn: this.authConf.clientAccessTokenExpiresIn
     })
-    const refreshToken = this.jwtService.sign(payload, {
+    const refreshToken = await this.jwtService.signAsync(payload, {
       secret: this.authConf.clientRefreshTokenSecret,
       expiresIn: this.authConf.clientRefreshTokenExpiresIn
     })
@@ -185,7 +185,7 @@ export class AuthService {
       delete payload.iat
       delete payload.exp
 
-      const accessToken = this.jwtService.sign(payload, {
+      const accessToken = await this.jwtService.signAsync(payload, {
         secret: this.authConf.clientAccessTokenSecret,
         expiresIn: this.authConf.clientAccessTokenExpiresIn
       })

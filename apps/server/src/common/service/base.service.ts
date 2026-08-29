@@ -6,9 +6,9 @@ import {
   Repository,
   SelectQueryBuilder,
   ObjectId,
-  FindOptionsSelectByString
+  FindOptionsSelectByString,
+  QueryDeepPartialEntity
 } from 'typeorm'
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { ListDto } from '@ying/dto'
 import { AbstractBaseEntity } from '@ying/entity'
 

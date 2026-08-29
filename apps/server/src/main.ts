@@ -30,7 +30,7 @@ async function bootstrap() {
 
   if (storageConf.mode === 'local') {
     // 存储本地模式图片存储的位置
-    app.useStaticAssets(join(__dirname, '../storage'), { prefix: '/storage', maxAge: '30d' })
+    app.useStaticAssets(join(import.meta.dirname, '../storage'), { prefix: '/storage', maxAge: '30d' })
   }
 
   await app.listen(apiConf.port)

@@ -4,7 +4,7 @@ import { Request } from 'express'
 
 import { getTokenFromRequest } from '@/common/utils'
 import { IS_PUBLIC_KEY, CLIENT_SCOPE } from '@/common/decorator'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis'
 
 import { AuthService } from './auth.service'
 

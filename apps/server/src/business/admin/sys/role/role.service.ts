@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { createTreeFns } from '@ying/utils'
 import { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/dto'
 import { SysPermissionEntity, SysRoleEntity } from '@ying/entity'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 
 @Injectable()

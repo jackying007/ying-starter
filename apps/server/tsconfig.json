@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolvePackageJsonExports": true,
     "declaration": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -19,6 +21,7 @@
     "noFallthroughCasesInSwitch": false,
     "sourceMap": false,
     "resolveJsonModule": true,
+    "types": ["vitest/globals", "node"],
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]

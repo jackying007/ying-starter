@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ConfigDto } from '@ying/dto'
 import { ConfigVo } from '@ying/vo'
 
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 // import { apiConfig } from '@/config'
 
 const DefaultCustomerConfig = {

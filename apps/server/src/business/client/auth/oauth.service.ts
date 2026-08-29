@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 import { type OAuthProvider, OAuthAccountEntity, UserEntity } from '@ying/entity'
 
 import { authConfig } from '@/config'
-import { RedisObjs, RedisToken, RedisKey } from '@/common/modules/redis'
+import { type RedisObjs, RedisToken, RedisKey } from '@/common/modules/redis'
 
 export type OAuthAccountInfo = {
   providerAccountId: string

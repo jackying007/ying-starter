@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 import { TPermission } from '@ying/permission'
 import { PERMISSION_SIGN } from '@/common/decorator'
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 import { SysAuthService } from '../auth.service'
 
 @Injectable()

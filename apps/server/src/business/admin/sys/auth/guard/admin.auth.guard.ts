@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedExceptio
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 
-import { RedisKey, RedisObjs, RedisToken } from '@/common/modules/redis'
+import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis'
 import { getTokenFromRequest } from '@/common/utils'
 import { IS_PUBLIC_KEY, ADMIN_SCOPE } from '@/common/decorator'
 
