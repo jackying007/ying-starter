@@ -1,5 +1,5 @@
 import { In } from 'typeorm'
-import { pms, TPermission } from '@ying/permission'
+import { pms, type TPermission } from '@ying/permission'
 import { SysPermissionEntity } from '@ying/entity'
 import dataSource from '../typeorm.config'
 

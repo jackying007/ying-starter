@@ -1,6 +1,7 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { Request } from 'express'
+import type { Request } from 'express'
 
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis'
 import { getTokenFromRequest } from '@/common/utils'

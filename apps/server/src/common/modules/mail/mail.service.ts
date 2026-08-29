@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
-import { createTransport, Transporter } from 'nodemailer'
+import type { ConfigType } from '@nestjs/config'
+import { createTransport, type Transporter } from 'nodemailer'
 import { mailConfig } from '@/config'
 
 @Injectable()

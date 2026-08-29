@@ -1,11 +1,12 @@
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { DataSource, In } from 'typeorm'
 import { Client } from 'minio'
 import { nanoid } from 'nanoid'
 import { FileEntity } from '@ying/entity'
 import { storageConfig } from '@/config'
 import { ExpirSeconds } from './constant'
-import { AddFileOptions, UploadFileOptions, AbstractFileService } from './abstract.file.service'
+import type { AddFileOptions, UploadFileOptions } from './abstract.file.service'
+import { AbstractFileService } from './abstract.file.service'
 
 export class MinioFileService extends AbstractFileService {
   private readonly storageConf: ConfigType<typeof storageConfig>

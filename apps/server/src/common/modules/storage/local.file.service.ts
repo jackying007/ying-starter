@@ -1,9 +1,10 @@
 import { dirname, join } from 'path'
-import { writeFileSync, unlink, existsSync, mkdirSync, PathLike } from 'fs'
+import { writeFileSync, unlink, existsSync, mkdirSync, type PathLike } from 'fs'
 import { DataSource, In } from 'typeorm'
 import { nanoid } from 'nanoid'
 import { FileEntity } from '@ying/entity'
-import { AddFileOptions, UploadFileOptions, AbstractFileService } from './abstract.file.service'
+import type { AddFileOptions, UploadFileOptions } from './abstract.file.service'
+import { AbstractFileService } from './abstract.file.service'
 
 export class LocalFileService extends AbstractFileService {
   private readonly serverUrl: string

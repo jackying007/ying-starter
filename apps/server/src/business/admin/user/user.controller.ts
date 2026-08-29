@@ -1,5 +1,5 @@
 import { Controller, Get, Query, Res } from '@nestjs/common'
-import { Response } from 'express'
+import type { Response } from 'express'
 import { ListUserDto } from '@ying/dto'
 import { omitArray } from '@ying/utils'
 import { pms } from '@ying/permission'

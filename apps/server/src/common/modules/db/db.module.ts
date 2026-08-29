@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import {
   FileEntity,
   SysPermissionEntity,

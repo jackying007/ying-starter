@@ -1,4 +1,4 @@
-import ExcelJS, { Buffer as XLSXBuffer } from 'exceljs'
+import ExcelJS, { type Buffer as XLSXBuffer } from 'exceljs'
 
 export type XslxData<T> = {
   sheet: string

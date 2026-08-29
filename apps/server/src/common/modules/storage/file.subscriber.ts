@@ -1,6 +1,6 @@
-import { DataSource, EntitySubscriberInterface, EventSubscriber, Repository } from 'typeorm'
+import { type EntitySubscriberInterface, DataSource, EventSubscriber, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { Inject } from '@nestjs/common'
 import { FileEntity } from '@ying/entity'
 import { storageConfig } from '@/config'

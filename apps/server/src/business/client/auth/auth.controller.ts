@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Res, Inject, Body, UseFilters, Query, Req } from '@nestjs/common'
-import { Request, Response } from 'express'
-import { ConfigType } from '@nestjs/config'
+import type { Request, Response } from 'express'
+import type { ConfigType } from '@nestjs/config'
 import { I18nContext } from 'nestjs-i18n'
 
 import {

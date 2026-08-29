@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common'
-import { Request } from 'express'
+import type { Request } from 'express'
 import { AdminLoginDto } from '@ying/dto'
 import { omit } from '@ying/utils'
 import { AdminScope, Public, Token, UID } from '@/common/decorator'

@@ -1,5 +1,5 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common'
-import { Request } from 'express'
+import { createParamDecorator, type ExecutionContext } from '@nestjs/common'
+import type { Request } from 'express'
 
 export const Token = createParamDecorator((data: any, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<Request>()

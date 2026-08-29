@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common'
-import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
+import type { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets'
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 
 // import { ClientToServerEvents, ServerToClientEvents } from '@ying/shared'

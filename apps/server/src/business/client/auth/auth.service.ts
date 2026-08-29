@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { DataSource, Repository } from 'typeorm'
 import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
@@ -15,7 +15,8 @@ import {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/dto'
-import { ClientAuthVo, ClientLoginVo, wrapBaseVo } from '@ying/vo'
+import type { ClientAuthVo, ClientLoginVo } from '@ying/vo'
+import { wrapBaseVo } from '@ying/vo'
 
 import { authConfig } from '@/config'
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'

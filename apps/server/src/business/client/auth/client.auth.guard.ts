@@ -1,6 +1,7 @@
 import { Reflector } from '@nestjs/core'
-import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
-import { Request } from 'express'
+import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import type { Request } from 'express'
 
 import { getTokenFromRequest } from '@/common/utils'
 import { IS_PUBLIC_KEY, CLIENT_SCOPE } from '@/common/decorator'

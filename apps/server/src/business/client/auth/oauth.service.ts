@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { generateCodeVerifier, decodeIdToken, Google, GitHub } from 'arctic'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'

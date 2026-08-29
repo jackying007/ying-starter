@@ -6,8 +6,8 @@ import { InjectQueue } from '@nestjs/bullmq'
 import type { PushSubscription } from 'web-push'
 import { match as langMatch } from '@formatjs/intl-localematcher'
 
-import { LngKeys, PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
-import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, PushData } from '@ying/entity'
+import { type LngKeys, PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
+import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, type PushData } from '@ying/entity'
 import { SetPushTaskDto, SendPushTemplateDto } from '@ying/dto'
 
 import { PushService } from '@/common/modules/push/push.service'

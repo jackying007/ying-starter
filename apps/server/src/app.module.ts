@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule as BaseConfigModule, ConfigType } from '@nestjs/config'
+import { ConfigModule as BaseConfigModule, type ConfigType } from '@nestjs/config'
 import { BullModule } from '@nestjs/bullmq'
 import { ScheduleModule } from '@nestjs/schedule'
 import { AcceptLanguageResolver, CookieResolver, I18nModule } from 'nestjs-i18n'

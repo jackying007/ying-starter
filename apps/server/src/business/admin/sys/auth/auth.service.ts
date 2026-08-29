@@ -1,6 +1,6 @@
 import { Injectable, Inject, NotAcceptableException, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import ms from 'ms'

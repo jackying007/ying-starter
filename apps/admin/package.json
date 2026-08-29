@@ -35,7 +35,7 @@
     "antd": "^6.5.3",
     "autosuggest-highlight": "^3.3.4",
     "color": "^4.2.3",
-    "dayjs": "~1.11.13",
+    "dayjs": "^1.11.23",
     "framer-motion": "^11.18.2",
     "js-cookie": "^3.0.5",
     "json-edit-react": "^1.27.0",

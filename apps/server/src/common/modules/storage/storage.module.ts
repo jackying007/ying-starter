@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { apiConfig, storageConfig } from '@/config'
 import { FileEntity } from '@ying/entity'
 import { FileServiceToken } from './constant'
