@@ -1,9 +1,19 @@
 {
-  "name": "@ying/http",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@jying/http",
+  "version": "1.0.0",
+  "author": "jackying007",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.mjs",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup"

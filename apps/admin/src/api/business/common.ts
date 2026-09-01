@@ -1,4 +1,4 @@
-import { HttpRequest } from '@ying/http'
+import { HttpRequest } from '@jying/http'
 import type { ListFileDto, ListFeedbackDto } from '@ying/dto'
 import type { FileEntity, TFileExtra, FeedbackEntity } from '@ying/entity'
 import type { ConfigVo } from '@ying/vo'

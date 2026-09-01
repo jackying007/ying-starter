@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@ying/http'
+import type { HttpRequest } from '@jying/http'
 import type { ClientLoginDto } from '@ying/dto'
 
 export default function (http: HttpRequest) {

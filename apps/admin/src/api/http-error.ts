@@ -1,4 +1,4 @@
-import { BaseHttpError } from '@ying/http'
+import { BaseHttpError } from '@jying/http'
 import type { ErrorVo } from '@ying/vo'
 
 export class HttpError extends BaseHttpError {

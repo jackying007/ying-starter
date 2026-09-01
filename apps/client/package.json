@@ -33,7 +33,7 @@
     "@ying/dto": "workspace:*",
     "@ying/entity": "workspace:*",
     "@ying/frontend": "workspace:*",
-    "@ying/http": "workspace:*",
+    "@jying/http": "workspace:*",
     "@ying/shared": "workspace:*",
     "@ying/utils": "workspace:*",
     "@ying/vo": "workspace:*",

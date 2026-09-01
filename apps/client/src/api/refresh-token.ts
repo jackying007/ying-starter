@@ -1,4 +1,4 @@
-import { HttpRequest, type BeforeRequestHookOptions } from '@ying/http'
+import { HttpRequest, type BeforeRequestHookOptions } from '@jying/http'
 import { useAuthStore, updateAccessToken } from '@/store/auth-store'
 
 let refreshTokenPromise: Promise<string> | undefined

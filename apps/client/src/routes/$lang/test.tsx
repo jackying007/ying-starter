@@ -1,5 +1,5 @@
 import { testAPI } from '@/api'
-import { BaseHttpError } from '@ying/http'
+import { BaseHttpError } from '@jying/http'
 import { Button } from '@ying/frontend/ui'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'

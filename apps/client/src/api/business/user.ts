@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@ying/http'
+import type { HttpRequest } from '@jying/http'
 import type { ResetPasswordDto, UpdateUserInfoDto } from '@ying/dto'
 import type { ClientUserVo } from '@ying/vo'
 

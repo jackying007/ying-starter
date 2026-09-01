@@ -1,4 +1,4 @@
-import { HttpRequest } from '@ying/http'
+import { HttpRequest } from '@jying/http'
 import { isBaseVo } from '@ying/vo'
 import { clearUserInfoAndAuthTokens } from '@/store/auth-store'
 import { HttpError } from './http-error'

@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@ying/http'
+import type { HttpRequest } from '@jying/http'
 import type { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/dto'
 import type { FileEntity, TFileExtra, VisitorEntity } from '@ying/entity'
 

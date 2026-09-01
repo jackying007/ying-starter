@@ -1,4 +1,4 @@
-import { HttpRequest } from '@ying/http'
+import { HttpRequest } from '@jying/http'
 import { isBaseVo } from '@ying/vo'
 
 export const http = new HttpRequest({

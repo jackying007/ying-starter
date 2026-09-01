@@ -1,4 +1,4 @@
-import { HttpRequest } from '@ying/http'
+import { HttpRequest } from '@jying/http'
 import type {
   ListSysUserDto,
   CreateSysUserDto,

@@ -83,7 +83,7 @@ importers:
       '@ying/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
-      '@ying/http':
+      '@jying/http':
         specifier: workspace:*
         version: link:../../packages/http
       '@ying/permission':
@@ -258,7 +258,7 @@ importers:
       '@ying/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
-      '@ying/http':
+      '@jying/http':
         specifier: workspace:*
         version: link:../../packages/http
       '@ying/shared':

@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@ying/http'
+import type { HttpRequest } from '@jying/http'
 import type { ListArticleDto } from '@ying/dto'
 import type { ArticleEntity } from '@ying/entity'
 

@@ -1,4 +1,4 @@
-import { HttpRequest } from '@ying/http'
+import { HttpRequest } from '@jying/http'
 import type { ListUserDto, StatDto, UserStatByTypeVo, UserStatVo } from '@ying/dto'
 import type { UserEntity } from '@ying/entity'
 

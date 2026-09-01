@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@ying/http'
+import type { HttpRequest } from '@jying/http'
 import type { AdminLoginDto } from '@ying/dto'
 import type { AdminAuthVo } from '@ying/vo'
 import type { SysUserEntity } from '@ying/entity'
