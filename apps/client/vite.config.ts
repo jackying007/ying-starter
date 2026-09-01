@@ -1,11 +1,10 @@
 import { defineConfig, loadEnv } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { devtools } from '@tanstack/devtools-vite'
-import babel from '@rolldown/plugin-babel'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
-import { customLogger } from './vite.logger'
+import { customLogger } from './vite.logger.ts'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'APP_')
@@ -32,8 +31,7 @@ export default defineConfig(({ mode }) => {
           enabled: false
         }
       }),
-      babel({ presets: [reactCompilerPreset()] }),
-      react(),
+      react({ compiler: true }),
       tailwindcss(),
       svgr()
     ]

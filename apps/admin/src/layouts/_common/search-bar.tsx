@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import { type CSSProperties, useMemo, useRef, useState } from 'react'
 import { Empty, type GlobalToken, Input, type InputRef, Modal } from 'antd'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
@@ -40,10 +40,6 @@ export function SearchBar() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0)
   const selectedItemIndexRef = useLatest(selectedItemIndex)
 
-  useEffect(() => {
-    setSelectedItemIndex(0)
-  }, [searchResult])
-
   const tagStyle: CSSProperties = {
     color: themeToken.colorPrimary,
     backgroundColor: `${Color(themeToken.colorPrimary).alpha(0.2).toString()}`
@@ -57,6 +53,7 @@ export function SearchBar() {
   const handleOpen = () => {
     setOpen(true)
     setSearchQuery('')
+    setSelectedItemIndex(0)
   }
   const handleCancel = () => {
     setOpen(false)
@@ -149,7 +146,10 @@ export function SearchBar() {
           <Input
             ref={inputRef}
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={e => {
+              setSearchQuery(e.target.value)
+              setSelectedItemIndex(0)
+            }}
             placeholder="搜索..."
             variant="borderless"
             suffix={

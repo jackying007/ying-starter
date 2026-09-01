@@ -7,9 +7,5 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup"
-  },
-  "devDependencies": {
-    "@types/node": "^22.10.7",
-    "tsup": "^8.5.0"
   }
 }

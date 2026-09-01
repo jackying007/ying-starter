@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { PlusOutlined, BorderInnerOutlined, Loading3QuartersOutlined } from '@ant-design/icons'
 import type { FileEntity } from '@ying/entity'
 import { SelectFileType, selectFile, useUpload, type UseUploadOptions, useDialogOpen } from '@ying/frontend/hooks'
@@ -25,7 +25,8 @@ export const UploadImage = ({
   aspectRatio,
   willSetUrl = true
 }: UploadProps) => {
-  const [url, setUrl] = useState(defaultUrl)
+  const [url, setUrl] = useState<string>()
+  const showUrl = url ?? defaultUrl
 
   const { loading, startUpload } = useUpload<FileEntity>({
     handleUpload,
@@ -35,10 +36,6 @@ export const UploadImage = ({
     },
     onError
   })
-
-  useEffect(() => {
-    setUrl(defaultUrl)
-  }, [defaultUrl])
 
   const cropModalProps = useDialogOpen<File>()
 
@@ -62,8 +59,8 @@ export const UploadImage = ({
       >
         {loading ? (
           <Loading3QuartersOutlined className="animate-spin" />
-        ) : url ? (
-          <img className="w-full h-full object-cover" src={url} alt="uploadedimage" />
+        ) : showUrl ? (
+          <img className="w-full h-full object-cover" src={showUrl} />
         ) : (
           <PlusOutlined className="transition-opacity duration-300 group-hover:opacity-0" />
         )}

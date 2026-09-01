@@ -1,9 +1,8 @@
 import { defineConfig, loadEnv } from 'vite'
-import babel from '@rolldown/plugin-babel'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
-import { customLogger } from './vite.logger'
+import { customLogger } from './vite.logger.ts'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'APP_')
@@ -23,6 +22,6 @@ export default defineConfig(({ mode }) => {
       }
     },
     customLogger,
-    plugins: [babel({ presets: [reactCompilerPreset()] }), react(), tailwindcss(), svgr()]
+    plugins: [react({ compiler: true }), tailwindcss(), svgr()]
   }
 })

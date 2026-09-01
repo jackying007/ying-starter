@@ -9,8 +9,6 @@
     "build": "tsup"
   },
   "devDependencies": {
-    "tsup": "^8.5.0",
-    "@types/node": "^22.10.7",
     "@types/numeral": "^2.0.5"
   },
   "dependencies": {

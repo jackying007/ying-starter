@@ -1,6 +1,6 @@
-import { type PropsWithChildren, type ReactNode, useEffect, useRef, useState } from 'react'
+import { type PropsWithChildren, type ReactNode, useMemo } from 'react'
 import type { ItemType } from 'antd/es/menu/interface'
-import { useLocation, useMatches } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { Iconify } from '@/components/icon'
 import { usePermissionRoutes, useRouter } from '@/router/hooks'
@@ -13,10 +13,10 @@ type MenuItem = {
   label?: string
   disabled?: boolean
   icon?: ReactNode
-  children?: ItemType[]
+  children?: MenuItem[]
 }
 
-const routeToMenu = (items: AppRouteObject[]) => {
+function routeToMenu(items: AppRouteObject[]) {
   return items
     .filter(item => !item.meta?.hideMenu)
     .map(item => {
@@ -36,47 +36,34 @@ const routeToMenu = (items: AppRouteObject[]) => {
       if (children) {
         menuItem.children = routeToMenu(children)
       }
-      return menuItem as ItemType
+      return menuItem
     })
+}
+
+function pushOpenKeys(menuList: MenuItem[], keys: string[]) {
+  menuList.forEach(menu => {
+    if (menu.children?.length && menu.key) {
+      keys.push(menu.key)
+      pushOpenKeys(menu.children, keys)
+    }
+  })
+}
+
+function getOpenKeys(menuList: MenuItem[]) {
+  const keys: string[] = []
+  pushOpenKeys(menuList, keys)
+  return keys
 }
 
 export const NavContextProvider = ({ children }: PropsWithChildren) => {
   const { push } = useRouter()
-  const matches = useMatches()
   const { pathname } = useLocation()
   const { navMenuRoutes, routeMetas } = usePermissionRoutes()
 
-  const [openKeys, setOpenKeys] = useState<string[]>([])
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([''])
-  const [menuList, setMenuList] = useState<ItemType[]>([])
+  const selectedKeys = useMemo(() => [pathname], [pathname])
+  const menuList = routeToMenu(navMenuRoutes)
+  const defaultOpenKeys = getOpenKeys(menuList)
 
-  const initializedRef = useRef(false)
-  useEffect(() => {
-    if (!initializedRef.current) {
-      const openKeys = matches.filter(match => match.pathname !== '/').map(match => match.pathname)
-      setOpenKeys(openKeys)
-      setSelectedKeys([pathname])
-      initializedRef.current = true
-    }
-  }, [pathname, matches])
-
-  useEffect(() => {
-    setSelectedKeys([pathname])
-  }, [pathname])
-
-  useEffect(() => {
-    const menus = routeToMenu(navMenuRoutes)
-    setMenuList(menus)
-  }, [navMenuRoutes])
-
-  const onOpenChange: NavContextValue['onOpenChange'] = keys => {
-    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1)
-    if (latestOpenKey) {
-      setOpenKeys(keys)
-    } else {
-      setOpenKeys([])
-    }
-  }
   const onClick: NavContextValue['onClick'] = ({ key }) => {
     const currentRoute = routeMetas.find(el => el.key === key)
     if (currentRoute?.frameSrc) {
@@ -89,10 +76,9 @@ export const NavContextProvider = ({ children }: PropsWithChildren) => {
   return (
     <NavContext.Provider
       value={{
-        openKeys,
+        defaultOpenKeys,
         selectedKeys,
-        menuList,
-        onOpenChange,
+        menuList: menuList as ItemType[],
         onClick
       }}
     >

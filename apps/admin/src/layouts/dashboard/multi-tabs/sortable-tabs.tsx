@@ -59,7 +59,7 @@ export function SortableTabs({ className }: PropsWithClassName) {
       if (!scrollContainer) return
       scrollContainer.scrollLeft += event.deltaY
     }
-    scrollContainer.addEventListener('wheel', handleMouseWheel)
+    scrollContainer.addEventListener('wheel', handleMouseWheel, { passive: true })
     return () => scrollContainer.removeEventListener('wheel', handleMouseWheel)
   }, [])
 

@@ -1,29 +1,46 @@
-import { useEffect, useState } from 'react'
+import type { Dispatch, Ref, SetStateAction } from 'react'
+import { useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
 
 import type { FileEntity } from '@ying/entity'
 
 import { ImageList } from './image-list'
 
-type ImageSelectorModalProps = {
-  files: FileEntity[]
+export type ImageSelectorModalRefHandle = {
+  setSelectedFiles: Dispatch<SetStateAction<FileEntity[]>>
+}
+
+export type ImageSelectorModalProps = {
+  defaultFiles?: FileEntity[]
   open: boolean
   onSelect: (files: FileEntity[]) => void
   onCancel: VoidFunction
   maxLength?: number
+  ref?: Ref<ImageSelectorModalRefHandle>
 }
 
-export const ImageSelectorModal = ({ files, open, onSelect, onCancel, maxLength = 1 }: ImageSelectorModalProps) => {
-  const [selectedFiles, setSelectedFiles] = useState<FileEntity[]>(files)
-
-  useEffect(() => {
-    setSelectedFiles(files)
-  }, [files])
+export const ImageSelectorModal = ({
+  defaultFiles,
+  open,
+  onSelect,
+  onCancel,
+  maxLength = 1,
+  ref
+}: ImageSelectorModalProps) => {
+  const [selectedFiles, setSelectedFiles] = useState<FileEntity[]>(defaultFiles ?? [])
 
   const onOk = () => {
     onSelect(selectedFiles)
     onCancel()
   }
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setSelectedFiles
+    }),
+    []
+  )
 
   return (
     <Modal open={open} onCancel={onCancel} width="1040px" title="选择图片" onOk={onOk}>

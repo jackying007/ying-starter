@@ -11,7 +11,9 @@ export function useKeepAlive() {
   const { push } = useRouter()
   const [tabs, setTabs] = useState<KeepAliveRoute[]>([])
   const tabsRef = useRef(tabs)
-  tabsRef.current = tabs
+  useEffect(() => {
+    tabsRef.current = tabs
+  }, [tabs])
   const currentKeepAliveRoute = useCurrentKeepAliveRoute()
   const activeTabKey = currentKeepAliveRoute?.key
   const [fullscreenTabKey, setFullscreenTabKey] = useState<string>()

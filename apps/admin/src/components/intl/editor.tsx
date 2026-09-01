@@ -29,7 +29,7 @@ export const IntlEditor = ({ defaultValue, onChange, ...props }: IntlEditorProps
         {...props}
         className="mt-2"
         ref={editorRef}
-        defaultValue={intl.current?.[fallbackLng]}
+        defaultValue={defaultValue?.[fallbackLng]}
         onChange={val => {
           intl.current[currentLng] = val
           onChange?.(intl.current)

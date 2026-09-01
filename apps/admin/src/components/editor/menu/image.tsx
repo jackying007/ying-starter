@@ -33,7 +33,7 @@ export const MenuImage = () => {
       <MenuButton onClick={selectImage}>
         <FaImage />
       </MenuButton>
-      <ImageSelectorModal files={[]} open={open} onSelect={onSelectFiles} onCancel={() => setOpen(false)} />
+      <ImageSelectorModal open={open} onSelect={onSelectFiles} onCancel={() => setOpen(false)} />
     </>
   )
 }

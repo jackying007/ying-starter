@@ -11,17 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
-import { Route as LangTestRouteImport } from './routes/$lang/test'
-import { Route as LangAuthRouteRouteImport } from './routes/$lang/auth/route'
 import { Route as LangProtectedRouteRouteImport } from './routes/$lang/_protected/route'
-import { Route as LangFeedbackIndexRouteImport } from './routes/$lang/feedback/index'
-import { Route as LangArticleIndexRouteImport } from './routes/$lang/article/index'
-import { Route as LangAuthRegisterRouteImport } from './routes/$lang/auth/register'
-import { Route as LangAuthLoginRouteImport } from './routes/$lang/auth/login'
-import { Route as LangAuthForgotPasswordRouteImport } from './routes/$lang/auth/forgot-password'
-import { Route as LangAuthErrorRouteImport } from './routes/$lang/auth/error'
-import { Route as LangProtectedResetPasswordRouteImport } from './routes/$lang/_protected/reset-password'
+import { Route as LangAuthRouteRouteImport } from './routes/$lang/auth/route'
+import { Route as LangTestRouteImport } from './routes/$lang/test'
 import { Route as LangProtectedProfileRouteImport } from './routes/$lang/_protected/profile'
+import { Route as LangProtectedResetPasswordRouteImport } from './routes/$lang/_protected/reset-password'
+import { Route as LangArticleIndexRouteImport } from './routes/$lang/article/index'
+import { Route as LangAuthErrorRouteImport } from './routes/$lang/auth/error'
+import { Route as LangAuthForgotPasswordRouteImport } from './routes/$lang/auth/forgot-password'
+import { Route as LangAuthLoginRouteImport } from './routes/$lang/auth/login'
+import { Route as LangAuthRegisterRouteImport } from './routes/$lang/auth/register'
+import { Route as LangFeedbackIndexRouteImport } from './routes/$lang/feedback/index'
 import { Route as LangArticleIdIndexRouteImport } from './routes/$lang/article/$id/index'
 
 const LangRouteRoute = LangRouteRouteImport.update({
@@ -34,9 +34,8 @@ const LangIndexRoute = LangIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangTestRoute = LangTestRouteImport.update({
-  id: '/test',
-  path: '/test',
+const LangProtectedRouteRoute = LangProtectedRouteRouteImport.update({
+  id: '/_protected',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangAuthRouteRoute = LangAuthRouteRouteImport.update({
@@ -44,39 +43,15 @@ const LangAuthRouteRoute = LangAuthRouteRouteImport.update({
   path: '/auth',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangProtectedRouteRoute = LangProtectedRouteRouteImport.update({
-  id: '/_protected',
+const LangTestRoute = LangTestRouteImport.update({
+  id: '/test',
+  path: '/test',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangFeedbackIndexRoute = LangFeedbackIndexRouteImport.update({
-  id: '/feedback/',
-  path: '/feedback/',
-  getParentRoute: () => LangRouteRoute,
-} as any)
-const LangArticleIndexRoute = LangArticleIndexRouteImport.update({
-  id: '/article/',
-  path: '/article/',
-  getParentRoute: () => LangRouteRoute,
-} as any)
-const LangAuthRegisterRoute = LangAuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => LangAuthRouteRoute,
-} as any)
-const LangAuthLoginRoute = LangAuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => LangAuthRouteRoute,
-} as any)
-const LangAuthForgotPasswordRoute = LangAuthForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => LangAuthRouteRoute,
-} as any)
-const LangAuthErrorRoute = LangAuthErrorRouteImport.update({
-  id: '/error',
-  path: '/error',
-  getParentRoute: () => LangAuthRouteRoute,
+const LangProtectedProfileRoute = LangProtectedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => LangProtectedRouteRoute,
 } as any)
 const LangProtectedResetPasswordRoute =
   LangProtectedResetPasswordRouteImport.update({
@@ -84,10 +59,35 @@ const LangProtectedResetPasswordRoute =
     path: '/reset-password',
     getParentRoute: () => LangProtectedRouteRoute,
   } as any)
-const LangProtectedProfileRoute = LangProtectedProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => LangProtectedRouteRoute,
+const LangArticleIndexRoute = LangArticleIndexRouteImport.update({
+  id: '/article/',
+  path: '/article/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangAuthErrorRoute = LangAuthErrorRouteImport.update({
+  id: '/error',
+  path: '/error',
+  getParentRoute: () => LangAuthRouteRoute,
+} as any)
+const LangAuthForgotPasswordRoute = LangAuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => LangAuthRouteRoute,
+} as any)
+const LangAuthLoginRoute = LangAuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => LangAuthRouteRoute,
+} as any)
+const LangAuthRegisterRoute = LangAuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => LangAuthRouteRoute,
+} as any)
+const LangFeedbackIndexRoute = LangFeedbackIndexRouteImport.update({
+  id: '/feedback/',
+  path: '/feedback/',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangArticleIdIndexRoute = LangArticleIdIndexRouteImport.update({
   id: '/article/$id/',
@@ -96,7 +96,7 @@ const LangArticleIdIndexRoute = LangArticleIdIndexRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/$lang': typeof LangProtectedRouteRouteWithChildren
+  '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRouteRouteWithChildren
   '/$lang/test': typeof LangTestRoute
   '/$lang/': typeof LangIndexRoute
@@ -209,11 +209,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/test': {
-      id: '/$lang/test'
-      path: '/test'
-      fullPath: '/$lang/test'
-      preLoaderRoute: typeof LangTestRouteImport
+    '/$lang/_protected': {
+      id: '/$lang/_protected'
+      path: ''
+      fullPath: '/$lang'
+      preLoaderRoute: typeof LangProtectedRouteRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/auth': {
@@ -223,19 +223,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthRouteRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/_protected': {
-      id: '/$lang/_protected'
-      path: ''
-      fullPath: '/$lang'
-      preLoaderRoute: typeof LangProtectedRouteRouteImport
+    '/$lang/test': {
+      id: '/$lang/test'
+      path: '/test'
+      fullPath: '/$lang/test'
+      preLoaderRoute: typeof LangTestRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/feedback/': {
-      id: '/$lang/feedback/'
-      path: '/feedback'
-      fullPath: '/$lang/feedback/'
-      preLoaderRoute: typeof LangFeedbackIndexRouteImport
-      parentRoute: typeof LangRouteRoute
+    '/$lang/_protected/profile': {
+      id: '/$lang/_protected/profile'
+      path: '/profile'
+      fullPath: '/$lang/profile'
+      preLoaderRoute: typeof LangProtectedProfileRouteImport
+      parentRoute: typeof LangProtectedRouteRoute
+    }
+    '/$lang/_protected/reset-password': {
+      id: '/$lang/_protected/reset-password'
+      path: '/reset-password'
+      fullPath: '/$lang/reset-password'
+      preLoaderRoute: typeof LangProtectedResetPasswordRouteImport
+      parentRoute: typeof LangProtectedRouteRoute
     }
     '/$lang/article/': {
       id: '/$lang/article/'
@@ -244,18 +251,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangArticleIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/auth/register': {
-      id: '/$lang/auth/register'
-      path: '/register'
-      fullPath: '/$lang/auth/register'
-      preLoaderRoute: typeof LangAuthRegisterRouteImport
-      parentRoute: typeof LangAuthRouteRoute
-    }
-    '/$lang/auth/login': {
-      id: '/$lang/auth/login'
-      path: '/login'
-      fullPath: '/$lang/auth/login'
-      preLoaderRoute: typeof LangAuthLoginRouteImport
+    '/$lang/auth/error': {
+      id: '/$lang/auth/error'
+      path: '/error'
+      fullPath: '/$lang/auth/error'
+      preLoaderRoute: typeof LangAuthErrorRouteImport
       parentRoute: typeof LangAuthRouteRoute
     }
     '/$lang/auth/forgot-password': {
@@ -265,26 +265,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthForgotPasswordRouteImport
       parentRoute: typeof LangAuthRouteRoute
     }
-    '/$lang/auth/error': {
-      id: '/$lang/auth/error'
-      path: '/error'
-      fullPath: '/$lang/auth/error'
-      preLoaderRoute: typeof LangAuthErrorRouteImport
+    '/$lang/auth/login': {
+      id: '/$lang/auth/login'
+      path: '/login'
+      fullPath: '/$lang/auth/login'
+      preLoaderRoute: typeof LangAuthLoginRouteImport
       parentRoute: typeof LangAuthRouteRoute
     }
-    '/$lang/_protected/reset-password': {
-      id: '/$lang/_protected/reset-password'
-      path: '/reset-password'
-      fullPath: '/$lang/reset-password'
-      preLoaderRoute: typeof LangProtectedResetPasswordRouteImport
-      parentRoute: typeof LangProtectedRouteRoute
+    '/$lang/auth/register': {
+      id: '/$lang/auth/register'
+      path: '/register'
+      fullPath: '/$lang/auth/register'
+      preLoaderRoute: typeof LangAuthRegisterRouteImport
+      parentRoute: typeof LangAuthRouteRoute
     }
-    '/$lang/_protected/profile': {
-      id: '/$lang/_protected/profile'
-      path: '/profile'
-      fullPath: '/$lang/profile'
-      preLoaderRoute: typeof LangProtectedProfileRouteImport
-      parentRoute: typeof LangProtectedRouteRoute
+    '/$lang/feedback/': {
+      id: '/$lang/feedback/'
+      path: '/feedback'
+      fullPath: '/$lang/feedback/'
+      preLoaderRoute: typeof LangFeedbackIndexRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/article/$id/': {
       id: '/$lang/article/$id/'

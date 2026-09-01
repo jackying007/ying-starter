@@ -1,7 +1,7 @@
+import { useMemo } from 'react'
 import { Card, Tooltip, Typography, Image } from 'antd'
 import type { ItemRender } from 'antd/es/upload/interface'
 import { m } from 'framer-motion'
-import { useEffect, useState } from 'react'
 import { formatNumber } from '@ying/utils'
 import { varFade } from '@/components/animate/variants'
 import { IconButton, Iconify, SvgIcon } from '@/components/icon'
@@ -17,14 +17,11 @@ export default function UploadListItem({ file, actions, thumbnail = false }: Pro
   const { name, size } = file
   const thumb = getFileIcon(name)
   const format = getFileFormat(name)
-  const [imgThumbUrl, setImgThumbUrl] = useState('')
 
-  useEffect(() => {
-    // TODO: mock upload sucess, you should delete 'error' in the production environment
+  const imgThumbUrl = useMemo(() => {
     if (!file.status || !file.originFileObj) return
-    if (['done', 'error'].includes(file.status) && format === 'img') {
-      setImgThumbUrl(getBlobUrl(file.originFileObj))
-    }
+    // TODO: mock upload sucess, you should delete 'error' in the production environment
+    if (['done', 'error'].includes(file.status) && format === 'img') return getBlobUrl(file.originFileObj)
   }, [file, format])
 
   const closeButton = (

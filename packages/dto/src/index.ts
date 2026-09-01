@@ -1,4 +1,4 @@
-import 'reflect-metadata'
+import 'reflect-metadata' // 为了前端引入能正常使用
 export * from './list.dto'
 export * from './delete.dto'
 export * from './stat.dto'

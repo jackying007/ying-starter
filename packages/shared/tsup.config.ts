@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { defineConfig } from 'tsup'
 import { exec } from 'node:child_process'
 

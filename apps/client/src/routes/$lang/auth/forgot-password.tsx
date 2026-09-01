@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { useTranslation } from 'react-i18next'
@@ -37,11 +37,10 @@ function RouteComponent() {
     control,
     formState: { isSubmitting },
     handleSubmit,
-    watch,
     trigger,
     getFieldState
   } = form
-  const email = watch('email')
+  const email = useWatch({ control, name: 'email' })
   const emailHasTrigger = useRef(false)
   useEffect(() => {
     if (emailHasTrigger.current) trigger('email')

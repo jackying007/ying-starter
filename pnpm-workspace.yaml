@@ -1,6 +1,5 @@
 packages:
   - 'apps/*'
   - 'packages/*'
-onlyBuiltDependencies:
-  - esbuild
-  - lightningcss
+allowBuilds:
+  '@parcel/watcher': true

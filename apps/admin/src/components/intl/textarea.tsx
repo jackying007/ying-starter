@@ -28,7 +28,7 @@ export const IntlTextArea = ({ value, defaultValue, onChange, ...props }: IntlTe
               {...props}
               className="mt-1.5"
               key={lng}
-              defaultValue={intlText.current?.[lng]}
+              defaultValue={defaultValue?.[lng]}
               onChange={e => {
                 intlText.current[lng] = e.target.value
                 onChange?.(intlText.current)

@@ -13,7 +13,7 @@ type IntlInputProps = Omit<InputProps, 'defaultValue' | 'onChange'> & {
   onChange?: (val: TIntlText) => void
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 export const IntlInput = ({ value, defaultValue, onChange, ...props }: IntlInputProps) => {
   const [currentLng, setCurrentLng] = useState<LngKeys>(fallbackLng)
   const intlText = useRef<TIntlText>(defaultValue ?? {})
@@ -29,7 +29,7 @@ export const IntlInput = ({ value, defaultValue, onChange, ...props }: IntlInput
               {...props}
               className="mt-1.5"
               key={lng}
-              defaultValue={intlText.current?.[lng]}
+              defaultValue={defaultValue?.[lng]}
               onChange={e => {
                 intlText.current[lng] = e.target.value
                 onChange?.(intlText.current)

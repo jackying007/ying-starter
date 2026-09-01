@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { App, Drawer, Button, Space } from 'antd'
 import { useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
@@ -6,9 +6,9 @@ import { useQuery } from '@tanstack/react-query'
 
 import { uniqueBy } from '@ying/utils'
 import { clientLanguagesConfig, type LngKeys } from '@ying/shared'
-import type { FileEntity } from '@ying/entity'
+import { FileEntity } from '@ying/entity'
 import { UpdateArticleContentDto } from '@ying/dto'
-import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/frontend/hooks'
 import { editorEmitter } from '@ying/frontend/editor'
 
 import { type EditorHandle, FullScreenEditor } from '@/components/editor'
@@ -43,9 +43,12 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
     refetchOnWindowFocus: false
   })
 
-  const { renderKey, setRenderKey } = useRemount()
+  const [newAssociatedFiles, setNewAssociatedFiles] = useState<FileEntity[]>()
+  const associatedFiles = useMemo(
+    () => uniqueBy([...(article?.associatedFiles ?? []), ...(newAssociatedFiles ?? [])], 'id'),
+    [article, newAssociatedFiles]
+  )
 
-  const [associatedFiles, setAssociatedFiles] = useState<FileEntity[]>()
   useEffect(() => {
     if (article) {
       reset({
@@ -53,34 +56,19 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
         content: article.content,
         associatedFileIds: article.associatedFiles?.map(el => el.id)
       })
-      setAssociatedFiles(article.associatedFiles)
-      setRenderKey(key => key + 1)
     } else {
       reset({})
-      setAssociatedFiles(undefined)
     }
-  }, [article, reset, setRenderKey])
-
-  const onAddAssociatedFiles = useCallback(
-    (files: FileEntity[]) => {
-      const newFiles = [...(associatedFiles ?? []), ...files]
-      setAssociatedFiles(uniqueBy(newFiles, 'id'))
-    },
-    [associatedFiles]
-  )
+  }, [article, reset])
 
   useEffect(() => {
-    editorEmitter.on('add-associated-files', onAddAssociatedFiles)
-    return () => editorEmitter.off('add-associated-files', onAddAssociatedFiles)
-  }, [onAddAssociatedFiles])
+    const onAddNewAssociatedFiles = (files: FileEntity[]) => {
+      setNewAssociatedFiles(files)
+    }
+    editorEmitter.on('add-associated-files', onAddNewAssociatedFiles)
+    return () => editorEmitter.off('add-associated-files', onAddNewAssociatedFiles)
+  }, [])
 
-  const handlePost = async (value: UpdateArticleContentDto) => {
-    await articleApi.updateContent(value)
-    message.success(`${title}成功`)
-    onSuccess?.()
-    onClose()
-  }
-  const submit = handleSubmit(handlePost)
   const processingAssociatedFiles = () => {
     if (!associatedFiles) return
     setValue(
@@ -88,6 +76,13 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
       associatedFiles.map(el => el.id)
     )
   }
+  const handlePost = async (value: UpdateArticleContentDto) => {
+    await articleApi.updateContent(value)
+    message.success(`${title}成功`)
+    onSuccess?.()
+    onClose()
+  }
+  const submit = handleSubmit(handlePost)
   const comfirm = () => {
     processingAssociatedFiles()
     submit()
@@ -130,7 +125,7 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
     >
       <FullScreenEditor
         ref={editorRef}
-        key={renderKey}
+        key={article?.id}
         defaultValue={article?.content?.[currentLng]}
         onChange={val => setValue(`content.${currentLng}`, val, { shouldDirty: true })}
         associatedFiles={associatedFiles}

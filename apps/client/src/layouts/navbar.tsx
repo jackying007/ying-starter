@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { LuLogOut, LuAlignJustify } from 'react-icons/lu'
 import { useTranslation } from 'react-i18next'
 import { linkOptions, useLocation, useParams, Link as TanstackLink, useMatches } from '@tanstack/react-router'
@@ -32,12 +31,8 @@ import { Brand } from './brand'
 export const Navbar = () => {
   const params = useParams({ from: '/$lang' })
   const { pathname } = useLocation()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const userInfo = useAuthStore(state => state.userInfo)
   const avatar = useUserAvatar()
-  useEffect(() => {
-    setIsMenuOpen(false)
-  }, [pathname])
 
   const MenuItems = linkOptions([
     {
@@ -67,7 +62,7 @@ export const Navbar = () => {
     >
       <MaxWidthWrapper className="flex justify-between items-start">
         <div className="h-full flex">
-          <Sheet open={isMenuOpen} onOpenChange={val => setIsMenuOpen(val)}>
+          <Sheet key={pathname}>
             <SheetTrigger>
               <LuAlignJustify className="text-xl mr-2 sm:hidden" />
             </SheetTrigger>

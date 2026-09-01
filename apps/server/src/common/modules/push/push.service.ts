@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import type { ConfigType } from '@nestjs/config'
 import type { PushSubscription } from 'web-push'
-import * as webpush from 'web-push'
+import webpush from 'web-push'
 
 import { pushConfig } from '@/config'
 

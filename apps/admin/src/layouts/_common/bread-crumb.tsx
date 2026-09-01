@@ -1,6 +1,6 @@
 import { Breadcrumb } from 'antd'
 import type { ItemType } from 'antd/es/breadcrumb/Breadcrumb'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useMatches } from 'react-router-dom'
 
 import { usePermissionRoutes, useRouter } from '@/router/hooks'
@@ -12,17 +12,14 @@ import type { PropsWithClassName } from '@/types'
  */
 export function BreadCrumb({ className }: PropsWithClassName) {
   const matches = useMatches()
-  const [breadCrumbs, setBreadCrumbs] = useState<ItemType[]>([])
   const { push } = useRouter()
-
   const { routeMetas, navMenuRoutes } = usePermissionRoutes()
 
-  useEffect(() => {
+  const breadCrumbs = useMemo(() => {
     const paths = matches.filter(item => item.pathname !== '/').map(item => item.pathname)
-
     const pathRouteMetas = routeMetas.filter(item => paths.indexOf(item.key) !== -1)
 
-    const breadCrumbs = pathRouteMetas.map(routeMeta => {
+    return pathRouteMetas.map(routeMeta => {
       const { key, label } = routeMeta
       const items = navMenuRoutes.find(item => item.meta?.key === key)?.children?.filter(item => !item.meta?.hideMenu)
       const result: ItemType = {
@@ -51,7 +48,6 @@ export function BreadCrumb({ className }: PropsWithClassName) {
       }
       return result
     })
-    setBreadCrumbs(breadCrumbs)
   }, [matches, routeMetas, navMenuRoutes, push])
 
   return <Breadcrumb className={className} items={breadCrumbs} />

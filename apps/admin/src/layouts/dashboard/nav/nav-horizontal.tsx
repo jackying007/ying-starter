@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Menu, type MenuProps } from 'antd'
+import { Menu } from 'antd'
 import { useThemeToken } from '@/hooks'
 import { useSettings } from '@/store'
 import { ThemeNavLayout } from '@/types/enum'
@@ -10,15 +9,6 @@ export function NavHorizontal() {
   const { colorBgLayout } = useThemeToken()
   const { themeLayout } = useSettings()
   const isHorizontal = themeLayout === ThemeNavLayout.Horizontal
-  const [openKeys, setOpenKeys] = useState<string[]>([])
-  const onOpenChange: MenuProps['onOpenChange'] = keys => {
-    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1)
-    if (latestOpenKey) {
-      setOpenKeys(keys)
-    } else {
-      setOpenKeys([])
-    }
-  }
   const { selectedKeys, menuList, onClick } = useNavContext()
 
   return (
@@ -35,11 +25,8 @@ export function NavHorizontal() {
         }}
         mode="horizontal"
         items={menuList}
-        defaultOpenKeys={openKeys}
-        openKeys={openKeys}
         defaultSelectedKeys={selectedKeys}
         selectedKeys={selectedKeys}
-        onOpenChange={onOpenChange}
         onClick={onClick}
       />
     </div>

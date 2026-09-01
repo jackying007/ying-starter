@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Image } from 'antd'
 import { EyeFilled, DeleteOutlined, PlusOutlined, DragOutlined } from '@ant-design/icons'
 import { DndContext, type DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { FileEntity } from '@ying/entity'
-import { ImageSelectorModal } from './image-selector-modal'
+import { ImageSelectorModal, type ImageSelectorModalRefHandle } from './image-selector-modal'
 
 type ImageSelectorProps = {
   maxLength?: number
@@ -18,6 +18,8 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
   const [images, setImages] = useState(
     defaultValue ? (Array.isArray(defaultValue) ? defaultValue : [defaultValue]) : []
   )
+
+  const imageSelectorModalRef = useRef<ImageSelectorModalRefHandle>(null)
 
   const onSelect = (files: FileEntity[]) => {
     setImages(files)
@@ -43,6 +45,7 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
     const newImages = images.filter(el => el.id !== file.id)
     setImages(newImages)
     onChange?.(newImages)
+    imageSelectorModalRef.current?.setSelectedFiles(newImages)
   }
 
   return (
@@ -61,11 +64,12 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
             </div>
           )}
           <ImageSelectorModal
-            files={images}
+            defaultFiles={images}
             open={open}
             onCancel={() => setOpen(false)}
             onSelect={onSelect}
             maxLength={maxLength}
+            ref={imageSelectorModalRef}
           />
           {previewUrl && (
             <Image
