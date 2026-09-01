@@ -19,46 +19,6 @@ export function useKeepAlive() {
   const [fullscreenTabKey, setFullscreenTabKey] = useState<string>()
   const currentFullscreenTab = tabs.find(tab => tab.key === fullscreenTabKey)
 
-  const closeTab = (path: string) => {
-    setTabs(prevTabs => {
-      if (prevTabs.length === 1) return prevTabs
-      const deleteTabIndex = prevTabs.findIndex(item => item.key === path)
-      if (path === activeTabKey) {
-        if (deleteTabIndex > 0) {
-          push(prevTabs[deleteTabIndex - 1].key)
-        } else {
-          push(prevTabs[deleteTabIndex + 1].key)
-        }
-      }
-      return prevTabs.toSpliced(deleteTabIndex, 1)
-    })
-  }
-
-  const closeOthersTab = (path: string) => {
-    setTabs(prevTabs => prevTabs.filter(item => item.key === path))
-  }
-
-  const closeAll = () => {
-    setTabs([])
-    push(import.meta.env.APP_HOMEPAGE)
-  }
-
-  const closeLeft = (path: string) => {
-    push(path)
-    setTabs(prevTabs => {
-      const currentTabIndex = prevTabs.findIndex(item => item.key === path)
-      return prevTabs.slice(currentTabIndex)
-    })
-  }
-
-  const closeRight = (path: string) => {
-    push(path)
-    setTabs(prevTabs => {
-      const currentTabIndex = prevTabs.findIndex(item => item.key === path)
-      return prevTabs.slice(0, currentTabIndex + 1)
-    })
-  }
-
   const refreshTab = (path: string) => {
     setTabs(prevTabs => {
       const currentTabIndex = prevTabs.findIndex(item => item.key === path)
@@ -91,6 +51,47 @@ export function useKeepAlive() {
     setFullscreenTabKey(undefined)
   }
 
+  const closeTab = (path: string) => {
+    setTabs(prevTabs => {
+      if (prevTabs.length === 1) return prevTabs
+      const deleteTabIndex = prevTabs.findIndex(item => item.key === path)
+      if (path === activeTabKey) {
+        if (deleteTabIndex > 0) {
+          push(prevTabs[deleteTabIndex - 1].key)
+        } else {
+          push(prevTabs[deleteTabIndex + 1].key)
+        }
+      }
+      return prevTabs.toSpliced(deleteTabIndex, 1)
+    })
+  }
+
+  const closeLeft = (path: string) => {
+    push(path)
+    setTabs(prevTabs => {
+      const currentTabIndex = prevTabs.findIndex(item => item.key === path)
+      return prevTabs.slice(currentTabIndex)
+    })
+  }
+
+  const closeRight = (path: string) => {
+    push(path)
+    setTabs(prevTabs => {
+      const currentTabIndex = prevTabs.findIndex(item => item.key === path)
+      return prevTabs.slice(0, currentTabIndex + 1)
+    })
+  }
+
+  const closeOthersTab = (path: string) => {
+    push(path)
+    setTabs(prevTabs => prevTabs.filter(item => item.key === path))
+  }
+
+  const closeAll = () => {
+    setTabs([])
+    push(import.meta.env.APP_HOMEPAGE)
+  }
+
   useEffect(() => {
     if (!currentKeepAliveRoute) return
     const existed = tabsRef.current.find(item => item.key === currentKeepAliveRoute.key)
@@ -110,13 +111,13 @@ export function useKeepAlive() {
     setTabs,
     activeTabKey,
     currentFullscreenTab,
-    closeTab,
-    closeOthersTab,
     refreshTab,
-    closeAll,
+    fullscreenTab,
+    exitFullscreenTab,
+    closeTab,
     closeLeft,
     closeRight,
-    fullscreenTab,
-    exitFullscreenTab
+    closeOthersTab,
+    closeAll
   }
 }

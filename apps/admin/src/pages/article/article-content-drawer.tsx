@@ -9,7 +9,14 @@ import { clientLanguagesConfig, type LngKeys } from '@ying/shared'
 import { FileEntity } from '@ying/entity'
 import { UpdateArticleContentDto } from '@ying/dto'
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { editorEmitter } from '@ying/frontend/editor'
+import {
+  editorEmitter,
+  generateJSON,
+  defaultExtensions,
+  findNodes,
+  type LazyImageAttr,
+  type LazyImageListAttr
+} from '@ying/frontend/editor'
 
 import { type EditorHandle, FullScreenEditor } from '@/components/editor'
 import { IntlSwitch } from '@/components/intl'
@@ -62,19 +69,34 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
   }, [article, reset])
 
   useEffect(() => {
-    const onAddNewAssociatedFiles = (files: FileEntity[]) => {
+    function onAddNewAssociatedFiles(files: FileEntity[]) {
       setNewAssociatedFiles(files)
     }
     editorEmitter.on('add-associated-files', onAddNewAssociatedFiles)
     return () => editorEmitter.off('add-associated-files', onAddNewAssociatedFiles)
   }, [])
 
-  const processingAssociatedFiles = () => {
-    if (!associatedFiles) return
-    setValue(
-      'associatedFileIds',
-      associatedFiles.map(el => el.id)
-    )
+  const processingAssociatedFileIds = () => {
+    const { content } = getValues()
+    if (!content) return
+
+    const fileIdSet = new Set<number>()
+    Object.values(content).forEach(value => {
+      const json = generateJSON(value, defaultExtensions)
+      const nodes = findNodes(json, ['lazyImage', 'lazyImageList'])
+      nodes.forEach(el => {
+        if (el.type === 'lazyImage') {
+          const { id } = el.attrs as LazyImageAttr
+          fileIdSet.add(id)
+        } else if (el.type === 'lazyImageList') {
+          const { ids } = el.attrs as LazyImageListAttr
+          ids.forEach(id => fileIdSet.add(id))
+        }
+      })
+    })
+    const fileIds = [...fileIdSet]
+
+    setValue('associatedFileIds', fileIds)
   }
   const handlePost = async (value: UpdateArticleContentDto) => {
     await articleApi.updateContent(value)
@@ -84,7 +106,7 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
   }
   const submit = handleSubmit(handlePost)
   const comfirm = () => {
-    processingAssociatedFiles()
+    processingAssociatedFileIds()
     submit()
   }
 

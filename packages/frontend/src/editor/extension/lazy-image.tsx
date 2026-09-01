@@ -35,11 +35,15 @@ export const LazyImageExtension = Node.create({
   }
 })
 
+export type LazyImageAttr = {
+  id: number
+}
 export const LazyImageCom = (props: ReactNodeViewProps) => {
   const selected = useSelected(props)
   const { moveUp, moveDown } = useMove(props)
+  const { id } = props.node.attrs as LazyImageAttr
   const { associatedFiles } = useEditorContext()
-  const imageFile = associatedFiles?.find(el => el.id === props.node.attrs.id)
+  const imageFile = associatedFiles?.find(el => el.id === id)
 
   if (!imageFile) return null
   return (
