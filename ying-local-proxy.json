@@ -1,0 +1,4 @@
+{
+  "admin.localhost": "localhost:5173",
+  "client.localhost": "localhost:5174"
+}

@@ -16,5 +16,5 @@
     /* Linting */
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "vite.logger.ts"]
+  "include": ["vite.config.ts"]
 }

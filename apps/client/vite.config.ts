@@ -4,7 +4,6 @@ import { devtools } from '@tanstack/devtools-vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
-import { customLogger } from './vite.logger.ts'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'APP_')
@@ -23,7 +22,6 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
-    customLogger,
     plugins: [
       tanstackStart(),
       devtools({
