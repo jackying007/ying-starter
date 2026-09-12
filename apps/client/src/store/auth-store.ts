@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { ClientUserVo, ClientAuthVo } from '@ying/shared/vo'
+import type { ClientUserVo, ClientAuthVo } from '@ying/shared'
 import { authAPI, userAPI } from '@/api'
 import { CookieEnum } from '@/enum'
 import { getCookie, setCookie, removeCookie } from '@/cookie'

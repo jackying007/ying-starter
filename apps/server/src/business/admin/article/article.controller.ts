@@ -1,11 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import {
-  CreateArticleDto,
-  UpdateArticleDto,
-  ListArticleDto,
-  DeleteDto,
-  UpdateArticleContentDto
-} from '@ying/shared/dto'
+import { CreateArticleDto, UpdateArticleDto, ListArticleDto, DeleteDto, UpdateArticleContentDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { ArticleService } from '@/business/modules/article'

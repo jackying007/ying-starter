@@ -16,7 +16,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { FileSourceType, FileType } from '@ying/shared'
-import { ListFileDto } from '@ying/shared/dto'
+import { ListFileDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator, UID } from '@/common/decorator'

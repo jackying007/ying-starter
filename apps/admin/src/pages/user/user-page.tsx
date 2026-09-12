@@ -4,8 +4,8 @@ import { Controller, type UseFormGetValues } from 'react-hook-form'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 
-import type { ListUserDto } from '@ying/shared/dto'
-import type { UserEntity } from '@ying/shared/entity'
+import type { ListUserDto } from '@ying/shared'
+import type { UserEntity } from '@ying/shared'
 
 import { downloadExcel, userApi } from '@/api'
 import { useTable } from '@/hooks'

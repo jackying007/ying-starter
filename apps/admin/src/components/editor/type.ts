@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 import type { TEditorEmitter } from '@ying/frontend/editor'
-import type { FileEntity } from '@ying/shared/entity'
+import type { FileEntity } from '@ying/shared'
 
 export type EditorHandle = {
   setContent: (val: string) => void

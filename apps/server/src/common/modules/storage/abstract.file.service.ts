@@ -1,7 +1,5 @@
 import { DataSource } from 'typeorm'
-import { ListFileDto } from '@ying/shared/dto'
-import { FileSourceType, FileType } from '@ying/shared'
-import { FileEntity } from '@ying/shared/entity'
+import { ListFileDto, FileSourceType, FileType, FileEntity } from '@ying/shared'
 import { BaseService } from '@/common/service/base.service'
 
 export type UploadFileOptions = {

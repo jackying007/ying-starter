@@ -4,8 +4,8 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, ListSysUserDto, UpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared/dto'
-import type { SysUserEntity } from '@ying/shared/entity'
+import type { ListRoleDto, ListSysUserDto, UpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
+import type { SysUserEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useThemeToken } from '@/hooks'

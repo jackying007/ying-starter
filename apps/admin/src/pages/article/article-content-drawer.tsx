@@ -6,8 +6,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { uniqueBy } from '@ying/utils'
 import { clientLanguagesConfig, type LngKeys } from '@ying/shared'
-import { FileEntity } from '@ying/shared/entity'
-import { UpdateArticleContentDto } from '@ying/shared/dto'
+import { FileEntity } from '@ying/shared'
+import { UpdateArticleContentDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 import {
   editorEmitter,

@@ -1,6 +1,6 @@
 import type { HttpRequest } from '@jying/http'
-import type { ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared/dto'
-import type { ClientUserVo } from '@ying/shared/vo'
+import type { ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
+import type { ClientUserVo } from '@ying/shared'
 
 export default function (http: HttpRequest) {
   return {

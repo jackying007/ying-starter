@@ -1,6 +1,6 @@
 import { HttpRequest } from '@jying/http'
-import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared/dto'
-import type { SysRoleEntity, SysPermissionEntity } from '@ying/shared/entity'
+import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
+import type { SysRoleEntity, SysPermissionEntity } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
 

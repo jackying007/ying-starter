@@ -14,7 +14,7 @@ import {
   PushTaskEntity,
   PushRecordEntity,
   ArticleEntity
-} from '@ying/shared/entity'
+} from '@ying/shared'
 import { dbConfig } from '@/config'
 
 @Global()

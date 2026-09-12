@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util'
 import { faker } from '@faker-js/faker'
 import { FileSourceType, FileType } from '@ying/shared'
-import { SysRoleEntity, SysUserEntity, FileEntity } from '@ying/shared/entity'
+import { SysRoleEntity, SysUserEntity, FileEntity } from '@ying/shared'
 import { generatePass } from '../src/common/utils'
 import dataSource from '../typeorm.config'
 

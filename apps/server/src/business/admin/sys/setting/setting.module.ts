@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { SysUserEntity } from '@ying/shared/entity'
+import { SysUserEntity } from '@ying/shared'
 import { SysSettingController } from './setting.controller'
 import { SysSettingService } from './setting.service'
 

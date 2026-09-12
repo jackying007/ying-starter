@@ -1,4 +1,4 @@
-import type { ArticleEntity } from '@ying/shared/entity'
+import type { ArticleEntity } from '@ying/shared'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
 import { Paginations } from '@/components/paginations'

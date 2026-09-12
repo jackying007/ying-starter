@@ -6,7 +6,7 @@ import { Repository } from 'typeorm'
 import { WebPushError } from 'web-push'
 
 import { PushRecordStatus, PushTaskStatus } from '@ying/shared'
-import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/shared/entity'
+import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/shared'
 
 import { RedisToken, type RedisObjs } from '@/common/modules/redis/constant'
 

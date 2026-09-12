@@ -1,6 +1,6 @@
 import { HttpRequest } from '@jying/http'
-import type { ListUserDto, StatDto, UserStatByTypeVo, UserStatVo } from '@ying/shared/dto'
-import type { UserEntity } from '@ying/shared/entity'
+import type { ListUserDto, StatDto, UserStatByTypeVo, UserStatVo } from '@ying/shared'
+import type { UserEntity } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
 

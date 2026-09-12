@@ -1,6 +1,6 @@
 import { App, Button, Card, Form, Input } from 'antd'
 import { useCallback, useState } from 'react'
-import type { AdminLoginDto } from '@ying/shared/dto'
+import type { AdminLoginDto } from '@ying/shared'
 
 import { setAccessToken, setRefreshToken, setUserInfo } from '@/store'
 import { authApi } from '@/api'

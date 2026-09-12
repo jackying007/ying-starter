@@ -4,8 +4,8 @@ import { Controller, useController, useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import dayjs from 'dayjs'
 
-import { SetPushTaskDto } from '@ying/shared/dto'
-import type { PushTaskEntity } from '@ying/shared/entity'
+import { SetPushTaskDto } from '@ying/shared'
+import type { PushTaskEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { notificationApi } from '@/api'

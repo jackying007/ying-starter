@@ -1,5 +1,5 @@
 import { DeviceType, PushTaskStatus } from '@ying/shared'
-import { CreatePushTaskDto } from '@ying/shared/dto'
+import { CreatePushTaskDto } from '@ying/shared'
 
 export const defaultValues: Partial<CreatePushTaskDto> = {
   name: undefined,

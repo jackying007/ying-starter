@@ -7,8 +7,8 @@ import ms from 'ms'
 
 import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
-import { AdminLoginDto } from '@ying/shared/dto'
-import { SysPermissionEntity, SysUserEntity } from '@ying/shared/entity'
+import { AdminLoginDto } from '@ying/shared'
+import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'
 import { comparePass } from '@/common/utils'

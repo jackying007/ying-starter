@@ -1,6 +1,6 @@
 import { In } from 'typeorm'
 import { pms, type TPermission } from '@ying/shared/permission'
-import { SysPermissionEntity } from '@ying/shared/entity'
+import { SysPermissionEntity } from '@ying/shared'
 import dataSource from '../typeorm.config'
 
 function pmsToTree(permission: TPermission, sortId: number, parentCode: string | null) {

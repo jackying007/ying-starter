@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { getRandomInRange } from '@ying/utils'
-import { ArticleEntity } from '@ying/shared/entity'
+import { ArticleEntity } from '@ying/shared'
 import dataSource from '../typeorm.config'
 
 function generateBlogPost() {

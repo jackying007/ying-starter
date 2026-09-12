@@ -4,8 +4,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { SendPushTemplateDto } from '@ying/shared/dto'
-import type { PushTemplateEntity } from '@ying/shared/entity'
+import { SendPushTemplateDto } from '@ying/shared'
+import type { PushTemplateEntity } from '@ying/shared'
 
 import { notificationApi } from '@/api'
 

@@ -1,6 +1,6 @@
 import type { HttpRequest } from '@jying/http'
-import type { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/shared/dto'
-import type { FileEntity, TFileExtra, VisitorEntity } from '@ying/shared/entity'
+import type { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/shared'
+import type { FileEntity, TFileExtra, VisitorEntity } from '@ying/shared'
 
 export default function (http: HttpRequest) {
   return {

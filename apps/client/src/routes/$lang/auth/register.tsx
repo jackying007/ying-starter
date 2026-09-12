@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { useTranslation } from 'react-i18next'
 
-import { ClientRegisterDto } from '@ying/shared/dto'
+import { ClientRegisterDto } from '@ying/shared'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'

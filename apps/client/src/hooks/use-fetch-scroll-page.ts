@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import type { ListDto } from '@ying/shared/dto'
+import type { ListDto } from '@ying/shared'
 
 type UseFetchScrollPageOptioons<T> = {
   listApi: (pageOptions: ListDto) => Promise<T[]> | undefined

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FaImages } from 'react-icons/fa'
 import { Modal } from 'antd'
 
-import type { FileEntity } from '@ying/shared/entity'
+import type { FileEntity } from '@ying/shared'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
 import { useEditorContext, MenuButton, type Events } from '@ying/frontend/editor'
 

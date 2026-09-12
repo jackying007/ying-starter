@@ -7,18 +7,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
     },
-    "./entity": {
-      "types": "./dist/entity/index.d.ts",
-      "import": "./dist/entity/index.mjs"
-    },
-    "./dto": {
-      "types": "./dist/dto/index.d.ts",
-      "import": "./dist/dto/index.mjs"
-    },
-    "./vo": {
-      "types": "./dist/vo/index.d.ts",
-      "import": "./dist/vo/index.mjs"
-    },
     "./permission": {
       "types": "./dist/permission/index.d.ts",
       "import": "./dist/permission/index.mjs"

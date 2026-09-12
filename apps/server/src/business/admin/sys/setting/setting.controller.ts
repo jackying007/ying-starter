@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ConfigDto } from '@ying/shared/dto'
+import { ConfigDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { ConfigService } from '@/common/modules/config/config.service'

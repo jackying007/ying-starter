@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
-import type { VerifyEmailDto } from '@ying/shared/dto'
+import type { VerifyEmailDto } from '@ying/shared'
 import { Field, FieldContent, FieldDescription } from '@ying/frontend/ui'
 import { LoadingIconV1 } from '@ying/frontend/icons'
 import { TipError } from '@/components/tip-error'

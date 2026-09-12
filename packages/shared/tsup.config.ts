@@ -5,9 +5,6 @@ import { exec } from 'node:child_process'
 export default defineConfig(options => ({
   entry: {
     index: './src/index.ts',
-    'entity/index': './src/entity/index.ts',
-    'dto/index': './src/dto/index.ts',
-    'vo/index': './src/vo/index.ts',
     'permission/index': './src/permission/index.ts'
   },
   outDir: 'dist',

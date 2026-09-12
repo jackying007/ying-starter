@@ -1,7 +1,7 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
 import { Catch, HttpStatus, Logger } from '@nestjs/common'
 import type { Request, Response } from 'express'
-import type { ErrorVo } from '@ying/shared/vo'
+import type { ErrorVo } from '@ying/shared'
 import { getErrorMessage } from './get-error-message'
 
 @Catch()

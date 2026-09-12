@@ -7,7 +7,7 @@ import {
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfPasswordDto,
   UpdateSysUserSelfUserInfoDto
-} from '@ying/shared/dto'
+} from '@ying/shared'
 import { omitArray } from '@ying/utils'
 import { pms } from '@ying/shared/permission'
 

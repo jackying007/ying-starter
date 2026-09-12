@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { JwtModule } from '@nestjs/jwt'
 
-import { FileEntity, UserEntity, OAuthAccountEntity } from '@ying/shared/entity'
+import { FileEntity, UserEntity, OAuthAccountEntity } from '@ying/shared'
 import { UserModule } from '@/business/modules/user'
 
 import { AuthController } from './auth.controller'

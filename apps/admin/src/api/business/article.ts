@@ -5,8 +5,8 @@ import type {
   UpdateArticleContentDto,
   ListArticleDto,
   DeleteDto
-} from '@ying/shared/dto'
-import type { ArticleEntity } from '@ying/shared/entity'
+} from '@ying/shared'
+import type { ArticleEntity } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
 

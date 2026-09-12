@@ -1,4 +1,4 @@
-import type { ListDto } from '@ying/shared/dto'
+import type { ListDto } from '@ying/shared'
 import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/frontend/hooks'
 import type { PaginationsProps } from '@/components/paginations'
 

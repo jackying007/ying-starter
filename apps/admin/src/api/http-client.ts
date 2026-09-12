@@ -1,5 +1,5 @@
 import { HttpRequest } from '@jying/http'
-import { isBaseVo } from '@ying/shared/vo'
+import { isBaseVo } from '@ying/shared'
 import { clearUserStore } from '@/store'
 import { globalEvent } from '@/event-emitter'
 import { isRefreshRequest, refreshToken } from './refresh-token'

@@ -13,7 +13,7 @@ import {
   PushTaskEntity,
   PushRecordEntity,
   ArticleEntity
-} from '@ying/shared/entity'
+} from '@ying/shared'
 
 export default new DataSource({
   type: 'postgres',

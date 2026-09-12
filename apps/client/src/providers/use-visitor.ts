@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { load } from '@fingerprintjs/fingerprintjs'
 import UAParser from 'ua-parser-js'
 
-import type { UserEntity } from '@ying/shared/entity'
+import type { UserEntity } from '@ying/shared'
 import { storage } from '@ying/frontend/utils'
 
 import { StorageEnum } from '@/enum'

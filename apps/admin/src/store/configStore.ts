@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { create } from 'zustand'
 
-import type { ConfigVo } from '@ying/shared/vo'
+import type { ConfigVo } from '@ying/shared'
 
 import { commonApi } from '@/api'
 

@@ -4,8 +4,8 @@ import { Like, Repository } from 'typeorm'
 
 import { PushRecordStatus } from '@ying/shared'
 
-import { PushRecordEntity, PushTaskEntity, type TaskStatus } from '@ying/shared/entity'
-import { CreatePushTaskDto, ListPushTaskDto } from '@ying/shared/dto'
+import { PushRecordEntity, PushTaskEntity, type TaskStatus } from '@ying/shared'
+import { CreatePushTaskDto, ListPushTaskDto } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'
 

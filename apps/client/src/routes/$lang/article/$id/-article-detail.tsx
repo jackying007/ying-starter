@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
 import type { LngKeys } from '@ying/shared'
-import type { ArticleEntity } from '@ying/shared/entity'
+import type { ArticleEntity } from '@ying/shared'
 import { Badge } from '@ying/frontend/ui'
 import { LazyImage } from '@ying/frontend/components'
 

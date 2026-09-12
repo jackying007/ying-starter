@@ -1,1 +1,2 @@
-export * from './client.languages'
+export * from './config.dto'
+export * from './config.vo'

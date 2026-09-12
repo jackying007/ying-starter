@@ -4,7 +4,7 @@ import { EyeFilled, DeleteOutlined, PlusOutlined, DragOutlined } from '@ant-desi
 import { DndContext, type DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { FileEntity } from '@ying/shared/entity'
+import type { FileEntity } from '@ying/shared'
 import { ImageSelectorModal, type ImageSelectorModalRefHandle } from './image-selector-modal'
 
 type ImageSelectorProps = {

@@ -1,7 +1,7 @@
 import type { HttpRequest } from '@jying/http'
-import type { AdminLoginDto } from '@ying/shared/dto'
-import type { AdminAuthVo } from '@ying/shared/vo'
-import type { SysUserEntity } from '@ying/shared/entity'
+import type { AdminLoginDto } from '@ying/shared'
+import type { AdminAuthVo } from '@ying/shared'
+import type { SysUserEntity } from '@ying/shared'
 
 export default function (http: HttpRequest) {
   return {

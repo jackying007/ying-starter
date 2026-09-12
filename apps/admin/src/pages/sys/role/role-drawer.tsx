@@ -5,7 +5,7 @@ import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { useQuery } from '@tanstack/react-query'
 
 import { BasicStatus } from '@ying/shared'
-import { CreateRoleDto, UpdateRoleDto } from '@ying/shared/dto'
+import { CreateRoleDto, UpdateRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { sysRoleApi } from '@/api'

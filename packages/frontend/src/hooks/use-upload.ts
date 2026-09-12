@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { TFileExtra } from '@ying/shared/entity'
+import type { TFileExtra } from '@ying/shared'
 
 export enum SelectFileType {
   Image,

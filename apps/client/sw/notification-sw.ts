@@ -1,5 +1,5 @@
 /// <reference lib="WebWorker" />
-import type { PushData } from '@ying/shared/entity'
+import type { PushData } from '@ying/shared'
 
 type TPushData = PushData & {
   pushRecordId?: number

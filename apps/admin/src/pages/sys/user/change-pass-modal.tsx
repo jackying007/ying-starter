@@ -3,7 +3,7 @@ import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 
-import { UpdateSysUserPasswordDto } from '@ying/shared/dto'
+import { UpdateSysUserPasswordDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { sysUserApi } from '@/api'

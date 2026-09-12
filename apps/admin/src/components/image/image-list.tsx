@@ -3,8 +3,8 @@ import { Pagination, Spin, Image, Popconfirm, Space, Select, Button, App } from 
 import { EyeFilled, CheckCircleFilled, DeleteOutlined, CloseOutlined } from '@ant-design/icons'
 import { Controller } from 'react-hook-form'
 
-import type { ListFileDto } from '@ying/shared/dto'
-import type { FileEntity } from '@ying/shared/entity'
+import type { ListFileDto } from '@ying/shared'
+import type { FileEntity } from '@ying/shared'
 import { FileType } from '@ying/shared'
 import { cn } from '@ying/frontend/ui'
 

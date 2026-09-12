@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { SelectFileType, useUpload, selectFile, useDialogOpen, type UseUploadOptions } from '@ying/frontend/hooks'
-import type { FileEntity } from '@ying/shared/entity'
+import type { FileEntity } from '@ying/shared'
 import { cn } from '@ying/frontend/ui'
 import { PlusIcon, LoadingIconV1 } from '@ying/frontend/icons'
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import type { ListDto } from '@ying/shared/dto'
+import type { ListDto } from '@ying/shared'
 
 export type UsePaginationDataOptions<TParams extends ListDto, TData> = {
   key: string

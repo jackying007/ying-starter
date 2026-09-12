@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
-import { ListArticleDto } from '@ying/shared/dto'
+import { ListArticleDto } from '@ying/shared'
 import { ClientScope, Public } from '@/common/decorator'
 import { ArticleService } from '@/business/modules/article'
 

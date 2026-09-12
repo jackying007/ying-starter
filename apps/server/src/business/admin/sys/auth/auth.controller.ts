@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common'
 import type { Request } from 'express'
-import { AdminLoginDto } from '@ying/shared/dto'
+import { AdminLoginDto } from '@ying/shared'
 import { omit } from '@ying/utils'
 import { AdminScope, Public, Token, UID } from '@/common/decorator'
 import { getRefreshTokenFromRequest } from '@/common/utils'

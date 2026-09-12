@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common'
 // import { ConfigType } from '@nestjs/config'
 
-import { ConfigDto } from '@ying/shared/dto'
-import type { ConfigVo } from '@ying/shared/vo'
+import { ConfigDto } from '@ying/shared'
+import type { ConfigVo } from '@ying/shared'
 
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 // import { apiConfig } from '@/config'

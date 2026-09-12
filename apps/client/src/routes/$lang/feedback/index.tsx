@@ -4,7 +4,7 @@ import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { CreateFeedbackDto } from '@ying/shared/dto'
+import { CreateFeedbackDto } from '@ying/shared'
 import { Card, CardContent, Input, Textarea, Button } from '@ying/frontend/ui'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
