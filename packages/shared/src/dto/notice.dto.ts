@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsString, ValidateNested, IsEnum, IsNumber, IsArray } from 'class-validator'
 
-import { DeviceType, type TIntlText } from '@ying/shared'
+import { DeviceType, type TIntlText } from '../'
 
 import { ListDto } from './list.dto'
 import { IsIntlText } from './intl.validator'

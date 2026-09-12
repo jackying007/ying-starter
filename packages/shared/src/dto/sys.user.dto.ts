@@ -13,7 +13,7 @@ import {
   ValidateIf
 } from 'class-validator'
 import { Type } from 'class-transformer'
-import { BasicStatus } from '@ying/shared'
+import { BasicStatus } from '../'
 import { ListDto } from './list.dto'
 
 export class ListSysUserDto extends ListDto {

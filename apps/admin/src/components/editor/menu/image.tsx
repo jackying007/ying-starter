@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FaImage } from 'react-icons/fa'
 
-import type { FileEntity } from '@ying/entity'
+import type { FileEntity } from '@ying/shared/entity'
 import { useEditorContext, MenuButton } from '@ying/frontend/editor'
 
 import { ImageSelectorModal } from '@/components/image/image-selector-modal'

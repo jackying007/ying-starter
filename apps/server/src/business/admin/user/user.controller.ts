@@ -1,8 +1,8 @@
 import { Controller, Get, Query, Res } from '@nestjs/common'
 import type { Response } from 'express'
-import { ListUserDto } from '@ying/dto'
+import { ListUserDto } from '@ying/shared/dto'
 import { omitArray } from '@ying/utils'
-import { pms } from '@ying/permission'
+import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { UserService } from '@/business/modules/user'
 

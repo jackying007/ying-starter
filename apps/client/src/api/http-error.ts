@@ -1,5 +1,5 @@
 import { BaseHttpError } from '@jying/http'
-import type { ErrorVo } from '@ying/vo'
+import type { ErrorVo } from '@ying/shared/vo'
 
 export class HttpError extends BaseHttpError {
   errData: ErrorVo

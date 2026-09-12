@@ -1,5 +1,5 @@
 import { BasicStatus } from '@ying/shared'
-import type { CreateRoleDto } from '@ying/dto'
+import type { CreateRoleDto } from '@ying/shared/dto'
 
 export const defaultRoleValues: Partial<CreateRoleDto> = {
   name: '',

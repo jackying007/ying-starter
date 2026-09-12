@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/dto'
-import { pms } from '@ying/permission'
+import { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared/dto'
+import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { SysRoleService } from './role.service'
 

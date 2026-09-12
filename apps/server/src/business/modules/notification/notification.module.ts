@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { BullModule } from '@nestjs/bullmq'
 
-import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, UserEntity } from '@ying/entity'
+import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, UserEntity } from '@ying/shared/entity'
 
 import { VisitorService } from './visitor.service'
 import { PushTemplateService } from './push.template.service'

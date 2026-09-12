@@ -80,27 +80,15 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.102.8(react@19.2.8)
-      '@ying/dto':
-        specifier: workspace:*
-        version: link:../../packages/dto
-      '@ying/entity':
-        specifier: workspace:*
-        version: link:../../packages/entity
       '@ying/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
-      '@ying/permission':
-        specifier: workspace:*
-        version: link:../../packages/permission
       '@ying/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@ying/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@ying/vo':
-        specifier: workspace:*
-        version: link:../../packages/vo
       antd:
         specifier: ^6.5.3
         version: 6.6.2(luxon@3.7.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -255,12 +243,6 @@ importers:
       '@tanstack/router-plugin':
         specifier: ^1.132.0
         version: 1.168.35(@rspack/core@2.2.1)(@tanstack/react-router@1.170.32(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(esbuild@0.28.2)(rolldown@1.2.6)(rollup@4.63.1)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(tsx@4.23.13)(yaml@2.9.0))
-      '@ying/dto':
-        specifier: workspace:*
-        version: link:../../packages/dto
-      '@ying/entity':
-        specifier: workspace:*
-        version: link:../../packages/entity
       '@ying/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
@@ -270,9 +252,6 @@ importers:
       '@ying/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@ying/vo':
-        specifier: workspace:*
-        version: link:../../packages/vo
       accept-language-parser:
         specifier: ^1.5.0
         version: 1.5.0
@@ -412,24 +391,12 @@ importers:
       '@nestjs/websockets':
         specifier: ^12.0.0
         version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)(@nestjs/platform-socket.io@12.0.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@ying/dto':
-        specifier: workspace:*
-        version: link:../../packages/dto
-      '@ying/entity':
-        specifier: workspace:*
-        version: link:../../packages/entity
-      '@ying/permission':
-        specifier: workspace:*
-        version: link:../../packages/permission
       '@ying/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@ying/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@ying/vo':
-        specifier: workspace:*
-        version: link:../../packages/vo
       arctic:
         specifier: ^3.7.0
         version: 3.7.0
@@ -543,46 +510,6 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
 
-  packages/dto:
-    dependencies:
-      '@ying/shared':
-        specifier: workspace:*
-        version: link:../shared
-      class-transformer:
-        specifier: ^0.5.1
-        version: 0.5.1
-      class-validator:
-        specifier: ^0.14.1
-        version: 0.14.4
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
-
-  packages/entity:
-    dependencies:
-      '@ying/dto':
-        specifier: workspace:*
-        version: link:../dto
-      '@ying/shared':
-        specifier: workspace:*
-        version: link:../shared
-      class-transformer:
-        specifier: ^0.5.1
-        version: 0.5.1
-      nanoid:
-        specifier: ^3.3.8
-        version: 3.3.18
-      typeorm:
-        specifier: ^0.3.20
-        version: 0.3.31(ioredis@5.11.1)(pg@8.23.0)
-      web-push:
-        specifier: ^3.6.7
-        version: 3.6.7
-    devDependencies:
-      '@types/web-push':
-        specifier: ^3.6.4
-        version: 3.6.4
-
   packages/frontend:
     dependencies:
       '@tiptap/extension-text-align':
@@ -597,12 +524,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.27.1
         version: 3.30.6
-      '@ying/dto':
+      '@ying/shared':
         specifier: workspace:*
-        version: link:../dto
-      '@ying/entity':
-        specifier: workspace:*
-        version: link:../entity
+        version: link:../shared
       '@ying/utils':
         specifier: workspace:*
         version: link:../utils
@@ -675,9 +599,30 @@ importers:
         specifier: ^6.15.1
         version: 6.15.1
 
-  packages/permission: {}
-
-  packages/shared: {}
+  packages/shared:
+    dependencies:
+      class-transformer:
+        specifier: ^0.5.1
+        version: 0.5.1
+      class-validator:
+        specifier: ^0.14.4
+        version: 0.14.4
+      nanoid:
+        specifier: ^3.3.18
+        version: 3.3.18
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+      typeorm:
+        specifier: ^0.3.31
+        version: 0.3.31(ioredis@5.11.1)(pg@8.23.0)
+      web-push:
+        specifier: ^3.6.7
+        version: 3.6.7
+    devDependencies:
+      '@types/web-push':
+        specifier: ^3.6.4
+        version: 3.6.4
 
   packages/utils:
     dependencies:
@@ -691,15 +636,6 @@ importers:
       '@types/numeral':
         specifier: ^2.0.5
         version: 2.0.5
-
-  packages/vo:
-    dependencies:
-      '@ying/dto':
-        specifier: workspace:*
-        version: link:../dto
-      '@ying/entity':
-        specifier: workspace:*
-        version: link:../entity
 
 packages:
 

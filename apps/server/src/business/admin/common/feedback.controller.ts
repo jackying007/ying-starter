@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Inject, Param, Query } from '@nestjs/common'
 
-import { ListFeedbackDto } from '@ying/dto'
-import { pms } from '@ying/permission'
+import { ListFeedbackDto } from '@ying/shared/dto'
+import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'

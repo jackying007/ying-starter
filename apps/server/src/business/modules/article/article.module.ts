@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { ArticleEntity } from '@ying/entity'
+import { ArticleEntity } from '@ying/shared/entity'
 
 import { ArticleService } from './article.service'
 

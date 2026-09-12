@@ -9,7 +9,7 @@ import {
   VerifyEmailDto,
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
-} from '@ying/dto'
+} from '@ying/shared/dto'
 
 import { ClientScope, UID, Token } from '@/common/decorator'
 import { authConfig } from '@/config'

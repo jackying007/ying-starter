@@ -1,6 +1,6 @@
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
-import { FileSourceType, FileType } from '@ying/shared'
+import { FileSourceType, FileType } from '../'
 import { ListDto } from './list.dto'
 
 export class ListFileDto extends ListDto {

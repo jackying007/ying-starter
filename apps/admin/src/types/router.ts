@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
-import type { TPermission } from '@ying/permission'
+import type { TPermission } from '@ying/shared/permission'
 
 export type RouteMeta = {
   /**

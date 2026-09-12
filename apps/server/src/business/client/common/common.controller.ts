@@ -14,7 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { FileSourceType, FileType } from '@ying/shared'
-import { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/dto'
+import { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/shared/dto'
 
 import { ClientScope, Public, UID } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
-import { BasicStatus, type TIntlText } from '@ying/shared'
+import { BasicStatus, type TIntlText } from '../'
 import { BaseEntityWithAutoId } from './base'
 import { FileEntity } from './file.entity'
 

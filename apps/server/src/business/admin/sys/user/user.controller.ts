@@ -7,9 +7,9 @@ import {
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfPasswordDto,
   UpdateSysUserSelfUserInfoDto
-} from '@ying/dto'
+} from '@ying/shared/dto'
 import { omitArray } from '@ying/utils'
-import { pms } from '@ying/permission'
+import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator, UID } from '@/common/decorator'
 import { SysUserService } from './user.service'

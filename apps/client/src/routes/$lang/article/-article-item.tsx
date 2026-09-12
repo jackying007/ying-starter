@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 
 import type { LngKeys } from '@ying/shared'
-import type { ArticleEntity } from '@ying/entity'
+import type { ArticleEntity } from '@ying/shared/entity'
 import { cn, Badge } from '@ying/frontend/ui'
 import { LazyImage } from '@ying/frontend/components'
 

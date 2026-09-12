@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common'
-import type { TPermission } from '@ying/permission'
+import type { TPermission } from '@ying/shared/permission'
 
 export const PERMISSION_SIGN = 'permission_sign'
 

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { PushTaskStatus } from '@ying/shared'
+import { PushTaskStatus } from '../'
 import { BaseEntityWithAutoId } from './base'
 import { PushTemplateEntity } from './push.template.entity'
 

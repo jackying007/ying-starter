@@ -5,7 +5,7 @@ import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
-import { ClientLoginDto } from '@ying/dto'
+import { ClientLoginDto } from '@ying/shared/dto'
 import { Button, buttonVariants, Input } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'

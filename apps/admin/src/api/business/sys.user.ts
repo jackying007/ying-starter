@@ -6,8 +6,8 @@ import type {
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfUserInfoDto,
   UpdateSysUserSelfPasswordDto
-} from '@ying/dto'
-import type { SysUserEntity } from '@ying/entity'
+} from '@ying/shared/dto'
+import type { SysUserEntity } from '@ying/shared/entity'
 
 import { timeDataTransform } from '../helpers'
 

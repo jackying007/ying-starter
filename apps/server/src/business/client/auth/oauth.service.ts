@@ -5,7 +5,7 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 import { nanoid } from 'nanoid'
 
-import { type OAuthProvider, OAuthAccountEntity, UserEntity } from '@ying/entity'
+import { type OAuthProvider, OAuthAccountEntity, UserEntity } from '@ying/shared/entity'
 
 import { authConfig } from '@/config'
 import { type RedisObjs, RedisToken, RedisKey } from '@/common/modules/redis'

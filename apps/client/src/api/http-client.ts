@@ -1,5 +1,5 @@
 import { HttpRequest } from '@jying/http'
-import { isBaseVo } from '@ying/vo'
+import { isBaseVo } from '@ying/shared/vo'
 import { clearUserInfoAndAuthTokens } from '@/store/auth-store'
 import { HttpError } from './http-error'
 import { isRefreshRequest, refreshToken } from './refresh-token'

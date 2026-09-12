@@ -3,8 +3,8 @@ import type { ColumnsType } from 'antd/es/table'
 import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
-import { ListFeedbackDto } from '@ying/dto'
-import type { FeedbackEntity } from '@ying/entity'
+import { ListFeedbackDto } from '@ying/shared/dto'
+import type { FeedbackEntity } from '@ying/shared/entity'
 
 import { commonApi } from '@/api'
 import { useTable } from '@/hooks'

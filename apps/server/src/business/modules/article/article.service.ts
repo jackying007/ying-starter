@@ -2,8 +2,8 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
-import { ListArticleDto, UpdateArticleContentDto } from '@ying/dto'
-import { ArticleEntity, FileEntity } from '@ying/entity'
+import { ListArticleDto, UpdateArticleContentDto } from '@ying/shared/dto'
+import { ArticleEntity, FileEntity } from '@ying/shared/entity'
 
 import { BaseService } from '@/common/service/base.service'
 

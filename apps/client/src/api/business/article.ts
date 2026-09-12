@@ -1,6 +1,6 @@
 import type { HttpRequest } from '@jying/http'
-import type { ListArticleDto } from '@ying/dto'
-import type { ArticleEntity } from '@ying/entity'
+import type { ListArticleDto } from '@ying/shared/dto'
+import type { ArticleEntity } from '@ying/shared/entity'
 
 export default function (http: HttpRequest) {
   return {

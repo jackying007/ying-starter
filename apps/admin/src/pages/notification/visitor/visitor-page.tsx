@@ -4,8 +4,8 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { ListVisitorDto } from '@ying/dto'
-import type { VisitorEntity } from '@ying/entity'
+import { ListVisitorDto } from '@ying/shared/dto'
+import type { VisitorEntity } from '@ying/shared/entity'
 
 import { useTable } from '@/hooks'
 import { notificationApi } from '@/api'

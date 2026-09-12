@@ -4,8 +4,8 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, UpdateRoleDto } from '@ying/dto'
-import type { SysRoleEntity } from '@ying/entity'
+import type { ListRoleDto, UpdateRoleDto } from '@ying/shared/dto'
+import type { SysRoleEntity } from '@ying/shared/entity'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useTable } from '@/hooks'

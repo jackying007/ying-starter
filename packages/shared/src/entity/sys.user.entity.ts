@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToMany, OneToOne } from 'typeorm'
-import { BasicStatus } from '@ying/shared'
+import { BasicStatus } from '../'
 import { BaseEntityWithAutoId } from './base'
 import { SysRoleEntity } from './sys.role.entity'
 import { SysPermissionEntity } from './sys.permission.entity'

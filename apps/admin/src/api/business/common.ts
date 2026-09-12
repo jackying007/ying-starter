@@ -1,7 +1,7 @@
 import { HttpRequest } from '@jying/http'
-import type { ListFileDto, ListFeedbackDto } from '@ying/dto'
-import type { FileEntity, TFileExtra, FeedbackEntity } from '@ying/entity'
-import type { ConfigVo } from '@ying/vo'
+import type { ListFileDto, ListFeedbackDto } from '@ying/shared/dto'
+import type { FileEntity, TFileExtra, FeedbackEntity } from '@ying/shared/entity'
+import type { ConfigVo } from '@ying/shared/vo'
 
 import { timeDataTransform } from '../helpers'
 

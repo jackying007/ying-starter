@@ -5,7 +5,7 @@ import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { UpdateUserInfoDto } from '@ying/dto'
+import { UpdateUserInfoDto } from '@ying/shared/dto'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'

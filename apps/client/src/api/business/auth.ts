@@ -5,8 +5,8 @@ import type {
   VerifyEmailDto,
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
-} from '@ying/dto'
-import type { ClientLoginVo } from '@ying/vo'
+} from '@ying/shared/dto'
+import type { ClientLoginVo } from '@ying/shared/vo'
 
 export default function (http: HttpRequest) {
   return {

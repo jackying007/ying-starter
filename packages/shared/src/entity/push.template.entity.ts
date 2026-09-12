@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import type { TIntlText } from '@ying/shared'
-import { PushActionDto } from '@ying/dto'
+import type { TIntlText } from '../'
+import { PushActionDto } from '../dto'
 import { BaseEntityWithAutoId } from './base'
 import { FileEntity } from './file.entity'
 

@@ -1,7 +1,7 @@
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 import { Type } from 'class-transformer'
 
-import { BasicStatus, type TIntlText } from '@ying/shared'
+import { BasicStatus, type TIntlText } from '../'
 
 import { ListDto } from './list.dto'
 import { IsIntlText } from './intl.validator'

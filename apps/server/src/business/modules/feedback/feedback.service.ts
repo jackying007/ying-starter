@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
-import { ListFeedbackDto } from '@ying/dto'
-import { FeedbackEntity } from '@ying/entity'
+import { ListFeedbackDto } from '@ying/shared/dto'
+import { FeedbackEntity } from '@ying/shared/entity'
 
 import { BaseService } from '@/common/service/base.service'
 

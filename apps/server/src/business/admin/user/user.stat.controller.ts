@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common'
 
-import { StatDto } from '@ying/dto'
+import { StatDto } from '@ying/shared/dto'
 
 import { AdminScope } from '@/common/decorator'
 import { UserStatService } from '@/business/modules/user'

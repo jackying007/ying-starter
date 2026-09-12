@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { ResetPasswordWithCodeDto } from '@ying/dto'
+import { ResetPasswordWithCodeDto } from '@ying/shared/dto'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'

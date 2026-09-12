@@ -1,5 +1,5 @@
 import mitt from 'mitt'
-import type { FileEntity } from '@ying/entity'
+import type { FileEntity } from '@ying/shared/entity'
 
 export type Events = {
   'add-associated-files': FileEntity[]

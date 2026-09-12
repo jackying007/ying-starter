@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm'
-import { FileType, FileSourceType } from '@ying/shared'
+import { FileType, FileSourceType } from '../'
 import { BaseEntityWithAutoId } from './base'
 
 export type TFileExtra = {

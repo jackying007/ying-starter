@@ -3,8 +3,8 @@ import { Form, Modal, Input, App, Select, type SelectProps } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 
-import { CreatePushTaskDto, ListPushTemplateDto, UpdatePushTaskDto } from '@ying/dto'
-import type { PushTaskEntity } from '@ying/entity'
+import { CreatePushTaskDto, ListPushTemplateDto, UpdatePushTaskDto } from '@ying/shared/dto'
+import type { PushTaskEntity } from '@ying/shared/entity'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useQueryWithRequery } from '@/hooks'

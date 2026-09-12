@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Put, Request, UnauthorizedException } from '@nestjs/common'
 import type { Request as TRequest } from 'express'
 
-import { UpdateUserInfoDto, ResetPasswordDto } from '@ying/dto'
-import type { ClientUserVo } from '@ying/vo'
+import { UpdateUserInfoDto, ResetPasswordDto } from '@ying/shared/dto'
+import type { ClientUserVo } from '@ying/shared/vo'
 import { omit } from '@ying/utils'
 
 import { ClientScope } from '@/common/decorator'

@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationArguments } from 'class-validator'
-import { clientLanguagesConfig, type TIntlText } from '@ying/shared'
+import { clientLanguagesConfig, type TIntlText } from '../'
 
 type IsIntlTextOptions = {
   minLength?: number

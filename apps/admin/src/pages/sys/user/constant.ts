@@ -1,5 +1,5 @@
 import { BasicStatus } from '@ying/shared'
-import type { UpdateSysUserDto } from '@ying/dto'
+import type { UpdateSysUserDto } from '@ying/shared/dto'
 
 export const defaultUserValues: Partial<UpdateSysUserDto> = {
   id: undefined,

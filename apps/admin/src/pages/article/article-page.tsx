@@ -4,8 +4,8 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import { ListArticleDto } from '@ying/dto'
-import type { ArticleEntity } from '@ying/entity'
+import { ListArticleDto } from '@ying/shared/dto'
+import type { ArticleEntity } from '@ying/shared/entity'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { Page, PageQuery, PageOperations } from '@/layouts/page'

@@ -2,7 +2,7 @@ import { type EntitySubscriberInterface, DataSource, EventSubscriber, Repository
 import { InjectRepository } from '@nestjs/typeorm'
 import type { ConfigType } from '@nestjs/config'
 import { Inject } from '@nestjs/common'
-import { FileEntity } from '@ying/entity'
+import { FileEntity } from '@ying/shared/entity'
 import { storageConfig } from '@/config'
 import { FileServiceToken, ExpirSeconds } from './constant'
 import { AbstractFileService } from './abstract.file.service'

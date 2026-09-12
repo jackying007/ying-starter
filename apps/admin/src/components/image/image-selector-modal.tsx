@@ -2,7 +2,7 @@ import type { Dispatch, Ref, SetStateAction } from 'react'
 import { useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
 
-import type { FileEntity } from '@ying/entity'
+import type { FileEntity } from '@ying/shared/entity'
 
 import { ImageList } from './image-list'
 

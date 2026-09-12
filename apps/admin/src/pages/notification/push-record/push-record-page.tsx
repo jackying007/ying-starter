@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { ListPushRecordDto, ListPushTaskDto } from '@ying/dto'
-import type { PushRecordEntity } from '@ying/entity'
+import { ListPushRecordDto, ListPushTaskDto } from '@ying/shared/dto'
+import type { PushRecordEntity } from '@ying/shared/entity'
 
 import { useQueryWithRequery, useTable } from '@/hooks'
 import { notificationApi } from '@/api'

@@ -1,5 +1,5 @@
 import { HttpRequest } from '@jying/http'
-import type { PushRecordEntity, PushTaskEntity, PushTemplateEntity, VisitorEntity } from '@ying/entity'
+import type { PushRecordEntity, PushTaskEntity, PushTemplateEntity, VisitorEntity } from '@ying/shared/entity'
 import {
   CreatePushTemplateDto,
   UpdatePushTemplateDto,
@@ -11,7 +11,7 @@ import {
   SetPushTaskDto,
   ListPushRecordDto,
   ListVisitorDto
-} from '@ying/dto'
+} from '@ying/shared/dto'
 
 import { timeDataTransform } from '../helpers'
 

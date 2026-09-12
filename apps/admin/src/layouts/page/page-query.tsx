@@ -2,7 +2,7 @@ import { Button, DatePicker, Space } from 'antd'
 import { type Control, Controller, type UseFormReset } from 'react-hook-form'
 import dayjs from 'dayjs'
 
-import type { ListDto } from '@ying/dto'
+import type { ListDto } from '@ying/shared/dto'
 
 const { RangePicker } = DatePicker
 

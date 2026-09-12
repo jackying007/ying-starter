@@ -3,7 +3,7 @@ import type { TablePaginationConfig } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 
 import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/frontend/hooks'
-import type { ListDto } from '@ying/dto'
+import type { ListDto } from '@ying/shared/dto'
 
 export const useTable = <TParams extends ListDto, TData>(props: UsePaginationDataOptions<TParams, TData>) => {
   const { params, control, reset: resetParams, getValues: getParams } = usePaginationParams<TParams>()

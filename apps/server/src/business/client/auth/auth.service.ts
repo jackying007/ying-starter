@@ -7,16 +7,16 @@ import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
 import ms from 'ms'
 
-import { UserEntity } from '@ying/entity'
+import { UserEntity } from '@ying/shared/entity'
 import {
   ClientLoginDto,
   ClientRegisterDto,
   VerifyEmailDto,
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
-} from '@ying/dto'
-import type { ClientAuthVo, ClientLoginVo } from '@ying/vo'
-import { wrapBaseVo } from '@ying/vo'
+} from '@ying/shared/dto'
+import type { ClientAuthVo, ClientLoginVo } from '@ying/shared/vo'
+import { wrapBaseVo } from '@ying/shared/vo'
 
 import { authConfig } from '@/config'
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'

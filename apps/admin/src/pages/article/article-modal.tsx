@@ -3,8 +3,8 @@ import { Form, Input, App, InputNumber, Select, Modal } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 
-import { CreateArticleDto, UpdateArticleDto } from '@ying/dto'
-import type { ArticleEntity } from '@ying/entity'
+import { CreateArticleDto, UpdateArticleDto } from '@ying/shared/dto'
+import type { ArticleEntity } from '@ying/shared/entity'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
 
 import { Tags } from '@/components/tags'

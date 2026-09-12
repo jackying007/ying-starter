@@ -1,4 +1,4 @@
-import type { UserEntity } from '@ying/entity'
+import type { UserEntity } from '../entity'
 import { BaseVo } from './base.vo'
 
 export type ClientUserVo = Omit<UserEntity, 'password'> & {

@@ -2,8 +2,8 @@ import { useCallback } from 'react'
 import { create } from 'zustand'
 import cookie from 'js-cookie'
 
-import type { SysUserEntity } from '@ying/entity'
-import type { TPermission } from '@ying/permission'
+import type { SysUserEntity } from '@ying/shared/entity'
+import type { TPermission } from '@ying/shared/permission'
 import { storage } from '@ying/frontend/utils'
 
 import { authApi } from '@/api'

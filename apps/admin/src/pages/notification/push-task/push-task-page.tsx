@@ -7,8 +7,8 @@ import { getOption } from '@ying/utils'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { PushTaskStatus } from '@ying/shared'
-import { ListPushTaskDto } from '@ying/dto'
-import type { PushTaskEntity } from '@ying/entity'
+import { ListPushTaskDto } from '@ying/shared/dto'
+import type { PushTaskEntity } from '@ying/shared/entity'
 
 import { useTable } from '@/hooks'
 import { notificationApi } from '@/api'

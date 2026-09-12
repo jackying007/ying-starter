@@ -11,8 +11,8 @@ import {
   UpdatePushTaskDto,
   SetPushTaskDto,
   ListPushRecordDto
-} from '@ying/dto'
-import { pms } from '@ying/permission'
+} from '@ying/shared/dto'
+import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import {

@@ -10,8 +10,8 @@ import {
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfPasswordDto,
   UpdateSysUserSelfUserInfoDto
-} from '@ying/dto'
-import { SysRoleEntity, SysUserEntity } from '@ying/entity'
+} from '@ying/shared/dto'
+import { SysRoleEntity, SysUserEntity } from '@ying/shared/entity'
 import { comparePass, generatePass } from '@/common/utils'
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'

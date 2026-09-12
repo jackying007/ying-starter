@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import type { Request } from 'express'
 import { Observable } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
-import { type BaseVo, isBaseVo, wrapBaseVo } from '@ying/vo'
+import { type BaseVo, isBaseVo, wrapBaseVo } from '@ying/shared/vo'
 
 const bluePrefix = '\x1B[36m'
 const redPrefix = '\x1B[31m'
