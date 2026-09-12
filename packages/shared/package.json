@@ -2,14 +2,15 @@
   "name": "@ying/shared",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js"
     },
     "./permission": {
       "types": "./dist/permission/index.d.ts",
-      "import": "./dist/permission/index.mjs"
+      "import": "./dist/permission/index.js"
     }
   },
   "scripts": {
