@@ -21,7 +21,6 @@ import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator, UID } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
-import { FeedbackService } from '@/business/modules/feedback'
 
 @PermissionDecorator(pms.file)
 @AdminScope()
@@ -29,8 +28,7 @@ import { FeedbackService } from '@/business/modules/feedback'
 export class FileController {
   constructor(
     @Inject(FileServiceToken)
-    readonly fileService: AbstractFileService,
-    readonly feedbackService: FeedbackService
+    readonly fileService: AbstractFileService
   ) {}
 
   @Get('list')
