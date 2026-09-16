@@ -1,12 +1,12 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm, useWatch } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { ResetPasswordWithCodeDto } from '@ying/shared'
+import { resetPasswordWithCodeDto, type ResetPasswordWithCodeDto } from '@ying/shared'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -26,7 +26,7 @@ function RouteComponent() {
   const navigate = useNavigate()
 
   const form = useForm<ResetPasswordWithCodeDto>({
-    resolver: classValidatorResolver(ResetPasswordWithCodeDto),
+    resolver: zodResolver(resetPasswordWithCodeDto),
     defaultValues: {
       email: '',
       code: '',

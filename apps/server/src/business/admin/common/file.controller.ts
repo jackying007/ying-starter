@@ -16,7 +16,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { FileSourceType, FileType } from '@ying/shared'
-import { ListFileDto } from '@ying/shared'
+import { listFileDto, type ListFileDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator, UID } from '@/common/decorator'
@@ -32,12 +32,12 @@ export class FileController {
   ) {}
 
   @Get('list')
-  fileList(@Query() dto: ListFileDto) {
+  fileList(@Query({ schema: listFileDto }) dto: ListFileDto) {
     return this.fileService.list(dto)
   }
 
   @Get('list-count')
-  fileListCount(@Query() dto: ListFileDto) {
+  fileListCount(@Query({ schema: listFileDto }) dto: ListFileDto) {
     return this.fileService.listCount(dto)
   }
 

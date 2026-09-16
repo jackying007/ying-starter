@@ -1,9 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 
 import {
-  CreateSysUserDto,
+  listSysUserDto,
+  createOrUpdateSysUserDto,
+  updateSysUserPasswordDto,
+  updateSysUserSelfPasswordDto,
+  updateSysUserSelfUserInfoDto
+} from '@ying/shared'
+import type {
   ListSysUserDto,
-  UpdateSysUserDto,
+  CreateOrUpdateSysUserDto,
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfPasswordDto,
   UpdateSysUserSelfUserInfoDto
@@ -21,26 +27,26 @@ export class SysUserController {
   constructor(private readonly sysUserService: SysUserService) {}
 
   @Get('list')
-  async list(@Query() dto: ListSysUserDto) {
+  async list(@Query({ schema: listSysUserDto }) dto: ListSysUserDto) {
     const users = await this.sysUserService.list(dto)
     return omitArray(users, 'password')
   }
 
   @Get('list-count')
-  listCount(@Query() dto: ListSysUserDto) {
+  listCount(@Query({ schema: listSysUserDto }) dto: ListSysUserDto) {
     return this.sysUserService.listCount(dto)
   }
 
   @PermissionDecorator(pms.sys.user.create)
   @Post()
-  create(@Body() dto: CreateSysUserDto) {
-    return this.sysUserService.create(dto)
+  create(@Body({ schema: createOrUpdateSysUserDto }) dto: CreateOrUpdateSysUserDto) {
+    return this.sysUserService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.sys.user.update)
   @Put()
-  update(@Body() dto: UpdateSysUserDto) {
-    return this.sysUserService.update(dto)
+  update(@Body({ schema: createOrUpdateSysUserDto }) dto: CreateOrUpdateSysUserDto) {
+    return this.sysUserService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.sys.user.delete)
@@ -51,17 +57,23 @@ export class SysUserController {
 
   @PermissionDecorator(pms.sys.user.update)
   @Put('password')
-  updatePassword(@Body() dto: UpdateSysUserPasswordDto) {
+  updatePassword(@Body({ schema: updateSysUserPasswordDto }) dto: UpdateSysUserPasswordDto) {
     return this.sysUserService.updatePassword(dto)
   }
 
   @Put('self-info')
-  updateSelfInfo(@Body() dto: UpdateSysUserSelfUserInfoDto, @UID() uid: number) {
+  updateSelfInfo(
+    @Body({ schema: updateSysUserSelfUserInfoDto }) dto: UpdateSysUserSelfUserInfoDto,
+    @UID() uid: number
+  ) {
     return this.sysUserService.updateSelfInfo(dto, uid)
   }
 
   @Put('self-password')
-  updateSelfPassword(@Body() dto: UpdateSysUserSelfPasswordDto, @UID() uid: number) {
+  updateSelfPassword(
+    @Body({ schema: updateSysUserSelfPasswordDto }) dto: UpdateSysUserSelfPasswordDto,
+    @UID() uid: number
+  ) {
     return this.sysUserService.updateSelfPassword(dto, uid)
   }
 }

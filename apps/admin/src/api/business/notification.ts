@@ -1,12 +1,10 @@
 import { HttpRequest } from '@jying/http'
 import type { PushRecordEntity, PushTaskEntity, PushTemplateEntity, VisitorEntity } from '@ying/shared'
-import {
-  CreatePushTemplateDto,
-  UpdatePushTemplateDto,
+import type {
+  CreateOrUpdatePushTemplateDto,
   ListPushTemplateDto,
   SendPushTemplateDto,
-  CreatePushTaskDto,
-  UpdatePushTaskDto,
+  CreateOrUpdatePushTaskDto,
   ListPushTaskDto,
   SetPushTaskDto,
   ListPushRecordDto,
@@ -17,10 +15,10 @@ import { timeDataTransform } from '../helpers'
 
 export default function (http: HttpRequest) {
   return {
-    createPushTemplate(data: CreatePushTemplateDto) {
+    createPushTemplate(data: CreateOrUpdatePushTemplateDto) {
       return http.post('/push-template', { data })
     },
-    updatePushTemplate(data: UpdatePushTemplateDto) {
+    updatePushTemplate(data: CreateOrUpdatePushTemplateDto) {
       return http.put('/push-template', { data })
     },
     deletePushTemplate(id: number) {
@@ -35,10 +33,10 @@ export default function (http: HttpRequest) {
     sendPushTemplate(data: SendPushTemplateDto) {
       return http.post('/push-template/send', { data })
     },
-    createPushTask(data: CreatePushTaskDto) {
+    createPushTask(data: CreateOrUpdatePushTaskDto) {
       return http.post('/push-task', { data })
     },
-    updatePushTask(data: UpdatePushTaskDto) {
+    updatePushTask(data: CreateOrUpdatePushTaskDto) {
       return http.put('/push-task', { data })
     },
     deletePushTask(id: number) {

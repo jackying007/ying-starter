@@ -7,7 +7,7 @@ import { getOption } from '@ying/utils'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { PushTaskStatus } from '@ying/shared'
-import { ListPushTaskDto } from '@ying/shared'
+import type { ListPushTaskDto } from '@ying/shared'
 import type { PushTaskEntity } from '@ying/shared'
 
 import { useTable } from '@/hooks'

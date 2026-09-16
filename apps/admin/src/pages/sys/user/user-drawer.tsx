@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Form, Drawer, Input, Button, Radio, Select, App, type SelectProps } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { BasicStatus } from '@ying/shared'
-import { CreateSysUserDto, UpdateSysUserDto, type ListRoleDto } from '@ying/shared'
+import { createOrUpdateSysUserDto } from '@ying/shared'
+import type { CreateOrUpdateSysUserDto, ListRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useQueryWithRequery } from '@/hooks'
@@ -12,10 +13,7 @@ import { sysRoleApi, sysUserApi } from '@/api'
 
 import { defaultUserValues } from './constant'
 
-const createResolver = classValidatorResolver(CreateSysUserDto)
-const updateResolver = classValidatorResolver(UpdateSysUserDto)
-
-export type UserDrawerProps = ReturnType<typeof useDialogOpen<UpdateSysUserDto>> & {
+export type UserDrawerProps = ReturnType<typeof useDialogOpen<CreateOrUpdateSysUserDto>> & {
   onSuccess?: VoidFunction
 }
 
@@ -36,8 +34,8 @@ export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerPr
     handleSubmit,
     formState: { errors, isSubmitting },
     reset
-  } = useForm<CreateSysUserDto & UpdateSysUserDto>({
-    resolver: formValue ? updateResolver : createResolver,
+  } = useForm({
+    resolver: zodResolver(createOrUpdateSysUserDto),
     defaultValues: defaultUserValues
   })
 

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ConfigDto } from '@ying/shared'
+import { configDto, type ConfigDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { ConfigService } from '@/common/modules/config/config.service'
@@ -28,7 +28,7 @@ export class SysSettingController {
 
   @PermissionDecorator(pms.sys.setting.updateSetting)
   @Post()
-  updateSetting(@Body() dto: ConfigDto) {
+  updateSetting(@Body({ schema: configDto }) dto: ConfigDto) {
     return this.configService.setConfig(dto)
   }
 }

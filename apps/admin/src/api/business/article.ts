@@ -1,11 +1,5 @@
 import type { HttpRequest } from '@jying/http'
-import type {
-  CreateArticleDto,
-  UpdateArticleDto,
-  UpdateArticleContentDto,
-  ListArticleDto,
-  DeleteDto
-} from '@ying/shared'
+import type { CreateOrUpdateArticleDto, UpdateArticleContentDto, ListArticleDto, DeleteDto } from '@ying/shared'
 import type { ArticleEntity } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
@@ -18,10 +12,10 @@ export default function (http: HttpRequest) {
     listCount(query: ListArticleDto) {
       return http.get<number>('/article/list-count', { query: timeDataTransform(query, 'date') })
     },
-    create(data: CreateArticleDto) {
+    create(data: CreateOrUpdateArticleDto) {
       return http.post<void>('/article', { data })
     },
-    update(data: UpdateArticleDto) {
+    update(data: CreateOrUpdateArticleDto) {
       return http.put<void>('/article', { data })
     },
     updateContent(data: UpdateArticleContentDto) {

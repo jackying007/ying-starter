@@ -1,12 +1,11 @@
 import { BasicStatus } from '@ying/shared'
-import type { UpdateSysUserDto } from '@ying/shared'
+import type { CreateOrUpdateSysUserDto } from '@ying/shared'
 
-export const defaultUserValues: Partial<UpdateSysUserDto> = {
-  id: undefined,
+export const defaultUserValues: CreateOrUpdateSysUserDto = {
   name: '',
   account: '',
-  email: '',
-  password: '',
+  email: undefined,
+  password: undefined,
   status: BasicStatus.ENABLE,
   roleIds: [],
   remark: undefined

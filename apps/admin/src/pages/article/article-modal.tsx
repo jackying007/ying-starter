@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Form, Input, App, InputNumber, Select, Modal } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { CreateArticleDto, UpdateArticleDto } from '@ying/shared'
+import { createOrUpdateArticleDto } from '@ying/shared'
 import type { ArticleEntity } from '@ying/shared'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
 
@@ -13,9 +13,6 @@ import { IntlInput } from '@/components/intl'
 import { articleApi } from '@/api'
 import { BasicStatusOptions } from '@/constant'
 import { defaultValues } from './constant'
-
-const createResolver = classValidatorResolver(CreateArticleDto)
-const updateResolver = classValidatorResolver(UpdateArticleDto)
 
 type ArticleModalProps = ReturnType<typeof useDialogOpen<ArticleEntity>> & {
   onSuccess?: VoidFunction
@@ -30,9 +27,8 @@ export function ArticleModal({ open, formValue, onSuccess, onClose }: ArticleMod
     formState: { isDirty, isSubmitting, errors },
     reset,
     setValue
-  } = useForm<CreateArticleDto & UpdateArticleDto>({
-    resolver: formValue ? updateResolver : createResolver,
-    defaultValues
+  } = useForm({
+    resolver: zodResolver(createOrUpdateArticleDto)
   })
 
   useEffect(() => {

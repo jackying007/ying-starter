@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common'
+import { Logger, StandardSchemaValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import type { ConfigType } from '@nestjs/config'
 import type { NestExpressApplication } from '@nestjs/platform-express'
@@ -19,13 +19,7 @@ async function bootstrap() {
   app.useGlobalFilters(new OtherExceptionFilter())
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalInterceptors(new AppInterceptor())
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidUnknownValues: true,
-      transform: true
-    })
-  )
+  app.useGlobalPipes(new StandardSchemaValidationPipe())
   app.set('query parser', (queryString: string) => qs.parse(queryString))
 
   if (storageConf.mode === 'local') {

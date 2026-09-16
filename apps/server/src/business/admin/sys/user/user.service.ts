@@ -3,10 +3,9 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { faker } from '@faker-js/faker'
 import { FileSourceType, FileType } from '@ying/shared'
-import {
-  CreateSysUserDto,
+import type {
   ListSysUserDto,
-  UpdateSysUserDto,
+  CreateOrUpdateSysUserDto,
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfPasswordDto,
   UpdateSysUserSelfUserInfoDto
@@ -86,44 +85,44 @@ export class SysUserService extends BaseService<SysUserEntity> {
     return qb.getCount()
   }
 
-  async create(dto: CreateSysUserDto) {
-    const sysUser = this.sysUserRepository.create(dto)
-    sysUser.password = generatePass(dto.password)
-    sysUser.roles = dto.roleIds.map(id => {
-      const entity = new SysRoleEntity()
-      entity.id = id
-      return entity
-    })
+  async createOrUpdate(dto: CreateOrUpdateSysUserDto) {
+    if (dto.id) {
+      const sysUser = this.sysUserRepository.create(dto)
+      sysUser.roles = dto.roleIds.map(id => {
+        const entity = new SysRoleEntity()
+        entity.id = id
+        return entity
+      })
+      await this.redisObjs.redis.del(`${RedisKey.AdminAuthPermission}:${sysUser.id}`)
+      return this.sysUserRepository.save(sysUser)
+    } else {
+      const sysUser = this.sysUserRepository.create(dto)
+      sysUser.password = generatePass(dto.password!)
+      sysUser.roles = dto.roleIds.map(id => {
+        const entity = new SysRoleEntity()
+        entity.id = id
+        return entity
+      })
 
-    const newSysUser = await this.sysUserRepository.save(sysUser)
+      const newSysUser = await this.sysUserRepository.save(sysUser)
 
-    const newFile = await this.fileService.addFile({
-      url: faker.image.avatar(),
-      fileType: FileType.Image,
-      from: FileSourceType.Admin,
-      userId: newSysUser.id
-    })
+      const newFile = await this.fileService.addFile({
+        url: faker.image.avatar(),
+        fileType: FileType.Image,
+        from: FileSourceType.Admin,
+        userId: newSysUser.id
+      })
 
-    void this.sysUserRepository.update(
-      {
-        id: newSysUser.id
-      },
-      {
-        avatar: newFile
-      }
-    )
-    return newSysUser
-  }
-
-  async update(dto: UpdateSysUserDto) {
-    const sysUser = this.sysUserRepository.create(dto)
-    sysUser.roles = dto.roleIds.map(id => {
-      const entity = new SysRoleEntity()
-      entity.id = id
-      return entity
-    })
-    await this.redisObjs.redis.del(`${RedisKey.AdminAuthPermission}:${sysUser.id}`)
-    return this.sysUserRepository.save(sysUser)
+      void this.sysUserRepository.update(
+        {
+          id: newSysUser.id
+        },
+        {
+          avatar: newFile
+        }
+      )
+      return newSysUser
+    }
   }
 
   updatePassword(dto: UpdateSysUserPasswordDto) {

@@ -1,13 +1,8 @@
-import { ArrayMaxSize, ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from 'class-validator'
+import { z } from 'zod'
 
-export class StatDto {
-  @IsString()
-  type: 'hour' | 'day'
+export const statDto = z.object({
+  type: z.enum(['hour', 'day']),
+  date: z.array(z.string()).length(2).nonempty()
+})
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @ArrayMaxSize(2)
-  @ArrayMinSize(2)
-  @IsNotEmpty()
-  date: string[]
-}
+export type StatDto = z.infer<typeof statDto>

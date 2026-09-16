@@ -7,7 +7,7 @@ import ms from 'ms'
 
 import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
-import { AdminLoginDto } from '@ying/shared'
+import type { AdminLoginDto } from '@ying/shared'
 import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'

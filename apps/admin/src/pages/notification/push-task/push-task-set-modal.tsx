@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react'
 import { Form, Modal, App, DatePicker } from 'antd'
 import { Controller, useController, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import dayjs from 'dayjs'
 
-import { SetPushTaskDto } from '@ying/shared'
+import { setPushTaskDto } from '@ying/shared'
 import type { PushTaskEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
@@ -22,8 +22,8 @@ export function PushTaskSetModal({ open, formValue, onSuccess, onClose }: PushTa
     handleSubmit,
     formState: { errors, isSubmitting },
     reset
-  } = useForm<SetPushTaskDto>({
-    resolver: classValidatorResolver(SetPushTaskDto)
+  } = useForm({
+    resolver: zodResolver(setPushTaskDto)
   })
 
   const { field: timeField } = useController({ control, name: 'time' })

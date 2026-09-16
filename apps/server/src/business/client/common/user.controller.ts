@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Put, Request, UnauthorizedException } from '@nestjs/common'
 import type { Request as TRequest } from 'express'
 
-import { UpdateUserInfoDto, ResetPasswordDto } from '@ying/shared'
+import { updateUserInfoDto, resetPasswordDto } from '@ying/shared'
+import type { UpdateUserInfoDto, ResetPasswordDto } from '@ying/shared'
 import type { ClientUserVo } from '@ying/shared'
 import { omit } from '@ying/utils'
 
@@ -24,12 +25,12 @@ export class UserController {
   }
 
   @Put()
-  updateInfo(@Body() dto: UpdateUserInfoDto, @Request() req: TRequest) {
+  updateInfo(@Body({ schema: updateUserInfoDto }) dto: UpdateUserInfoDto, @Request() req: TRequest) {
     return this.userService.updateInfo(dto, req.user!.id)
   }
 
   @Put('reset-password')
-  resetPassword(@Body() dto: ResetPasswordDto, @Request() req: TRequest) {
+  resetPassword(@Body({ schema: resetPasswordDto }) dto: ResetPasswordDto, @Request() req: TRequest) {
     return this.userService.resetPassword(dto, req.user!.id)
   }
 }

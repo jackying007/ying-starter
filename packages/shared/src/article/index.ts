@@ -1,2 +1,2 @@
-export * from './article.entity'
-export * from './article.dto'
+export * from './entity'
+export * from './dto'

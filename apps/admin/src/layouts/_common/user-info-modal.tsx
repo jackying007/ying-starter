@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { App, Form, Modal, Input, Segmented, Button } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { UpdateSysUserSelfUserInfoDto, UpdateSysUserSelfPasswordDto } from '@ying/shared'
+import { updateSysUserSelfUserInfoDto, updateSysUserSelfPasswordDto } from '@ying/shared'
+import type { UpdateSysUserSelfUserInfoDto, UpdateSysUserSelfPasswordDto } from '@ying/shared'
 import { commonApi, sysUserApi } from '@/api'
 import { UploadImage } from '@/components/image'
 import { updateUserInfo, logout, useUserInfo } from '@/store'
@@ -45,7 +46,7 @@ const ChangeUserInfoForm = () => {
     formState: { isSubmitting, isDirty, errors },
     reset
   } = useForm<UpdateSysUserSelfUserInfoDto>({
-    resolver: classValidatorResolver(UpdateSysUserSelfUserInfoDto)
+    resolver: zodResolver(updateSysUserSelfUserInfoDto)
   })
   useEffect(() => {
     if (userInfo) {
@@ -114,7 +115,7 @@ const ChangePasswordForm = () => {
     handleSubmit,
     formState: { isSubmitting, errors }
   } = useForm<UpdateSysUserSelfPasswordDto>({
-    resolver: classValidatorResolver(UpdateSysUserSelfPasswordDto),
+    resolver: zodResolver(updateSysUserSelfPasswordDto),
     defaultValues: {
       oldPass: '',
       newPass: ''

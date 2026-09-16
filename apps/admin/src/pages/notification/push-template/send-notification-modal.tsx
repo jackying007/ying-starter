@@ -1,15 +1,13 @@
 import { useEffect } from 'react'
 import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { SendPushTemplateDto } from '@ying/shared'
+import { sendPushTemplateDto } from '@ying/shared'
 import type { PushTemplateEntity } from '@ying/shared'
 
 import { notificationApi } from '@/api'
-
-const resolver = classValidatorResolver(SendPushTemplateDto)
 
 export type SendNotificationProps = ReturnType<typeof useDialogOpen<PushTemplateEntity>>
 
@@ -21,8 +19,8 @@ export function SendNotificationModal({ open, formValue, onClose }: SendNotifica
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue
-  } = useForm<SendPushTemplateDto>({
-    resolver
+  } = useForm({
+    resolver: zodResolver(sendPushTemplateDto)
   })
 
   useEffect(() => {
@@ -39,8 +37,7 @@ export function SendNotificationModal({ open, formValue, onClose }: SendNotifica
   return (
     <Modal title="发送通知" open={open} onOk={submit} onCancel={onClose} confirmLoading={isSubmitting}>
       <Form layout="vertical">
-        <Form.Item<SendPushTemplateDto>
-          name="visitorId"
+        <Form.Item
           label="浏览用户ID"
           required
           validateStatus={errors.visitorId ? 'error' : ''}

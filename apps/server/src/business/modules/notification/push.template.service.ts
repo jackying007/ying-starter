@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
-import { CreatePushTemplateDto, ListPushTemplateDto } from '@ying/shared'
+import type { ListPushTemplateDto, CreateOrUpdatePushTemplateDto } from '@ying/shared'
 import { PushTemplateEntity } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'
@@ -16,8 +16,12 @@ export class PushTemplateService extends BaseService<PushTemplateEntity> {
     super(pushTemplateRepository)
   }
 
-  async create(dto: CreatePushTemplateDto) {
-    return this.pushTemplateRepository.save(this.pushTemplateRepository.create(dto))
+  async createOrUpdate(dto: CreateOrUpdatePushTemplateDto) {
+    if (dto.id) {
+      return this.updateById(dto.id, dto)
+    } else {
+      return this.create(dto)
+    }
   }
 
   detail(id: number) {

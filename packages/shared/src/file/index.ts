@@ -1,3 +1,3 @@
-export * from './file.enum'
-export * from './file.entity'
-export * from './file.dto'
+export * from './enum'
+export * from './entity'
+export * from './dto'

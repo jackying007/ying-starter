@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
-import { ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
+import type { CreateOrUpdateArticleDto, ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
 import { ArticleEntity, FileEntity } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'
@@ -60,6 +60,14 @@ export class ArticleService extends BaseService<ArticleEntity> {
 
   async view(id: number) {
     await this.articleRepository.increment({ id }, 'view', 1)
+  }
+
+  createOrUpdate(dto: CreateOrUpdateArticleDto) {
+    if (dto.id) {
+      return this.updateById(dto.id, dto)
+    } else {
+      return this.create(dto)
+    }
   }
 
   async updateContent(dto: UpdateArticleContentDto) {

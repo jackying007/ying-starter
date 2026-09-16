@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { CreateArticleDto, UpdateArticleDto, ListArticleDto, DeleteDto, UpdateArticleContentDto } from '@ying/shared'
+import {} from '@ying/shared'
+import { listArticleDto, createOrUpdateArticleDto, updateArticleContentDto, deleteDto } from '@ying/shared'
+import type { ListArticleDto, CreateOrUpdateArticleDto, UpdateArticleContentDto, DeleteDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { ArticleService } from '@/business/modules/article'
@@ -11,12 +13,12 @@ export class ArticleController {
   constructor(readonly articleService: ArticleService) {}
 
   @Get('list')
-  list(@Query() dto: ListArticleDto) {
+  list(@Query({ schema: listArticleDto }) dto: ListArticleDto) {
     return this.articleService.list(dto)
   }
 
   @Get('list-count')
-  listCount(@Query() dto: ListArticleDto) {
+  listCount(@Query({ schema: listArticleDto }) dto: ListArticleDto) {
     return this.articleService.listCount(dto)
   }
 
@@ -27,25 +29,25 @@ export class ArticleController {
 
   @PermissionDecorator(pms.article.create)
   @Post()
-  create(@Body() dto: CreateArticleDto) {
-    return this.articleService.create(dto)
+  create(@Body({ schema: createOrUpdateArticleDto }) dto: CreateOrUpdateArticleDto) {
+    return this.articleService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.article.update)
   @Put()
-  update(@Body() dto: UpdateArticleDto) {
-    return this.articleService.updateById(dto.id, dto)
+  update(@Body({ schema: createOrUpdateArticleDto }) dto: CreateOrUpdateArticleDto) {
+    return this.articleService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.article.updateContent)
   @Put('content')
-  updateContent(@Body() dto: UpdateArticleContentDto) {
+  updateContent(@Body({ schema: updateArticleContentDto }) dto: UpdateArticleContentDto) {
     return this.articleService.updateContent(dto)
   }
 
   @PermissionDecorator(pms.article.delete)
   @Delete()
-  delete(@Body() dto: DeleteDto) {
+  delete(@Body({ schema: deleteDto }) dto: DeleteDto) {
     return this.articleService.delete(dto.ids)
   }
 }

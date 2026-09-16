@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { useLocation } from 'react-router-dom'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
-import { ListPushTemplateDto } from '@ying/shared'
+import type { ListPushTemplateDto } from '@ying/shared'
 import type { ArticleEntity, PushTemplateEntity } from '@ying/shared'
 
 import { useTable } from '@/hooks'

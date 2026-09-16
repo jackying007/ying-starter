@@ -1,16 +1,24 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 
 import {
-  CreatePushTemplateDto,
-  ListPushTemplateDto,
+  listVisitorDto,
+  listPushTemplateDto,
+  createOrUpdatePushTemplateDto,
+  sendPushTemplateDto,
+  listPushTaskDto,
+  createOrUpdatePushTaskDto,
+  listPushRecordDto,
+  setPushTaskDto
+} from '@ying/shared'
+import type {
   ListVisitorDto,
+  ListPushTemplateDto,
+  CreateOrUpdatePushTemplateDto,
   SendPushTemplateDto,
-  UpdatePushTemplateDto,
   ListPushTaskDto,
-  CreatePushTaskDto,
-  UpdatePushTaskDto,
-  SetPushTaskDto,
-  ListPushRecordDto
+  CreateOrUpdatePushTaskDto,
+  ListPushRecordDto,
+  SetPushTaskDto
 } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 
@@ -34,28 +42,46 @@ export class NotificationController {
     readonly notificationService: NotificationService
   ) {}
 
+  @PermissionDecorator(pms.notification.visitor)
+  @Get('visitor/list')
+  listVisitor(@Query({ schema: listVisitorDto }) dto: ListVisitorDto) {
+    return this.visitorService.list(dto)
+  }
+
+  @PermissionDecorator(pms.notification.visitor)
+  @Get('visitor/list-count')
+  listVisitorCount(@Query({ schema: listVisitorDto }) dto: ListVisitorDto) {
+    return this.visitorService.listCount(dto)
+  }
+
+  @PermissionDecorator(pms.notification.visitor.delete)
+  @Delete('visitor/:id')
+  deleteVisitor(@Param('id') visitorId: string) {
+    return this.visitorService.delete({ visitorId })
+  }
+
   @PermissionDecorator(pms.notification.pushTemplate)
   @Get('push-template/list')
-  listPushTemplate(@Query() dto: ListPushTemplateDto) {
+  listPushTemplate(@Query({ schema: listPushTemplateDto }) dto: ListPushTemplateDto) {
     return this.pushTemplateService.list(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTemplate)
   @Get('push-template/list-count')
-  listPushTemplateCount(@Query() dto: ListPushTemplateDto) {
+  listPushTemplateCount(@Query({ schema: listPushTemplateDto }) dto: ListPushTemplateDto) {
     return this.pushTemplateService.listCount(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTemplate.create)
   @Post('push-template')
-  createPushTemplate(@Body() dto: CreatePushTemplateDto) {
-    return this.pushTemplateService.create(dto)
+  createPushTemplate(@Body({ schema: createOrUpdatePushTemplateDto }) dto: CreateOrUpdatePushTemplateDto) {
+    return this.pushTemplateService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTemplate.update)
   @Put('push-template')
-  updatePushTemplate(@Body() dto: UpdatePushTemplateDto) {
-    return this.pushTemplateService.updateById(dto.id, dto)
+  updatePushTemplate(@Body({ schema: createOrUpdatePushTemplateDto }) dto: CreateOrUpdatePushTemplateDto) {
+    return this.pushTemplateService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTemplate.delete)
@@ -66,32 +92,32 @@ export class NotificationController {
 
   @PermissionDecorator(pms.notification.pushTemplate.send)
   @Post('push-template/send')
-  async send(@Body() dto: SendPushTemplateDto) {
+  async send(@Body({ schema: sendPushTemplateDto }) dto: SendPushTemplateDto) {
     return this.notificationService.sendNotification(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTask)
   @Get('push-task/list')
-  listPushTask(@Query() dto: ListPushTaskDto) {
+  listPushTask(@Query({ schema: listPushTaskDto }) dto: ListPushTaskDto) {
     return this.pushTaskService.list(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTask)
   @Get('push-task/list-count')
-  listPushTaskCount(@Query() dto: ListPushTaskDto) {
+  listPushTaskCount(@Query({ schema: listPushTaskDto }) dto: ListPushTaskDto) {
     return this.pushTaskService.listCount(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTask.create)
   @Post('push-task')
-  createPushTask(@Body() dto: CreatePushTaskDto) {
-    return this.pushTaskService.create(dto)
+  createPushTask(@Body({ schema: createOrUpdatePushTaskDto }) dto: CreateOrUpdatePushTaskDto) {
+    return this.pushTaskService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTask.update)
   @Put('push-task')
-  updatePushTask(@Body() dto: UpdatePushTaskDto) {
-    return this.pushTaskService.updateById(dto.id, dto)
+  updatePushTask(@Body({ schema: createOrUpdatePushTaskDto }) dto: CreateOrUpdatePushTaskDto) {
+    return this.pushTaskService.createOrUpdate(dto)
   }
 
   @PermissionDecorator(pms.notification.pushTask.delete)
@@ -102,7 +128,7 @@ export class NotificationController {
 
   @PermissionDecorator(pms.notification.pushTask.setUp)
   @Post('push-task/set-up')
-  setPushTask(@Body() dto: SetPushTaskDto) {
+  setPushTask(@Body({ schema: setPushTaskDto }) dto: SetPushTaskDto) {
     return this.notificationService.setPuskTask(dto)
   }
 
@@ -114,31 +140,13 @@ export class NotificationController {
 
   @PermissionDecorator(pms.notification.pushRecord)
   @Get('push-record/list')
-  listPushRecord(@Query() dto: ListPushRecordDto) {
+  listPushRecord(@Query({ schema: listPushRecordDto }) dto: ListPushRecordDto) {
     return this.pushRecordService.list(dto)
   }
 
   @PermissionDecorator(pms.notification.pushRecord)
   @Get('push-record/list-count')
-  listPushRecordCount(@Query() dto: ListPushRecordDto) {
+  listPushRecordCount(@Query({ schema: listPushRecordDto }) dto: ListPushRecordDto) {
     return this.pushRecordService.listCount(dto)
-  }
-
-  @PermissionDecorator(pms.notification.visitor)
-  @Get('visitor/list')
-  listVisitor(@Query() dto: ListVisitorDto) {
-    return this.visitorService.list(dto)
-  }
-
-  @PermissionDecorator(pms.notification.visitor)
-  @Get('visitor/list-count')
-  listVisitorCount(@Query() dto: ListVisitorDto) {
-    return this.visitorService.listCount(dto)
-  }
-
-  @PermissionDecorator(pms.notification.visitor.delete)
-  @Delete('visitor/:id')
-  deleteVisitor(@Param('id') visitorId: string) {
-    return this.visitorService.delete({ visitorId })
   }
 }

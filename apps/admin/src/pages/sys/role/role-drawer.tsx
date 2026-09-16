@@ -1,19 +1,19 @@
 import { useEffect } from 'react'
 import { Form, Drawer, Input, InputNumber, Button, App, Radio, TreeSelect } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
 import { BasicStatus } from '@ying/shared'
-import { CreateRoleDto, UpdateRoleDto } from '@ying/shared'
+import { createRoleDto, updateRoleDto } from '@ying/shared'
+import type { CreateRoleDto, UpdateRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { sysRoleApi } from '@/api'
-
 import { defaultRoleValues } from './constant'
 
-const createResolver = classValidatorResolver(CreateRoleDto)
-const updateResolver = classValidatorResolver(UpdateRoleDto)
+const createResolver = zodResolver(createRoleDto)
+const updateResolver = zodResolver(updateRoleDto)
 
 export type RoleDrawerProps = ReturnType<typeof useDialogOpen<UpdateRoleDto>> & {
   onSuccess?: VoidFunction
@@ -26,14 +26,6 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
     queryKey: ['permission'],
     queryFn: () => sysRoleApi.listPermission()
   })
-
-  // const permissionList = useMemo(() => {
-  //   function sort(list: SysPermissionEntity[]) {
-  //     if (!list) return undefined
-  //     return list.map(el => ({ ...el, children: sort(el.children) }))
-  //   }
-  //   return sort(data)
-  // }, [data])
 
   const { message } = App.useApp()
   const {
@@ -122,7 +114,7 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
                 fieldNames={{
                   value: 'code'
                 }}
-                treeNodeFilterProp="name"
+                showSearch={{ treeNodeFilterProp: 'label' }}
                 placeholder="请选择权限"
                 treeCheckable
                 treeCheckStrictly={true}

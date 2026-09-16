@@ -1,11 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
-import { useTranslation } from 'react-i18next'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 
-import { ClientLoginDto } from '@ying/shared'
+import { clientLoginDto, type ClientLoginDto } from '@ying/shared'
 import { Button, buttonVariants, Input } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -50,7 +50,7 @@ function RouteComponent() {
   const [success, setSuccess] = useState<string>()
 
   const form = useForm<ClientLoginDto>({
-    resolver: classValidatorResolver(ClientLoginDto),
+    resolver: zodResolver(clientLoginDto),
     defaultValues: {
       email: '',
       password: ''

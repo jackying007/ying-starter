@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Form, Drawer, Input, Button, App } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { CreatePushTemplateDto, UpdatePushTemplateDto } from '@ying/shared'
+import { createOrUpdatePushTemplateDto } from '@ying/shared'
 import type { PushTemplateEntity } from '@ying/shared'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
 
@@ -12,15 +12,11 @@ import { ImageSelector } from '@/components/image'
 import { FormList } from '@/components/form/form-list'
 import { IntlInput, IntlTextArea } from '@/components/intl'
 
-const createResolver = classValidatorResolver(CreatePushTemplateDto)
-const updateResolver = classValidatorResolver(UpdatePushTemplateDto)
-
-type FormValueType = Partial<PushTemplateEntity>
-type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<FormValueType>> & {
+type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<Partial<PushTemplateEntity>>> & {
   onSuccess?: VoidFunction
 }
 
-const defaultValue: FormValueType = {
+const defaultValue: Partial<PushTemplateEntity> = {
   name: undefined,
   title: undefined,
   link: undefined,
@@ -38,9 +34,8 @@ export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: Push
     formState: { isDirty, isSubmitting, errors },
     reset,
     setValue
-  } = useForm<CreatePushTemplateDto & UpdatePushTemplateDto>({
-    resolver: formValue?.id ? updateResolver : createResolver,
-    defaultValues: defaultValue
+  } = useForm({
+    resolver: zodResolver(createOrUpdatePushTemplateDto)
   })
 
   useEffect(() => {

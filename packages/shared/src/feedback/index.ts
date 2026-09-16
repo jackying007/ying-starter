@@ -1,2 +1,2 @@
-export * from './feedback.entity'
-export * from './feedback.dto'
+export * from './entity'
+export * from './dto'

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
-import { ListArticleDto } from '@ying/shared'
+import { listArticleDto, type ListArticleDto } from '@ying/shared'
 import { ClientScope, Public } from '@/common/decorator'
 import { ArticleService } from '@/business/modules/article'
 
@@ -10,12 +10,12 @@ export class ArticleController {
   constructor(readonly articleService: ArticleService) {}
 
   @Get('list')
-  list(@Query() dto: ListArticleDto) {
+  list(@Query({ schema: listArticleDto }) dto: ListArticleDto) {
     return this.articleService.list(dto)
   }
 
   @Get('list-count')
-  listCount(@Query() dto: ListArticleDto) {
+  listCount(@Query({ schema: listArticleDto }) dto: ListArticleDto) {
     return this.articleService.listCount(dto)
   }
 

@@ -5,6 +5,7 @@ import type { InputProps } from 'antd/lib/input'
 import { clientLanguagesConfig, type LngKeys, type TIntlText } from '@ying/shared'
 
 import { IntlSwitch } from './intl-switch'
+import { cn } from '@ying/frontend/ui'
 
 const { fallbackLng, languages } = clientLanguagesConfig
 
@@ -21,22 +22,18 @@ export const IntlInput = ({ value, defaultValue, onChange, ...props }: IntlInput
   return (
     <>
       <IntlSwitch value={currentLng} onChange={setCurrentLng} />
-
-      {languages.map(
-        lng =>
-          currentLng === lng && (
-            <Input
-              {...props}
-              className="mt-1.5"
-              key={lng}
-              defaultValue={defaultValue?.[lng]}
-              onChange={e => {
-                intlText.current[lng] = e.target.value
-                onChange?.(intlText.current)
-              }}
-            />
-          )
-      )}
+      {languages.map(lng => (
+        <Input
+          {...props}
+          className={cn('mt-1.5! hidden!', currentLng === lng && 'inline-flex!')}
+          key={lng}
+          defaultValue={defaultValue?.[lng]}
+          onChange={e => {
+            intlText.current[lng] = e.target.value
+            onChange?.(intlText.current)
+          }}
+        />
+      ))}
     </>
   )
 }

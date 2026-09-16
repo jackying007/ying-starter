@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
+import { createRoleDto, listRoleDto, updateRoleDto } from '@ying/shared'
+import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { SysRoleService } from './role.service'
@@ -11,13 +12,13 @@ export class SysRoleController {
   constructor(private readonly sysRoleService: SysRoleService) {}
 
   @Get('list')
-  list(@Query() listRoleDto: ListRoleDto) {
-    return this.sysRoleService.list(listRoleDto)
+  list(@Query({ schema: listRoleDto }) dto: ListRoleDto) {
+    return this.sysRoleService.list(dto)
   }
 
   @Get('list-count')
-  listCount(@Query() listRoleDto: ListRoleDto) {
-    return this.sysRoleService.listCount(listRoleDto)
+  listCount(@Query({ schema: listRoleDto }) dto: ListRoleDto) {
+    return this.sysRoleService.listCount(dto)
   }
 
   @Get('permissions')
@@ -27,14 +28,14 @@ export class SysRoleController {
 
   @PermissionDecorator(pms.sys.role.create)
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
-    return this.sysRoleService.create(createRoleDto)
+  create(@Body({ schema: createRoleDto }) dto: CreateRoleDto) {
+    return this.sysRoleService.create(dto)
   }
 
   @PermissionDecorator(pms.sys.role.update)
   @Put()
-  update(@Body() updateRoleDto: UpdateRoleDto) {
-    return this.sysRoleService.update(updateRoleDto)
+  update(@Body({ schema: updateRoleDto }) dto: UpdateRoleDto) {
+    return this.sysRoleService.update(dto)
   }
 
   @PermissionDecorator(pms.sys.role.delete)

@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { UpdateSysUserPasswordDto } from '@ying/shared'
+import { updateSysUserPasswordDto, type UpdateSysUserPasswordDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { sysUserApi } from '@/api'
@@ -21,7 +21,7 @@ export function ChangePassModal({ open, formValue, onSuccess, onClose }: ChangeP
     formState: { errors, isSubmitting },
     reset
   } = useForm<UpdateSysUserPasswordDto>({
-    resolver: classValidatorResolver(UpdateSysUserPasswordDto),
+    resolver: zodResolver(updateSysUserPasswordDto),
     defaultValues: formValue
   })
 

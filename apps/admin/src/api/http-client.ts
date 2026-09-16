@@ -4,6 +4,7 @@ import { clearUserStore } from '@/store'
 import { globalEvent } from '@/event-emitter'
 import { isRefreshRequest, refreshToken } from './refresh-token'
 import { HttpError } from './http-error'
+import { nullToUndefined } from './helpers'
 
 export const http = new HttpRequest({
   baseURL: import.meta.env.APP_API_BASE
@@ -11,7 +12,7 @@ export const http = new HttpRequest({
 
 http.addHooks({
   afterResponse: ({ type, data }) => {
-    if (type === 'json' && isBaseVo(data)) return data.data
+    if (type === 'json' && isBaseVo(data)) return nullToUndefined(data.data)
     return data
   },
   beforeError: async (fetchRes, options) => {

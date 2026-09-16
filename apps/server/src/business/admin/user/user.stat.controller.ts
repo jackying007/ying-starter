@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common'
 
-import { StatDto } from '@ying/shared'
+import { statDto, type StatDto } from '@ying/shared'
 
 import { AdminScope } from '@/common/decorator'
 import { UserStatService } from '@/business/modules/user'
@@ -16,12 +16,12 @@ export class UserStatController {
   }
 
   @Get('growth-trend-all')
-  getUserGrowthTrendAll(@Query() dto: StatDto) {
+  getUserGrowthTrendAll(@Query({ schema: statDto }) dto: StatDto) {
     return this.userStatService.getUserGrowthTrendAll(dto)
   }
 
   @Get('growth-trend')
-  getUserGrowthTrend(@Query() dto: StatDto) {
+  getUserGrowthTrend(@Query({ schema: statDto }) dto: StatDto) {
     return this.userStatService.getUserGrowthTrend(dto)
   }
 }

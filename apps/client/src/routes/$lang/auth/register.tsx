@@ -1,10 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 
-import { ClientRegisterDto } from '@ying/shared'
+import { clientRegisterDto, type ClientRegisterDto } from '@ying/shared'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -24,7 +24,7 @@ function RouteComponent() {
   const [emailToBeVerified, setEmailToBeVerified] = useState<string>()
 
   const form = useForm<ClientRegisterDto>({
-    resolver: classValidatorResolver(ClientRegisterDto),
+    resolver: zodResolver(clientRegisterDto),
     defaultValues: {
       email: '',
       name: '',

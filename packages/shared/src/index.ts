@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 export * from './config'
 export * from './base'
 export * from './file'

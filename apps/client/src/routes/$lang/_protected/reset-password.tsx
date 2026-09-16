@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { ResetPasswordDto } from '@ying/shared'
+import { resetPasswordDto, type ResetPasswordDto } from '@ying/shared'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -20,7 +20,7 @@ function RouteComponent() {
   const userInfo = useAuthStore(state => state.userInfo)
 
   const form = useForm<ResetPasswordDto>({
-    resolver: classValidatorResolver(ResetPasswordDto),
+    resolver: zodResolver(resetPasswordDto),
     defaultValues: {
       oldPassword: '',
       newPassword: ''

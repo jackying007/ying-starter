@@ -5,7 +5,7 @@ import type { Column } from 'exceljs'
 import dayjs from 'dayjs'
 
 import { UserEntity } from '@ying/shared'
-import { ListUserDto, ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
+import type { ListUserDto, ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'
 import { dataToXLSXDefaultSheetAndGetBuffer, generatePass } from '@/common/utils'
@@ -85,7 +85,7 @@ export class UserService extends BaseService<UserEntity> {
 
     if (!existingUser) throw new InternalServerErrorException('error.user_not_exists')
 
-    if (existingUser.password && existingUser.password !== generatePass(dto.oldPassword)) {
+    if (existingUser.password && (!dto.oldPassword || existingUser.password !== generatePass(dto.oldPassword))) {
       throw new InternalServerErrorException('error.old_password_error')
     }
 

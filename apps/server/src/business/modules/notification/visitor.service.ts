@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
-import { CreateVisitorDto, ListVisitorDto, NoticeSubscribeDto } from '@ying/shared'
+import type { CreateVisitorDto, ListVisitorDto, NoticeSubscribeDto } from '@ying/shared'
 import { VisitorEntity, UserEntity } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'

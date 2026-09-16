@@ -8,7 +8,7 @@ import { I18nContext } from 'nestjs-i18n'
 import ms from 'ms'
 
 import { UserEntity } from '@ying/shared'
-import {
+import type {
   ClientLoginDto,
   ClientRegisterDto,
   VerifyEmailDto,

@@ -1,8 +1,7 @@
-import { IsArray, IsNotEmpty, IsNumber } from 'class-validator'
+import { z } from 'zod'
 
-export class DeleteDto {
-  @IsArray()
-  @IsNumber(undefined, { each: true })
-  @IsNotEmpty()
-  ids: number[]
-}
+export const deleteDto = z.object({
+  ids: z.array(z.number()).nonoptional()
+})
+
+export type DeleteDto = z.infer<typeof deleteDto>

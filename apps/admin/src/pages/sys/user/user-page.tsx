@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, ListSysUserDto, UpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
+import type { ListRoleDto, ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
 import type { SysUserEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
@@ -35,7 +35,7 @@ export default function UserPage() {
   })
 
   const changePassModalPros = useDialogOpen<UpdateSysUserPasswordDto>()
-  const userDrawerProps = useDialogOpen<UpdateSysUserDto>()
+  const userDrawerProps = useDialogOpen<CreateOrUpdateSysUserDto>()
 
   const { colorTextSecondary } = useThemeToken()
   const columns: ColumnsType<SysUserEntity> = [

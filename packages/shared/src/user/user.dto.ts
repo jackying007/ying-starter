@@ -1,13 +1,12 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from 'class-validator'
-import { ListDto } from '../base'
+import { z } from 'zod'
+import { listDto } from '../base'
 
-export class ListUserDto extends ListDto {
-  @IsOptional()
-  name?: string
+export const listUserDto = listDto.extend({
+  name: z.string().optional(),
+  email: z.string().optional()
+})
 
-  @IsOptional()
-  email?: string
-}
+export type ListUserDto = z.infer<typeof listUserDto>
 
 export enum UserStatType {
   Register = 'register',
@@ -28,28 +27,19 @@ export class UserStatByTypeVo {
   }[]
 }
 
-export class UpdateUserInfoDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({
-    message: 'validation.nickname_should_not_be_empty'
-  })
-  name: string
+export const updateUserInfoDto = z.object({
+  name: z.string().nonempty('validation.nickname_should_not_be_empty').optional(),
+  avatarId: z.number().optional()
+})
 
-  @IsOptional()
-  @IsNumber()
-  avatarId: number
-}
+export type UpdateUserInfoDto = z.infer<typeof updateUserInfoDto>
 
-export class ResetPasswordDto {
-  @IsOptional()
-  oldPassword: string
+export const resetPasswordDto = z.object({
+  oldPassword: z.string().optional(),
+  newPassword: z
+    .string()
+    .regex(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, 'validation.incorrect_password_format')
+    .nonempty('validation.new_password_should_not_be_empty')
+})
 
-  @Matches(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, {
-    message: 'validation.incorrect_password_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.new_password_should_not_be_empty'
-  })
-  newPassword: string
-}
+export type ResetPasswordDto = z.infer<typeof resetPasswordDto>

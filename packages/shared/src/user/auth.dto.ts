@@ -1,93 +1,49 @@
-import { IsEmail, IsNotEmpty, Length, Matches } from 'class-validator'
+import { z } from 'zod'
 
-export class ClientLoginDto {
-  @IsEmail(undefined, {
-    message: 'validation.incorrect_email_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.email_should_not_be_empty'
-  })
-  email: string
+export const clientLoginDto = z.object({
+  email: z.email('validation.incorrect_email_format').nonempty('validation.email_should_not_be_empty'),
+  password: z
+    .string()
+    .regex(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, 'validation.incorrect_password_format')
+    .nonempty('validation.password_should_not_be_empty')
+})
 
-  @Matches(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, {
-    message: 'validation.incorrect_password_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.password_should_not_be_empty'
-  })
-  password: string
-}
+export type ClientLoginDto = z.infer<typeof clientLoginDto>
 
-export class ClientRegisterDto {
-  @IsNotEmpty({
-    message: 'validation.nickname_should_not_be_empty'
-  })
-  name: string
+export const clientRegisterDto = z.object({
+  name: z.string().nonempty('validation.nickname_should_not_be_empty'),
+  email: z.email('validation.incorrect_email_format').nonempty('validation.email_should_not_be_empty'),
+  password: z
+    .string()
+    .nonempty('validation.password_should_not_be_empty')
+    .regex(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, 'validation.incorrect_password_format')
+})
 
-  @IsEmail(undefined, {
-    message: 'validation.incorrect_email_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.email_should_not_be_empty'
-  })
-  email: string
+export type ClientRegisterDto = z.infer<typeof clientRegisterDto>
 
-  @Matches(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, {
-    message: 'validation.incorrect_password_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.password_should_not_be_empty'
-  })
-  password: string
-}
+export const verifyEmailDto = z.object({
+  email: z.email('validation.incorrect_email_format').nonempty('validation.email_should_not_be_empty'),
+  code: z.string().nonempty('validation.code_should_not_be_empty')
+})
 
-export class VerifyEmailDto {
-  @IsNotEmpty({
-    message: 'validation.email_should_not_be_empty'
-  })
-  @IsEmail(undefined, {
-    message: 'validation.incorrect_email_format'
-  })
-  email: string
+export type VerifyEmailDto = z.infer<typeof verifyEmailDto>
 
-  @IsNotEmpty({
-    message: 'validation.code_should_not_be_empty'
-  })
-  code: string
-}
+export const forgotPasswordDto = z.object({
+  email: z.email('validation.incorrect_email_format').nonempty('validation.email_should_not_be_empty')
+})
 
-export class ForgotPasswordDto {
-  @IsNotEmpty({
-    message: 'validation.email_should_not_be_empty'
-  })
-  @IsEmail(undefined, {
-    message: 'validation.incorrect_email_format'
-  })
-  email: string
-}
+export type ForgotPasswordDto = z.infer<typeof forgotPasswordDto>
 
-export class ResetPasswordWithCodeDto {
-  @IsEmail(undefined, {
-    message: 'validation.incorrect_email_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.email_should_not_be_empty'
-  })
-  email: string
+export const resetPasswordWithCodeDto = z.object({
+  email: z.email('validation.incorrect_email_format').nonempty('validation.email_should_not_be_empty'),
+  code: z
+    .string()
+    .nonempty('validation.code_should_not_be_empty')
+    .length(6, 'validation.verification_code_length_error'),
+  password: z
+    .string()
+    .nonempty('validation.password_should_not_be_empty')
+    .regex(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, 'validation.incorrect_password_format')
+})
 
-  @Length(6, 6, {
-    message: 'validation.verification_code_length_error'
-  })
-  @IsNotEmpty({
-    message: 'validation.code_should_not_be_empty'
-  })
-  code: string
-
-  @Matches(/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*;',.])/, {
-    message: 'validation.incorrect_password_format'
-  })
-  @IsNotEmpty({
-    message: 'validation.password_should_not_be_empty'
-  })
-  password: string
-}
+export type ResetPasswordWithCodeDto = z.infer<typeof resetPasswordWithCodeDto>

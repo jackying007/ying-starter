@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntityWithAutoId } from '../base'
-import { FileType, FileSourceType } from './file.enum'
+import { FileType, FileSourceType } from './enum'
 
 export type TFileExtra = {
   size: number

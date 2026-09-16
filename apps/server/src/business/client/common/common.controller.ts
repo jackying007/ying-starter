@@ -14,7 +14,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { FileSourceType, FileType } from '@ying/shared'
-import { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/shared'
+import { createFeedbackDto, createVisitorDto, noticeSubscribeDto } from '@ying/shared'
+import type { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@ying/shared'
 
 import { ClientScope, Public, UID } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
@@ -39,7 +40,7 @@ export class CommonController {
 
   @Post('feedback')
   @Public()
-  createFeedback(@Body() dto: CreateFeedbackDto) {
+  createFeedback(@Body({ schema: createFeedbackDto }) dto: CreateFeedbackDto) {
     return this.feedbackService.create(dto)
   }
 
@@ -72,13 +73,13 @@ export class CommonController {
 
   @Public()
   @Post('visitor')
-  async createVisitor(@Body() dto: CreateVisitorDto) {
+  async createVisitor(@Body({ schema: createVisitorDto }) dto: CreateVisitorDto) {
     return this.visitorService.createVisitor(dto)
   }
 
   @Public()
   @Post('visitor/subscribe')
-  async subscribe(@Body() dto: NoticeSubscribeDto) {
+  async subscribe(@Body({ schema: noticeSubscribeDto }) dto: NoticeSubscribeDto) {
     return this.visitorService.subscribe(dto)
   }
 

@@ -4,6 +4,13 @@ import type { ConfigType } from '@nestjs/config'
 import { I18nContext } from 'nestjs-i18n'
 
 import {
+  clientLoginDto,
+  clientRegisterDto,
+  verifyEmailDto,
+  forgotPasswordDto,
+  resetPasswordWithCodeDto
+} from '@ying/shared'
+import type {
   ClientLoginDto,
   ClientRegisterDto,
   VerifyEmailDto,
@@ -28,7 +35,7 @@ export class AuthController {
   private readonly oauthService: OAuthService
 
   @Post('login')
-  login(@Body() dto: ClientLoginDto) {
+  login(@Body({ schema: clientLoginDto }) dto: ClientLoginDto) {
     return this.authService.login(dto)
   }
 
@@ -38,22 +45,22 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() dto: ClientRegisterDto) {
+  async register(@Body({ schema: clientRegisterDto }) dto: ClientRegisterDto) {
     return this.authService.register(dto)
   }
 
   @Post('verify-email')
-  async verifyEmail(@Body() dto: VerifyEmailDto) {
+  async verifyEmail(@Body({ schema: verifyEmailDto }) dto: VerifyEmailDto) {
     return this.authService.verifyEmail(dto)
   }
 
   @Post('forgot-password')
-  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+  async forgotPassword(@Body({ schema: forgotPasswordDto }) dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto)
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() dto: ResetPasswordWithCodeDto) {
+  async resetPassword(@Body({ schema: resetPasswordWithCodeDto }) dto: ResetPasswordWithCodeDto) {
     return this.authService.resetPassword(dto)
   }
 

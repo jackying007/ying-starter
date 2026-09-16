@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { UpdateUserInfoDto } from '@ying/shared'
+import { updateUserInfoDto, type UpdateUserInfoDto } from '@ying/shared'
 import { Input, Button } from '@ying/frontend/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -24,7 +24,7 @@ function RouteComponent() {
   const userInfo = useAuthStore(state => state.userInfo)
 
   const form = useForm<UpdateUserInfoDto>({
-    resolver: classValidatorResolver(UpdateUserInfoDto),
+    resolver: zodResolver(updateUserInfoDto),
     defaultValues: {
       name: '',
       avatarId: -1

@@ -1,7 +1,7 @@
 import { BasicStatus } from '@ying/shared'
-import { CreateArticleDto } from '@ying/shared'
+import type { CreateOrUpdateArticleDto } from '@ying/shared'
 
-export const defaultValues: Partial<CreateArticleDto> = {
+export const defaultValues: Partial<CreateOrUpdateArticleDto> = {
   name: undefined,
   title: undefined,
   keywords: undefined,

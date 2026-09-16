@@ -1,40 +1,25 @@
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator'
-import { Type } from 'class-transformer'
-import { BasicStatus, ListDto } from '../base'
+import { z } from 'zod'
+import { BasicStatus, listDto } from '../base'
 
-export class ListRoleDto extends ListDto {
-  @IsOptional()
-  name?: string
+export const listRoleDto = listDto.extend({
+  name: z.string().optional(),
+  status: z.coerce.number().pipe(z.enum(BasicStatus)).optional()
+})
 
-  @IsOptional()
-  @IsEnum(BasicStatus)
-  @Type(() => Number)
-  status?: BasicStatus
-}
+export type ListRoleDto = z.infer<typeof listRoleDto>
 
-export class CreateRoleDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(32)
-  name: string
+export const createRoleDto = z.object({
+  name: z.string().nonempty('角色名称不能为空').max(32),
+  status: z.number().pipe(z.enum(BasicStatus)),
+  remark: z.string().max(200).optional(),
+  sort: z.number().optional(),
+  permissionCodes: z.array(z.string())
+})
 
-  @IsEnum(BasicStatus)
-  status: BasicStatus
+export type CreateRoleDto = z.infer<typeof createRoleDto>
 
-  @IsOptional()
-  @MaxLength(200)
-  remark?: string
+export const updateRoleDto = createRoleDto.extend({
+  id: z.number()
+})
 
-  @IsOptional()
-  @IsNumber()
-  sort?: number
-
-  @IsArray()
-  permissionCodes: string[]
-}
-
-export class UpdateRoleDto extends CreateRoleDto {
-  @IsNumber()
-  @IsNotEmpty()
-  id: number
-}
+export type UpdateRoleDto = z.infer<typeof updateRoleDto>

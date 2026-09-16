@@ -1,6 +1,7 @@
 import { Controller, Delete, Get, Inject, Param, Query } from '@nestjs/common'
 
-import { ListFeedbackDto } from '@ying/shared'
+import { listFeedbackDto } from '@ying/shared'
+import type { ListFeedbackDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
@@ -18,12 +19,12 @@ export class FeedbackController {
   ) {}
 
   @Get('list')
-  feedbackList(@Query() dto: ListFeedbackDto) {
+  feedbackList(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
     return this.feedbackService.list(dto)
   }
 
   @Get('list-count')
-  feedbackListCount(@Query() dto: ListFeedbackDto) {
+  feedbackListCount(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
     return this.feedbackService.listCount(dto)
   }
 

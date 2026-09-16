@@ -1,11 +1,4 @@
 import { DeviceType, PushTaskStatus } from '@ying/shared'
-import { CreatePushTaskDto } from '@ying/shared'
-
-export const defaultValues: Partial<CreatePushTaskDto> = {
-  name: undefined,
-  deviceType: undefined,
-  pushTemplateId: undefined
-}
 
 export type DeviceTypeOption = { value: DeviceType; label: string }
 

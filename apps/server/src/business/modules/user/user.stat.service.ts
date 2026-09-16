@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindOperator, Repository } from 'typeorm'
 
-import { StatDto, UserStatType } from '@ying/shared'
+import { type StatDto, UserStatType } from '@ying/shared'
 import { UserEntity } from '@ying/shared'
 
 import { StatService } from '@/common/service/stat.service'

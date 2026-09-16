@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { ListPushRecordDto } from '@ying/shared'
+import type { ListPushRecordDto } from '@ying/shared'
 import { PushRecordEntity } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'

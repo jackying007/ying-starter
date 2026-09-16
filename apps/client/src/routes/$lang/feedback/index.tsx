@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { CreateFeedbackDto } from '@ying/shared'
+import { createFeedbackDto, type CreateFeedbackDto } from '@ying/shared'
 import { Card, CardContent, Input, Textarea, Button } from '@ying/frontend/ui'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/$lang/feedback/')({
 function RouteComponent() {
   const { t } = useTranslation('auth')
   const form = useForm<CreateFeedbackDto>({
-    resolver: classValidatorResolver(CreateFeedbackDto),
+    resolver: zodResolver(createFeedbackDto),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -53,7 +53,7 @@ function RouteComponent() {
         <FeedbackSVG className="text-primary w-full h-full" />
         <Card>
           <CardContent>
-            <Form className="space-y-2" onSubmit={handleSubmit(submit)} {...form}>
+            <Form className="space-y-2" t={t} onSubmit={handleSubmit(submit)} {...form}>
               <div className="flex flex-col lg:flex-row gap-2">
                 <FormField
                   control={form.control}

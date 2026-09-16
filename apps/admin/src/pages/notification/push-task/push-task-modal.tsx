@@ -1,19 +1,22 @@
 import { useCallback, useEffect } from 'react'
 import { Form, Modal, Input, App, Select, type SelectProps } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { CreatePushTaskDto, ListPushTemplateDto, UpdatePushTaskDto } from '@ying/shared'
+import { createOrUpdatePushTaskDto, type CreateOrUpdatePushTaskDto, type ListPushTemplateDto } from '@ying/shared'
 import type { PushTaskEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useQueryWithRequery } from '@/hooks'
 import { notificationApi } from '@/api'
 
-import { defaultValues, DeviceTypeOptions } from './constant'
+import { DeviceTypeOptions } from './constant'
 
-const createResolver = classValidatorResolver(CreatePushTaskDto)
-const updateResolver = classValidatorResolver(UpdatePushTaskDto)
+const defaultValues: Partial<CreateOrUpdatePushTaskDto> = {
+  name: undefined,
+  deviceType: undefined,
+  pushTemplateId: undefined
+}
 
 export type PushTaskModalProps = ReturnType<typeof useDialogOpen<PushTaskEntity>> & {
   onSuccess: VoidFunction
@@ -36,9 +39,8 @@ export function PushTaskModal({ open, formValue, onSuccess, onClose }: PushTaskM
     handleSubmit,
     formState: { errors, isSubmitting },
     reset
-  } = useForm<CreatePushTaskDto & UpdatePushTaskDto>({
-    resolver: formValue ? updateResolver : createResolver,
-    defaultValues
+  } = useForm({
+    resolver: zodResolver(createOrUpdatePushTaskDto)
   })
 
   const updateForm = useCallback(() => {

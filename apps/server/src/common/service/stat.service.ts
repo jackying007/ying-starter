@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { Between } from 'typeorm'
 
-import { StatDto } from '@ying/shared'
+import type { StatDto } from '@ying/shared'
 
 @Injectable()
 export class StatService {

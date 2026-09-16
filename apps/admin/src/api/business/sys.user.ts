@@ -1,8 +1,7 @@
 import { HttpRequest } from '@jying/http'
 import type {
   ListSysUserDto,
-  CreateSysUserDto,
-  UpdateSysUserDto,
+  CreateOrUpdateSysUserDto,
   UpdateSysUserPasswordDto,
   UpdateSysUserSelfUserInfoDto,
   UpdateSysUserSelfPasswordDto
@@ -19,10 +18,10 @@ export default function (http: HttpRequest) {
     listCount(query: ListSysUserDto) {
       return http.get<number>('/sys/user/list-count', { query: timeDataTransform(query, 'date') })
     },
-    create(data: CreateSysUserDto) {
+    create(data: CreateOrUpdateSysUserDto) {
       return http.post('/sys/user', { data })
     },
-    update(data: UpdateSysUserDto) {
+    update(data: CreateOrUpdateSysUserDto) {
       return http.put('/sys/user', { data })
     },
     del(id: number) {

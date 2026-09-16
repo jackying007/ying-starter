@@ -1,18 +1,8 @@
-import { IsArray, IsNumber, IsOptional } from 'class-validator'
-import { Type } from 'class-transformer'
+import { z } from 'zod'
 
-export class ListDto {
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  page?: number
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  size?: number
-
-  @IsOptional()
-  @IsArray()
-  date?: string[]
-}
+export const listDto = z.object({
+  page: z.coerce.number().positive().optional(),
+  size: z.coerce.number().positive().optional(),
+  date: z.array(z.string()).optional()
+})
+export type ListDto = z.infer<typeof listDto>

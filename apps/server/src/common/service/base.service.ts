@@ -6,7 +6,7 @@ import type {
   QueryDeepPartialEntity
 } from 'typeorm'
 import { Between, Repository, SelectQueryBuilder, ObjectId } from 'typeorm'
-import { ListDto } from '@ying/shared'
+import type { ListDto } from '@ying/shared'
 import { AbstractBaseEntity } from '@ying/shared'
 
 export class BaseService<TEntity extends AbstractBaseEntity> {

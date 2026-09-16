@@ -1,6 +1,7 @@
-import { IsString } from 'class-validator'
+import { z } from 'zod'
 
-export class ConfigDto {
-  @IsString()
-  debugUserIds: string
-}
+export const configDto = z.object({
+  debugUserIds: z.string()
+})
+
+export type ConfigDto = z.infer<typeof configDto>

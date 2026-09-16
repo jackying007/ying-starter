@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { App, Drawer, Button, Space } from 'antd'
 import { useForm } from 'react-hook-form'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
 import { uniqueBy } from '@ying/utils'
 import { clientLanguagesConfig, type LngKeys } from '@ying/shared'
 import { FileEntity } from '@ying/shared'
-import { UpdateArticleContentDto } from '@ying/shared'
+import { updateArticleContentDto, type UpdateArticleContentDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 import {
   editorEmitter,
@@ -39,8 +39,8 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
     reset,
     getValues,
     setValue
-  } = useForm<UpdateArticleContentDto>({
-    resolver: classValidatorResolver(UpdateArticleContentDto)
+  } = useForm({
+    resolver: zodResolver(updateArticleContentDto)
   })
 
   const { data: article, isFetching: loading } = useQuery({
@@ -82,6 +82,7 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
 
     const fileIdSet = new Set<number>()
     Object.values(content).forEach(value => {
+      if (!value) return
       const json = generateJSON(value, defaultExtensions)
       const nodes = findNodes(json, ['lazyImage', 'lazyImageList'])
       nodes.forEach(el => {
