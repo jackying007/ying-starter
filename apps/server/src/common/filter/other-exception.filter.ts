@@ -14,8 +14,7 @@ export class OtherExceptionFilter implements ExceptionFilter {
     const res: ErrorVo = {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: getErrorMessage(exception),
-      path: request.url,
-      timestamp: new Date().toISOString()
+      path: request.url
     }
 
     Logger.error(res, OtherExceptionFilter.name)

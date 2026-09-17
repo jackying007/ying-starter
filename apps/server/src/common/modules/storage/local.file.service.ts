@@ -31,7 +31,7 @@ export class LocalFileService extends AbstractFileService {
     const fileName = nanoid()
     const objectName = `${fileType}/${fileName}.${ext}`
 
-    const filePath = join(__dirname, `../../../../uploadfiles/${objectName}`)
+    const filePath = join(__dirname, `../../../../storage/${objectName}`)
 
     this.checkDirExistAndCreate(filePath)
     writeFileSync(filePath, file.buffer)
@@ -67,7 +67,7 @@ export class LocalFileService extends AbstractFileService {
   }
 
   getPresignedUrl(objectName: string) {
-    return this.serverUrl + '/upload/' + objectName
+    return this.serverUrl + '/storage/' + objectName
   }
 
   private deleteDiskFile(path: PathLike) {
@@ -79,7 +79,7 @@ export class LocalFileService extends AbstractFileService {
   async deleteFiles(files: FileEntity[]) {
     await this.dataSource.transaction(async t => {
       await t.delete(FileEntity, { id: In(files.map(el => el.id)) })
-      await Promise.all(files.map(el => this.deleteDiskFile(join(__dirname, `../../../uploadfiles/${el.path}`))))
+      await Promise.all(files.map(el => this.deleteDiskFile(join(__dirname, `../../../storage/${el.path}`))))
     })
   }
 }

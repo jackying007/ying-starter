@@ -28,7 +28,7 @@ export class PushTemplateEntity extends BaseEntityWithAutoId {
   @Column({
     nullable: true
   })
-  imageId?: number
+  imageId?: number | null
 
   @ManyToOne(() => FileEntity)
   @JoinColumn()

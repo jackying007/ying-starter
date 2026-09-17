@@ -24,7 +24,7 @@ export const listPushTemplateDto = listDto.extend({
 export type ListPushTemplateDto = z.infer<typeof listPushTemplateDto>
 
 export const pushActionDto = z.object({
-  title: zIntlText({ minLength: 2, maxLength: 6 }),
+  title: zIntlText({ minLength: 2, maxLength: 6 }).nonoptional(),
   link: z.string().optional()
 })
 export type PushActionDto = z.infer<typeof pushActionDto>

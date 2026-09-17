@@ -1,8 +1,7 @@
 export type ErrorVo = {
   status: number
-  message: string | string[]
+  message: string
   path: string
-  timestamp: string
 }
 
 export type BaseVo<TStatus extends string | number, TData> = {

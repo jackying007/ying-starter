@@ -1,22 +1,17 @@
-import { Controller, Delete, Get, Inject, Param, Query } from '@nestjs/common'
+import { Controller, Delete, Get, Param, Query } from '@nestjs/common'
 
 import { listFeedbackDto } from '@ying/shared'
 import type { ListFeedbackDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
-import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
 import { FeedbackService } from '@/business/modules/feedback'
 
 @PermissionDecorator(pms.feedback)
 @AdminScope()
 @Controller('admin/feedback')
 export class FeedbackController {
-  constructor(
-    @Inject(FileServiceToken)
-    readonly fileService: AbstractFileService,
-    readonly feedbackService: FeedbackService
-  ) {}
+  constructor(readonly feedbackService: FeedbackService) {}
 
   @Get('list')
   feedbackList(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
