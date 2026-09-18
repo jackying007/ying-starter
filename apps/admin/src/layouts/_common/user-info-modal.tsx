@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useDialogOpen } from '@ying/frontend/hooks'
 import { updateSysUserSelfUserInfoDto, updateSysUserSelfPasswordDto } from '@ying/shared'
 import type { UpdateSysUserSelfUserInfoDto, UpdateSysUserSelfPasswordDto } from '@ying/shared'
-import { commonApi, sysUserApi } from '@/api'
+import { commonApi, authApi } from '@/api'
 import { UploadImage } from '@/components/image'
 import { updateUserInfo, logout, useUserInfo } from '@/store'
 
@@ -58,7 +58,7 @@ const ChangeUserInfoForm = () => {
   }, [userInfo, reset])
 
   const handlePost = async (value: UpdateSysUserSelfUserInfoDto) => {
-    await sysUserApi.updateSelfInfo(value)
+    await authApi.updateUserInfo(value)
     message.success('修改用户信息成功')
     updateUserInfo()
   }
@@ -123,7 +123,7 @@ const ChangePasswordForm = () => {
   })
 
   const handlePost = async (value: UpdateSysUserSelfPasswordDto) => {
-    await sysUserApi.updateSelfPassword(value)
+    await authApi.updateUserPassword(value)
     message.success(`修改密码成功`)
     logout()
   }

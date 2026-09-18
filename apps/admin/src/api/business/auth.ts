@@ -1,5 +1,5 @@
 import type { HttpRequest } from '@jying/http'
-import type { AdminLoginDto } from '@ying/shared'
+import type { AdminLoginDto, UpdateSysUserSelfPasswordDto, UpdateSysUserSelfUserInfoDto } from '@ying/shared'
 import type { AdminAuthVo } from '@ying/shared'
 import type { SysUserEntity } from '@ying/shared'
 
@@ -12,7 +12,13 @@ export default function (http: HttpRequest) {
       return http.get('/sys/auth/logout')
     },
     getUserInfo() {
-      return http.get<SysUserEntity>('/sys/auth/user')
+      return http.get<SysUserEntity>('/sys/auth/user-info')
+    },
+    updateUserInfo(data: UpdateSysUserSelfUserInfoDto) {
+      return http.put('/sys/auth/user-info', { data })
+    },
+    updateUserPassword(data: UpdateSysUserSelfPasswordDto) {
+      return http.put('/sys/auth/user-password', { data })
     }
   }
 }

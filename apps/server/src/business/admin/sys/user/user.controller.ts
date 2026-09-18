@@ -1,23 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 
-import {
-  listSysUserDto,
-  createOrUpdateSysUserDto,
-  updateSysUserPasswordDto,
-  updateSysUserSelfPasswordDto,
-  updateSysUserSelfUserInfoDto
-} from '@ying/shared'
-import type {
-  ListSysUserDto,
-  CreateOrUpdateSysUserDto,
-  UpdateSysUserPasswordDto,
-  UpdateSysUserSelfPasswordDto,
-  UpdateSysUserSelfUserInfoDto
-} from '@ying/shared'
+import { listSysUserDto, createOrUpdateSysUserDto, updateSysUserPasswordDto } from '@ying/shared'
+import type { ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
 import { omitArray } from '@ying/utils'
 import { pms } from '@ying/shared/permission'
 
-import { AdminScope, PermissionDecorator, UID } from '@/common/decorator'
+import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { SysUserService } from './user.service'
 
 @PermissionDecorator(pms.sys.user)
@@ -59,21 +47,5 @@ export class SysUserController {
   @Put('password')
   updatePassword(@Body({ schema: updateSysUserPasswordDto }) dto: UpdateSysUserPasswordDto) {
     return this.sysUserService.updatePassword(dto)
-  }
-
-  @Put('self-info')
-  updateSelfInfo(
-    @Body({ schema: updateSysUserSelfUserInfoDto }) dto: UpdateSysUserSelfUserInfoDto,
-    @UID() uid: number
-  ) {
-    return this.sysUserService.updateSelfInfo(dto, uid)
-  }
-
-  @Put('self-password')
-  updateSelfPassword(
-    @Body({ schema: updateSysUserSelfPasswordDto }) dto: UpdateSysUserSelfPasswordDto,
-    @UID() uid: number
-  ) {
-    return this.sysUserService.updateSelfPassword(dto, uid)
   }
 }

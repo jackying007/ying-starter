@@ -1,6 +1,13 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, Req } from '@nestjs/common'
 import type { Request } from 'express'
-import { adminLoginDto, type AdminLoginDto } from '@ying/shared'
+import {
+  adminLoginDto,
+  updateSysUserSelfPasswordDto,
+  updateSysUserSelfUserInfoDto,
+  type AdminLoginDto,
+  type UpdateSysUserSelfPasswordDto,
+  type UpdateSysUserSelfUserInfoDto
+} from '@ying/shared'
 import { omit } from '@ying/utils'
 import { AdminScope, Public, Token, UID } from '@/common/decorator'
 import { getRefreshTokenFromRequest } from '@/common/utils'
@@ -29,9 +36,25 @@ export class SysAuthController {
     return this.authService.logout(token, uid)
   }
 
-  @Get('user')
+  @Get('user-info')
   async getUserInfo(@UID() uid: number) {
     const user = await this.authService.getUserInfo(uid)
     return omit(user, 'password')
+  }
+
+  @Put('user-info')
+  updateUserInfo(
+    @Body({ schema: updateSysUserSelfUserInfoDto }) dto: UpdateSysUserSelfUserInfoDto,
+    @UID() uid: number
+  ) {
+    return this.authService.updateUserInfo(dto, uid)
+  }
+
+  @Put('user-password')
+  updateUserPassword(
+    @Body({ schema: updateSysUserSelfPasswordDto }) dto: UpdateSysUserSelfPasswordDto,
+    @UID() uid: number
+  ) {
+    return this.authService.updateUserPassword(dto, uid)
   }
 }

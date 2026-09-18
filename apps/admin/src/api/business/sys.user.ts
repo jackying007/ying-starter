@@ -1,11 +1,5 @@
 import { HttpRequest } from '@jying/http'
-import type {
-  ListSysUserDto,
-  CreateOrUpdateSysUserDto,
-  UpdateSysUserPasswordDto,
-  UpdateSysUserSelfUserInfoDto,
-  UpdateSysUserSelfPasswordDto
-} from '@ying/shared'
+import type { ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
 import type { SysUserEntity } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
@@ -29,12 +23,6 @@ export default function (http: HttpRequest) {
     },
     updatePassword(data: UpdateSysUserPasswordDto) {
       return http.put('/sys/user/password', { data })
-    },
-    updateSelfInfo(data: UpdateSysUserSelfUserInfoDto) {
-      return http.put('/sys/user/self-info', { data })
-    },
-    updateSelfPassword(data: UpdateSysUserSelfPasswordDto) {
-      return http.put('/sys/user/self-password', { data })
     }
   }
 }

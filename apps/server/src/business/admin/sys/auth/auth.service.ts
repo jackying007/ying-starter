@@ -1,4 +1,10 @@
-import { Injectable, Inject, NotAcceptableException, UnauthorizedException } from '@nestjs/common'
+import {
+  Injectable,
+  Inject,
+  NotAcceptableException,
+  UnauthorizedException,
+  InternalServerErrorException
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import type { ConfigType } from '@nestjs/config'
 import { Repository } from 'typeorm'
@@ -7,11 +13,11 @@ import ms from 'ms'
 
 import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
-import type { AdminLoginDto } from '@ying/shared'
+import type { AdminLoginDto, UpdateSysUserSelfPasswordDto, UpdateSysUserSelfUserInfoDto } from '@ying/shared'
 import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'
-import { comparePass } from '@/common/utils'
+import { comparePass, generatePass } from '@/common/utils'
 import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 
 type VerifiedData = TAdminPayload & {
@@ -162,5 +168,26 @@ export class SysAuthService {
     })
 
     return sysUserEntity
+  }
+
+  async updateUserInfo(dto: UpdateSysUserSelfUserInfoDto, id: number) {
+    return this.sysUserRepository.update({ id }, dto)
+  }
+
+  async updateUserPassword(dto: UpdateSysUserSelfPasswordDto, id: number) {
+    const user = await this.sysUserRepository.findOne({
+      where: { id }
+    })
+    if (!user) {
+      throw new InternalServerErrorException('User does not exist!')
+    }
+    if (!comparePass(dto.oldPass, user.password)) {
+      throw new InternalServerErrorException('The password is incorrect!')
+    }
+
+    const sysUser = this.sysUserRepository.create({ id })
+    sysUser.password = generatePass(dto.newPass)
+
+    return this.sysUserRepository.save(sysUser)
   }
 }
