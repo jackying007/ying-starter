@@ -4,11 +4,12 @@ import { Reflector } from '@nestjs/core'
 import type { Request } from 'express'
 import { Redis } from 'ioredis'
 
-import { RedisKey, RedisToken } from '@/common/modules/redis'
+import { RedisToken } from '@/common/modules/redis'
 import { getTokenFromRequest } from '@/common/utils'
 import { IS_PUBLIC_KEY, ADMIN_SCOPE } from '@/common/decorator'
 
 import { SysAuthService } from '../auth.service'
+import { CacheKey } from '../constant'
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {
@@ -42,7 +43,7 @@ export class AdminAuthGuard implements CanActivate {
 
     try {
       const payload = await this.authService.verifyAccessToken(accesstoken)
-      const refreshToken = await this.redis.get(`${RedisKey.AdminAuthAccessToken}:${payload.id}:${accesstoken}`)
+      const refreshToken = await this.redis.get(`${CacheKey.AdminAuthAccessToken}:${payload.id}:${accesstoken}`)
       if (!refreshToken) throw new UnauthorizedException()
       request.user = payload
       return true

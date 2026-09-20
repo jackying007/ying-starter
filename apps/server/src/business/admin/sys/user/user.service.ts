@@ -7,9 +7,10 @@ import { FileSourceType, FileType } from '@ying/shared'
 import type { ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
 import { SysRoleEntity, SysUserEntity } from '@ying/shared'
 import { generatePass } from '@/common/utils'
-import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
+import { CacheKey } from '@/business/admin/sys/auth/constant'
 
 @Injectable()
 export class SysUserService extends BaseService<SysUserEntity> {
@@ -88,7 +89,7 @@ export class SysUserService extends BaseService<SysUserEntity> {
         entity.id = id
         return entity
       })
-      await this.redis.del(`${RedisKey.AdminAuthPermission}:${sysUser.id}`)
+      await this.redis.del(`${CacheKey.AdminAuthPermission}:${sysUser.id}`)
       return this.sysUserRepository.save(sysUser)
     } else {
       const sysUser = this.sysUserRepository.create(dto)

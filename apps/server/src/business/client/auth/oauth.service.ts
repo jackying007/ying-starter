@@ -5,11 +5,10 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 import { nanoid } from 'nanoid'
 import { Redis } from 'ioredis'
-
 import { type OAuthProvider, OAuthAccountEntity, UserEntity } from '@ying/shared'
-
 import { authConfig } from '@/config'
-import { RedisToken, RedisKey } from '@/common/modules/redis'
+import { RedisToken } from '@/common/modules/redis'
+import { CacheKey } from './constant'
 
 export type OAuthAccountInfo = {
   providerAccountId: string
@@ -91,7 +90,7 @@ export class OAuthService {
   async createGoogleAuthURL() {
     const state = nanoid()
     const codeVerifier = generateCodeVerifier()
-    await this.redis.set(`${RedisKey.OAuth}:${state}`, codeVerifier, 'EX', 5 * 60)
+    await this.redis.set(`${CacheKey.OAuth}:${state}`, codeVerifier, 'EX', 5 * 60)
     return this.google.createAuthorizationURL(`${state}`, codeVerifier, ['profile', 'email'])
   }
 
@@ -100,7 +99,7 @@ export class OAuthService {
   }
 
   async validateGoogleCallback(code: string, state: string): Promise<OAuthAccountInfo> {
-    const key = `${RedisKey.OAuth}:${state}`
+    const key = `${CacheKey.OAuth}:${state}`
     const codeVerifier = await this.redis.get(key)
     if (!codeVerifier) {
       throw new Error('Invalid or expired state')

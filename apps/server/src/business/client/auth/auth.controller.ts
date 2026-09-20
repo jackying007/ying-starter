@@ -2,7 +2,6 @@ import { Controller, Post, Get, Res, Inject, Body, UseFilters, Query, Req } from
 import type { Request, Response } from 'express'
 import type { ConfigType } from '@nestjs/config'
 import { I18nContext } from 'nestjs-i18n'
-
 import {
   clientLoginDto,
   clientRegisterDto,
@@ -17,13 +16,12 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-
 import { ClientScope, UID, Token } from '@/common/decorator'
+import { getRefreshTokenFromRequest } from '@/common/utils'
 import { authConfig } from '@/config'
 import { AuthService } from './auth.service'
 import { OAuthService } from './oauth.service'
 import { OAuthLoginExceptionFilter } from './oauth.login.filter'
-import { getRefreshTokenFromRequest } from '@/common/utils'
 
 @Controller('client/auth')
 export class AuthController {

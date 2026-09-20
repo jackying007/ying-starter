@@ -5,8 +5,9 @@ import { Redis } from 'ioredis'
 import { createTreeFns } from '@ying/utils'
 import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
 import { SysPermissionEntity, SysRoleEntity } from '@ying/shared'
-import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
+import { CacheKey } from '@/business/admin/sys/auth/constant'
 
 @Injectable()
 export class SysRoleService extends BaseService<SysRoleEntity> {
@@ -88,7 +89,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
       })
 
       role.users.forEach(el => {
-        void this.redis.del(`${RedisKey.AdminAuthPermission}:${el.id}`)
+        void this.redis.del(`${CacheKey.AdminAuthPermission}:${el.id}`)
       })
     }
 

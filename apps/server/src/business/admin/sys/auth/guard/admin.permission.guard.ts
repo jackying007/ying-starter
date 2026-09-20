@@ -5,8 +5,9 @@ import type { Request } from 'express'
 import { Redis } from 'ioredis'
 import type { TPermission } from '@ying/shared/permission'
 import { PERMISSION_SIGN } from '@/common/decorator'
-import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 import { SysAuthService } from '../auth.service'
+import { CacheKey } from '../constant'
 
 @Injectable()
 export class AdminPermissionGuard implements CanActivate {
@@ -32,7 +33,7 @@ export class AdminPermissionGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<Request>()
     const userId = request.user?.id
-    const KEY = `${RedisKey.AdminAuthPermission}:${userId}`
+    const KEY = `${CacheKey.AdminAuthPermission}:${userId}`
     const userPermissionCodesStr = await this.redis.get(KEY)
     let userPermissionCodes: string[] = []
 

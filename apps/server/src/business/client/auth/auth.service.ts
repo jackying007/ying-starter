@@ -7,7 +7,6 @@ import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
 import ms from 'ms'
 import { Redis } from 'ioredis'
-
 import { UserEntity } from '@ying/shared'
 import type {
   ClientLoginDto,
@@ -18,11 +17,11 @@ import type {
 } from '@ying/shared'
 import type { ClientAuthVo, ClientLoginVo } from '@ying/shared'
 import { wrapBaseVo } from '@ying/shared'
-
 import { authConfig } from '@/config'
-import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 import { MailService } from '@/common/modules/mail/mail.service'
 import { generatePass } from '@/common/utils'
+import { CacheKey } from './constant'
 
 const randomCode = customAlphabet('0123456789', 6)
 
@@ -47,7 +46,7 @@ export class AuthService {
   private readonly mailService: MailService
 
   async generateEmailVerificationCode(email: string) {
-    const key = `${RedisKey.EmailVerificationCode}:${email}`
+    const key = `${CacheKey.EmailVerificationCode}:${email}`
     const existingCode = await this.redis.get(key)
     if (existingCode) {
       await this.redis.del(key)
@@ -58,7 +57,7 @@ export class AuthService {
   }
 
   async verifyEmailVerificationCode(dto: VerifyEmailDto) {
-    const key = `${RedisKey.EmailVerificationCode}:${dto.email}`
+    const key = `${CacheKey.EmailVerificationCode}:${dto.email}`
     const code = await this.redis.get(key)
     if (!code || code !== dto.code) {
       return false
@@ -122,13 +121,13 @@ export class AuthService {
       expiresIn: this.authConf.clientRefreshTokenExpiresIn
     })
     await this.redis.set(
-      `${RedisKey.ClientAuthAccessToken}:${user.id}:${accessToken}`,
+      `${CacheKey.ClientAuthAccessToken}:${user.id}:${accessToken}`,
       refreshToken,
       'EX',
       ms(this.authConf.clientRefreshTokenExpiresIn) / 1000
     )
     await this.redis.set(
-      `${RedisKey.ClientAuthRefreshToken}:${user.id}:${refreshToken}`,
+      `${CacheKey.ClientAuthRefreshToken}:${user.id}:${refreshToken}`,
       user.id,
       'EX',
       ms(this.authConf.clientRefreshTokenExpiresIn) / 1000
@@ -176,7 +175,7 @@ export class AuthService {
     try {
       const payload = await this.verifyRefreshToken(token)
 
-      const existsToken = await this.redis.get(`${RedisKey.ClientAuthRefreshToken}:${payload.id}:${token}`)
+      const existsToken = await this.redis.get(`${CacheKey.ClientAuthRefreshToken}:${payload.id}:${token}`)
       if (!existsToken) throw new UnauthorizedException()
 
       delete payload.iat
@@ -188,7 +187,7 @@ export class AuthService {
       })
 
       await this.redis.set(
-        `${RedisKey.ClientAuthAccessToken}:${payload.id}:${accessToken}`,
+        `${CacheKey.ClientAuthAccessToken}:${payload.id}:${accessToken}`,
         token,
         'EX',
         ms(this.authConf.clientAccessTokenExpiresIn) / 1000
@@ -200,10 +199,10 @@ export class AuthService {
   }
 
   async logout(token: string, userId: number) {
-    const accessTokenKey = `${RedisKey.ClientAuthAccessToken}:${userId}:${token}`
+    const accessTokenKey = `${CacheKey.ClientAuthAccessToken}:${userId}:${token}`
     const refreshToken = await this.redis.get(accessTokenKey)
     await this.redis.del(accessTokenKey)
-    await this.redis.del(`${RedisKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
+    await this.redis.del(`${CacheKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {

@@ -19,7 +19,8 @@ import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'
 import { comparePass, generatePass } from '@/common/utils'
-import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
+import { CacheKey } from './constant'
 
 type VerifiedData = TAdminPayload & {
   iat?: any
@@ -57,13 +58,13 @@ export class SysAuthService {
     })
     // 用 redis 再存一份可以随时踢出登录
     await this.redis.set(
-      `${RedisKey.AdminAuthAccessToken}:${user.id}:${accessToken}`,
+      `${CacheKey.AdminAuthAccessToken}:${user.id}:${accessToken}`,
       refreshToken,
       'EX',
       ms(this.authConf.adminAccessTokenExpiresIn) / 1000
     )
     await this.redis.set(
-      `${RedisKey.AdminAuthRefreshToken}:${user.id}:${refreshToken}`,
+      `${CacheKey.AdminAuthRefreshToken}:${user.id}:${refreshToken}`,
       user.id,
       'EX',
       ms(this.authConf.adminRefreshTokenExpiresIn) / 1000
@@ -110,7 +111,7 @@ export class SysAuthService {
     try {
       const payload = await this.verifyRefreshToken(token)
 
-      const existsToken = await this.redis.get(`${RedisKey.AdminAuthRefreshToken}:${payload.id}:${token}`)
+      const existsToken = await this.redis.get(`${CacheKey.AdminAuthRefreshToken}:${payload.id}:${token}`)
       if (!existsToken) throw new UnauthorizedException()
 
       delete payload.iat
@@ -122,7 +123,7 @@ export class SysAuthService {
       })
 
       await this.redis.set(
-        `${RedisKey.AdminAuthAccessToken}:${payload.id}:${accessToken}`,
+        `${CacheKey.AdminAuthAccessToken}:${payload.id}:${accessToken}`,
         token,
         'EX',
         ms(this.authConf.adminAccessTokenExpiresIn) / 1000
@@ -134,10 +135,10 @@ export class SysAuthService {
   }
 
   async logout(token: string, userId: number) {
-    const accessTokenKey = `${RedisKey.AdminAuthAccessToken}:${userId}:${token}`
+    const accessTokenKey = `${CacheKey.AdminAuthAccessToken}:${userId}:${token}`
     const refreshToken = await this.redis.get(accessTokenKey)
     await this.redis.del(accessTokenKey)
-    await this.redis.del(`${RedisKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
+    await this.redis.del(`${CacheKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
   async getUserInfo(uid: number) {
