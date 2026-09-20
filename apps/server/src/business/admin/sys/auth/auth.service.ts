@@ -56,16 +56,9 @@ export class SysAuthService {
       secret: this.authConf.adminRefreshTokenSecret,
       expiresIn: this.authConf.adminRefreshTokenExpiresIn
     })
-    // 用 redis 再存一份可以随时踢出登录
-    await this.redis.set(
-      `${CacheKey.AdminAuthAccessToken}:${user.id}:${accessToken}`,
-      refreshToken,
-      'EX',
-      ms(this.authConf.adminAccessTokenExpiresIn) / 1000
-    )
     await this.redis.set(
       `${CacheKey.AdminAuthRefreshToken}:${user.id}:${refreshToken}`,
-      user.id,
+      1,
       'EX',
       ms(this.authConf.adminRefreshTokenExpiresIn) / 1000
     )
@@ -117,27 +110,16 @@ export class SysAuthService {
       delete payload.iat
       delete payload.exp
 
-      const accessToken = await this.jwtService.signAsync(payload, {
+      return this.jwtService.signAsync(payload, {
         secret: this.authConf.adminAccessTokenSecret,
         expiresIn: this.authConf.adminAccessTokenExpiresIn
       })
-
-      await this.redis.set(
-        `${CacheKey.AdminAuthAccessToken}:${payload.id}:${accessToken}`,
-        token,
-        'EX',
-        ms(this.authConf.adminAccessTokenExpiresIn) / 1000
-      )
-      return accessToken
     } catch {
       throw new UnauthorizedException()
     }
   }
 
-  async logout(token: string, userId: number) {
-    const accessTokenKey = `${CacheKey.AdminAuthAccessToken}:${userId}:${token}`
-    const refreshToken = await this.redis.get(accessTokenKey)
-    await this.redis.del(accessTokenKey)
+  async logout(userId: number, refreshToken: string) {
     await this.redis.del(`${CacheKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 

@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Res, Inject, Body, UseFilters, Query, Req } from '@nestjs/common'
+import { Controller, Post, Get, Res, Inject, Body, UseFilters, Query, Req, UnauthorizedException } from '@nestjs/common'
 import type { Request, Response } from 'express'
 import type { ConfigType } from '@nestjs/config'
 import { I18nContext } from 'nestjs-i18n'
@@ -16,7 +16,7 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-import { ClientScope, UID, Token } from '@/common/decorator'
+import { ClientScope } from '@/common/decorator'
 import { getRefreshTokenFromRequest } from '@/common/utils'
 import { authConfig } from '@/config'
 import { AuthService } from './auth.service'
@@ -64,8 +64,11 @@ export class AuthController {
 
   @Get('logout')
   @ClientScope()
-  async logout(@Token() token: string, @UID() uid: number) {
-    return this.authService.logout(token, uid)
+  async logout(@Req() req: Request) {
+    const userId = req.user?.id
+    const refreshToken = getRefreshTokenFromRequest(req)
+    if (!userId || !refreshToken) throw new UnauthorizedException()
+    return this.authService.logout(userId, refreshToken)
   }
 
   @Get('google')

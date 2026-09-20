@@ -120,15 +120,10 @@ export class AuthService {
       secret: this.authConf.clientRefreshTokenSecret,
       expiresIn: this.authConf.clientRefreshTokenExpiresIn
     })
-    await this.redis.set(
-      `${CacheKey.ClientAuthAccessToken}:${user.id}:${accessToken}`,
-      refreshToken,
-      'EX',
-      ms(this.authConf.clientRefreshTokenExpiresIn) / 1000
-    )
+
     await this.redis.set(
       `${CacheKey.ClientAuthRefreshToken}:${user.id}:${refreshToken}`,
-      user.id,
+      1,
       'EX',
       ms(this.authConf.clientRefreshTokenExpiresIn) / 1000
     )
@@ -181,27 +176,16 @@ export class AuthService {
       delete payload.iat
       delete payload.exp
 
-      const accessToken = await this.jwtService.signAsync(payload, {
+      return this.jwtService.signAsync(payload, {
         secret: this.authConf.clientAccessTokenSecret,
         expiresIn: this.authConf.clientAccessTokenExpiresIn
       })
-
-      await this.redis.set(
-        `${CacheKey.ClientAuthAccessToken}:${payload.id}:${accessToken}`,
-        token,
-        'EX',
-        ms(this.authConf.clientAccessTokenExpiresIn) / 1000
-      )
-      return accessToken
     } catch {
       throw new UnauthorizedException()
     }
   }
 
-  async logout(token: string, userId: number) {
-    const accessTokenKey = `${CacheKey.ClientAuthAccessToken}:${userId}:${token}`
-    const refreshToken = await this.redis.get(accessTokenKey)
-    await this.redis.del(accessTokenKey)
+  async logout(userId: number, refreshToken: string) {
     await this.redis.del(`${CacheKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 

@@ -34,7 +34,6 @@ declare global {
 
 declare module 'express' {
   interface Request {
-    token?: string | null
     user?: TAdminPayload | TClientPayload
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Req } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, Req, UnauthorizedException } from '@nestjs/common'
 import type { Request } from 'express'
 import {
   adminLoginDto,
@@ -9,9 +9,8 @@ import {
   type UpdateSysUserSelfUserInfoDto
 } from '@ying/shared'
 import { omit } from '@ying/utils'
-import { AdminScope, Public, Token, UID } from '@/common/decorator'
+import { AdminScope, Public, UID } from '@/common/decorator'
 import { getRefreshTokenFromRequest } from '@/common/utils'
-
 import { SysAuthService } from './auth.service'
 
 @Controller('admin/sys/auth')
@@ -32,8 +31,11 @@ export class SysAuthController {
   }
 
   @Get('logout')
-  logout(@Token() token: string, @UID() uid: number) {
-    return this.authService.logout(token, uid)
+  logout(@Req() req: Request) {
+    const userId = req.user?.id
+    const refreshToken = getRefreshTokenFromRequest(req)
+    if (!userId || !refreshToken) throw new UnauthorizedException()
+    return this.authService.logout(userId, refreshToken)
   }
 
   @Get('user-info')
