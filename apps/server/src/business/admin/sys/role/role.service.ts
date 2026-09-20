@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { Like, Repository, TreeRepository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Redis } from 'ioredis'
 import { createTreeFns } from '@ying/utils'
 import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
 import { SysPermissionEntity, SysRoleEntity } from '@ying/shared'
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 
 @Injectable()
@@ -15,7 +16,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
     @InjectRepository(SysPermissionEntity)
     readonly sysPermissionRepository: TreeRepository<SysPermissionEntity>,
     @Inject(RedisToken)
-    readonly redisObjs: RedisObjs
+    readonly redis: Redis
   ) {
     super(sysRoleRepository)
   }
@@ -87,7 +88,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
       })
 
       role.users.forEach(el => {
-        void this.redisObjs.redis.del(`${RedisKey.AdminAuthPermission}:${el.id}`)
+        void this.redis.del(`${RedisKey.AdminAuthPermission}:${el.id}`)
       })
     }
 

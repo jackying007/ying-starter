@@ -1,15 +1,11 @@
 import { HttpRequest } from '@jying/http'
 import type { ListFileDto, ListFeedbackDto } from '@ying/shared'
 import type { FileEntity, TFileExtra, FeedbackEntity } from '@ying/shared'
-import type { ConfigVo } from '@ying/shared'
 
 import { timeDataTransform } from '../helpers'
 
 export default function (http: HttpRequest) {
   return {
-    getConfig() {
-      return http.get<ConfigVo>('/config')
-    },
     uploadImage(file: File, extra?: TFileExtra) {
       const form = new FormData()
       form.append('file', file)

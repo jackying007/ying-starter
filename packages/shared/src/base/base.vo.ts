@@ -12,7 +12,7 @@ export type BaseVo<TStatus extends string | number, TData> = {
 
 const baseVoKeys = ['status', 'data', 'message']
 export function isBaseVo(data: any): data is BaseVo<string | number, any> {
-  if (typeof data === 'object' && 'status' in data) {
+  if (typeof data === 'object' && data !== null && 'status' in data) {
     const keys = Object.keys(data)
     if (keys.some(el => !baseVoKeys.includes(el))) return false
     return true

@@ -19,7 +19,7 @@ export const RichContent = ({ htmlText, associatedFiles }: RichContentProps) => 
   })
 
   useEffect(() => {
-    if (htmlText && editor) editor.commands.setContent(htmlText)
+    if (htmlText && editor) setTimeout(() => editor.commands.setContent(htmlText))
   }, [htmlText, editor])
 
   const mounted = useMounted()

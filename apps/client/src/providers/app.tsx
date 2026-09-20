@@ -1,4 +1,5 @@
 import {
+  useState,
   // useEffect,
   type PropsWithChildren
 } from 'react'
@@ -11,8 +12,6 @@ import { useAuth } from './use-auth'
 import { useVisitor } from './use-visitor'
 import { RouteLoading } from './route-loading'
 
-const queryClient = new QueryClient()
-
 export const AppProvider = ({ children }: PropsWithChildren) => {
   useAuth()
   useVisitor()
@@ -21,6 +20,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   //   initVconsole()
   // }, [])
 
+  const [queryClient] = useState(() => new QueryClient())
   return (
     <QueryClientProvider client={queryClient}>
       <main className="min-h-screen flex flex-col bg-accent" vaul-drawer-wrapper="">

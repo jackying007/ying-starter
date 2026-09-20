@@ -2,8 +2,9 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import type { Request } from 'express'
+import { Redis } from 'ioredis'
 
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis'
+import { RedisKey, RedisToken } from '@/common/modules/redis'
 import { getTokenFromRequest } from '@/common/utils'
 import { IS_PUBLIC_KEY, ADMIN_SCOPE } from '@/common/decorator'
 
@@ -16,7 +17,7 @@ export class AdminAuthGuard implements CanActivate {
   @Inject()
   private readonly authService: SysAuthService
   @Inject(RedisToken)
-  private readonly redisObjs: RedisObjs
+  private readonly redis: Redis
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<Request>()
@@ -41,9 +42,7 @@ export class AdminAuthGuard implements CanActivate {
 
     try {
       const payload = await this.authService.verifyAccessToken(accesstoken)
-      const refreshToken = await this.redisObjs.redis.get(
-        `${RedisKey.AdminAuthAccessToken}:${payload.id}:${accesstoken}`
-      )
+      const refreshToken = await this.redis.get(`${RedisKey.AdminAuthAccessToken}:${payload.id}:${accesstoken}`)
       if (!refreshToken) throw new UnauthorizedException()
       request.user = payload
       return true

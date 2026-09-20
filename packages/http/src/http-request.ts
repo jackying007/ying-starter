@@ -159,7 +159,7 @@ export class HttpRequest {
       skipAfterResponse
     } = options
 
-    const queryStr = qs.stringify(query)
+    const queryStr = qs.stringify(query, { arrayFormat: 'repeat' })
     const fetchUrl = `${this.options.baseURL ?? ''}${url}${queryStr ? `?${queryStr}` : ''}`
     let fetchRes = await fetch(fetchUrl, {
       method,

@@ -12,9 +12,9 @@ import { useThemeToken } from '@/hooks'
 
 export function SearchBar() {
   const { replace } = useRouter()
-  const panelRef = useRef<HTMLDivElement>(null as any)
-  const inputRef = useRef<InputRef>(null as any)
-  const listRef = useRef<HTMLDivElement>(null as any)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<InputRef>(null)
+  const listRef = useRef<HTMLDivElement>(null)
 
   const [open, setOpen] = useState(false)
   const themeToken = useThemeToken()
@@ -37,7 +37,7 @@ export function SearchBar() {
   )
   const searchResultRef = useLatest(searchResult)
 
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0)
+  const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const selectedItemIndexRef = useLatest(selectedItemIndex)
 
   const tagStyle: CSSProperties = {
@@ -53,7 +53,11 @@ export function SearchBar() {
   const handleOpen = () => {
     setOpen(true)
     setSearchQuery('')
-    setSelectedItemIndex(0)
+    setTimeout(() => {
+      // Modal 第一次 open, 才会挂载，必须触发一次渲染，panelRef 才会存在，然后把事件绑定上去
+      setSelectedItemIndex(0)
+      scrollSelectedItemIntoView(0)
+    })
   }
   const handleCancel = () => {
     setOpen(false)

@@ -11,9 +11,7 @@ import { PushRecordService } from './push.record.service'
 import { NotificationService } from './notification.service'
 import { NotificationConsumer } from './notification.consumer'
 
-// const enableWatcher = !!process.env.ENABLE_WATCHER
 const enableConsumer = !!process.env.ENABLE_CONSUMER
-// const enableQueue = enableWatcher || enableConsumer
 
 @Module({
   imports: [

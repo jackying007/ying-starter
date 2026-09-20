@@ -21,7 +21,7 @@ export class UserEntity extends BaseEntityWithAutoId {
   @Column({
     nullable: true
   })
-  avatarId?: number
+  avatarId?: number | null
 
   @OneToOne(() => FileEntity)
   @JoinColumn()

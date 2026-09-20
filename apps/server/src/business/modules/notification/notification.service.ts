@@ -5,13 +5,14 @@ import type { Queue } from 'bullmq'
 import { InjectQueue } from '@nestjs/bullmq'
 import type { PushSubscription } from 'web-push'
 import { match as langMatch } from '@formatjs/intl-localematcher'
+import { Redis } from 'ioredis'
 
 import { type LngKeys, PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
-import { VisitorEntity, PushTemplateEntity, PushTaskEntity, PushRecordEntity, type PushData } from '@ying/shared'
+import { VisitorEntity, PushTemplateEntity, PushTaskEntity, type PushData } from '@ying/shared'
 import type { SetPushTaskDto, SendPushTemplateDto } from '@ying/shared'
 
 import { PushService } from '@/common/modules/push/push.service'
-import { RedisToken, type RedisObjs } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 
 import type { TNotificationJobs } from './notification.consumer'
 
@@ -26,11 +27,9 @@ export class NotificationService {
     readonly pushTemplateRepository: Repository<PushTemplateEntity>,
     @InjectRepository(PushTaskEntity)
     readonly pushTaskRepository: Repository<PushTaskEntity>,
-    @InjectRepository(PushRecordEntity)
-    readonly pushRecordRepository: Repository<PushRecordEntity>,
     readonly pushService: PushService,
     @Inject(RedisToken)
-    readonly redisObjs: RedisObjs,
+    readonly redis: Redis,
     @InjectQueue('notification')
     readonly notificationQueue: Queue<TNotificationJobs>
   ) {}
@@ -99,7 +98,7 @@ export class NotificationService {
       return
     }
 
-    await this.redisObjs.redis.set(`push_task_${pushTask.id}_process_length`, visitors.length)
+    await this.redis.set(`push_task_${pushTask.id}_process_length`, visitors.length)
 
     visitors.forEach(visitor => {
       if (!visitor.pushSubscription) return

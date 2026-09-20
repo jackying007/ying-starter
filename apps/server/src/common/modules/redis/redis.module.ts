@@ -10,16 +10,12 @@ import { RedisToken } from './constant'
     {
       provide: RedisToken,
       useFactory(redisConf: ConfigType<typeof redisConfig>) {
-        const redis = new Redis({
+        return new Redis({
           host: redisConf.host,
           port: redisConf.port,
           password: redisConf.pass,
           db: redisConf.db
         })
-        return {
-          redis,
-          subscriber: redis.duplicate()
-        }
       },
       inject: [redisConfig.KEY]
     }

@@ -2,11 +2,12 @@ import { Inject, Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { faker } from '@faker-js/faker'
+import { Redis } from 'ioredis'
 import { FileSourceType, FileType } from '@ying/shared'
 import type { ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
 import { SysRoleEntity, SysUserEntity } from '@ying/shared'
 import { generatePass } from '@/common/utils'
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
 
@@ -16,7 +17,7 @@ export class SysUserService extends BaseService<SysUserEntity> {
     @InjectRepository(SysUserEntity)
     readonly sysUserRepository: Repository<SysUserEntity>,
     @Inject(RedisToken)
-    readonly redisObjs: RedisObjs,
+    readonly redis: Redis,
     @Inject(FileServiceToken)
     readonly fileService: AbstractFileService
   ) {
@@ -87,7 +88,7 @@ export class SysUserService extends BaseService<SysUserEntity> {
         entity.id = id
         return entity
       })
-      await this.redisObjs.redis.del(`${RedisKey.AdminAuthPermission}:${sysUser.id}`)
+      await this.redis.del(`${RedisKey.AdminAuthPermission}:${sysUser.id}`)
       return this.sysUserRepository.save(sysUser)
     } else {
       const sysUser = this.sysUserRepository.create(dto)

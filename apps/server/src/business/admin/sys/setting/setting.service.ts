@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common'
 // import { InjectDataSource } from '@nestjs/typeorm'
 // import { DataSource } from 'typeorm'
-import { RedisToken, RedisKey, type RedisObjs } from '@/common/modules/redis/constant'
+import { Redis } from 'ioredis'
+import { RedisToken, RedisKey } from '@/common/modules/redis/constant'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
 
 @Injectable()
@@ -10,15 +11,15 @@ export class SysSettingService {
   // private dataSource: DataSource
 
   @Inject(RedisToken)
-  private readonly redisObjs: RedisObjs
+  private readonly redis: Redis
 
   @Inject(FileServiceToken)
   private readonly fileService: AbstractFileService
 
   async clearPermissionCache() {
-    const arr = await this.redisObjs.redis.keys(RedisKey.AdminAuthPermission + '*')
+    const arr = await this.redis.keys(RedisKey.AdminAuthPermission + '*')
     arr.forEach(key => {
-      void this.redisObjs.redis.del(key)
+      void this.redis.del(key)
     })
   }
 

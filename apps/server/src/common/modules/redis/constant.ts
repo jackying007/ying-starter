@@ -1,10 +1,3 @@
-import { Redis } from 'ioredis'
-
-export type RedisObjs = {
-  redis: Redis
-  subscriber: Redis
-}
-
 export const RedisToken = 'REDIS_TOKEN'
 
 export const RedisKey = {

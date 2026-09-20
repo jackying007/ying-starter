@@ -5,7 +5,7 @@ interface ImportMetaEnv {
   readonly APP_API_BASE: string
   readonly APP_HOMEPAGE: string
   readonly APP_SERVER_URL: string
-  readonly APP_DS_AIRDROP_ADDRESS?: `0x${string}`
+  readonly APP_CLIENT_URL: string
 }
 
 interface ImportMeta {

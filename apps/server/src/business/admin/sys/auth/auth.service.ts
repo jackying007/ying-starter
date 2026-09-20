@@ -10,6 +10,7 @@ import type { ConfigType } from '@nestjs/config'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import ms from 'ms'
+import { Redis } from 'ioredis'
 
 import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
@@ -18,7 +19,7 @@ import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'
 import { comparePass, generatePass } from '@/common/utils'
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
 
 type VerifiedData = TAdminPayload & {
   iat?: any
@@ -28,7 +29,7 @@ type VerifiedData = TAdminPayload & {
 @Injectable()
 export class SysAuthService {
   @Inject(RedisToken)
-  private readonly redisObjs: RedisObjs
+  private readonly redis: Redis
 
   @Inject()
   private readonly jwtService: JwtService
@@ -55,13 +56,13 @@ export class SysAuthService {
       expiresIn: this.authConf.adminRefreshTokenExpiresIn
     })
     // 用 redis 再存一份可以随时踢出登录
-    await this.redisObjs.redis.set(
+    await this.redis.set(
       `${RedisKey.AdminAuthAccessToken}:${user.id}:${accessToken}`,
       refreshToken,
       'EX',
       ms(this.authConf.adminAccessTokenExpiresIn) / 1000
     )
-    await this.redisObjs.redis.set(
+    await this.redis.set(
       `${RedisKey.AdminAuthRefreshToken}:${user.id}:${refreshToken}`,
       user.id,
       'EX',
@@ -109,7 +110,7 @@ export class SysAuthService {
     try {
       const payload = await this.verifyRefreshToken(token)
 
-      const existsToken = await this.redisObjs.redis.get(`${RedisKey.AdminAuthRefreshToken}:${payload.id}:${token}`)
+      const existsToken = await this.redis.get(`${RedisKey.AdminAuthRefreshToken}:${payload.id}:${token}`)
       if (!existsToken) throw new UnauthorizedException()
 
       delete payload.iat
@@ -120,7 +121,7 @@ export class SysAuthService {
         expiresIn: this.authConf.adminAccessTokenExpiresIn
       })
 
-      await this.redisObjs.redis.set(
+      await this.redis.set(
         `${RedisKey.AdminAuthAccessToken}:${payload.id}:${accessToken}`,
         token,
         'EX',
@@ -134,9 +135,9 @@ export class SysAuthService {
 
   async logout(token: string, userId: number) {
     const accessTokenKey = `${RedisKey.AdminAuthAccessToken}:${userId}:${token}`
-    const refreshToken = await this.redisObjs.redis.get(accessTokenKey)
-    await this.redisObjs.redis.del(accessTokenKey)
-    await this.redisObjs.redis.del(`${RedisKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
+    const refreshToken = await this.redis.get(accessTokenKey)
+    await this.redis.del(accessTokenKey)
+    await this.redis.del(`${RedisKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
   async getUserInfo(uid: number) {

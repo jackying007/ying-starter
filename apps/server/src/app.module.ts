@@ -13,7 +13,6 @@ import { DbModule } from '@/common/modules/db/db.module'
 import { StorageModule } from '@/common/modules/storage/storage.module'
 import { MailModule } from '@/common/modules/mail/mail.module'
 import { PushModule } from '@/common/modules/push/push.module'
-import { ConfigModule } from '@/common/modules/config/config.module'
 import { AdminModule } from '@/business/admin/admin.module'
 import { ClientModule } from '@/business/client/client.module'
 
@@ -52,7 +51,6 @@ import { ClientModule } from '@/business/client/client.module'
     StorageModule,
     MailModule,
     PushModule,
-    ConfigModule,
     AdminModule,
     ClientModule
   ]

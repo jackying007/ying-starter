@@ -6,6 +6,7 @@ import { DataSource, Repository } from 'typeorm'
 import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
 import ms from 'ms'
+import { Redis } from 'ioredis'
 
 import { UserEntity } from '@ying/shared'
 import type {
@@ -19,7 +20,7 @@ import type { ClientAuthVo, ClientLoginVo } from '@ying/shared'
 import { wrapBaseVo } from '@ying/shared'
 
 import { authConfig } from '@/config'
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
 import { MailService } from '@/common/modules/mail/mail.service'
 import { generatePass } from '@/common/utils'
 
@@ -39,35 +40,30 @@ export class AuthService {
   @InjectRepository(UserEntity)
   private userRepository: Repository<UserEntity>
   @Inject(RedisToken)
-  private readonly redisObjs: RedisObjs
+  private readonly redis: Redis
   @Inject(authConfig.KEY)
   private readonly authConf: ConfigType<typeof authConfig>
   @Inject()
   private readonly mailService: MailService
 
   async generateEmailVerificationCode(email: string) {
-    const redis = this.redisObjs.redis
-
     const key = `${RedisKey.EmailVerificationCode}:${email}`
-    const existingCode = await redis.get(key)
+    const existingCode = await this.redis.get(key)
     if (existingCode) {
-      await redis.del(key)
+      await this.redis.del(key)
     }
-
     const code = randomCode()
-    await redis.set(key, code, 'EX', ms('5m') / 1000)
+    await this.redis.set(key, code, 'EX', ms('5m') / 1000)
     return code
   }
 
   async verifyEmailVerificationCode(dto: VerifyEmailDto) {
-    const redis = this.redisObjs.redis
     const key = `${RedisKey.EmailVerificationCode}:${dto.email}`
-
-    const code = await this.redisObjs.redis.get(key)
+    const code = await this.redis.get(key)
     if (!code || code !== dto.code) {
       return false
     }
-    await redis.del(key)
+    await this.redis.del(key)
     return true
   }
 
@@ -125,13 +121,13 @@ export class AuthService {
       secret: this.authConf.clientRefreshTokenSecret,
       expiresIn: this.authConf.clientRefreshTokenExpiresIn
     })
-    await this.redisObjs.redis.set(
+    await this.redis.set(
       `${RedisKey.ClientAuthAccessToken}:${user.id}:${accessToken}`,
       refreshToken,
       'EX',
       ms(this.authConf.clientRefreshTokenExpiresIn) / 1000
     )
-    await this.redisObjs.redis.set(
+    await this.redis.set(
       `${RedisKey.ClientAuthRefreshToken}:${user.id}:${refreshToken}`,
       user.id,
       'EX',
@@ -180,7 +176,7 @@ export class AuthService {
     try {
       const payload = await this.verifyRefreshToken(token)
 
-      const existsToken = await this.redisObjs.redis.get(`${RedisKey.ClientAuthRefreshToken}:${payload.id}:${token}`)
+      const existsToken = await this.redis.get(`${RedisKey.ClientAuthRefreshToken}:${payload.id}:${token}`)
       if (!existsToken) throw new UnauthorizedException()
 
       delete payload.iat
@@ -191,7 +187,7 @@ export class AuthService {
         expiresIn: this.authConf.clientAccessTokenExpiresIn
       })
 
-      await this.redisObjs.redis.set(
+      await this.redis.set(
         `${RedisKey.ClientAuthAccessToken}:${payload.id}:${accessToken}`,
         token,
         'EX',
@@ -205,9 +201,9 @@ export class AuthService {
 
   async logout(token: string, userId: number) {
     const accessTokenKey = `${RedisKey.ClientAuthAccessToken}:${userId}:${token}`
-    const refreshToken = await this.redisObjs.redis.get(accessTokenKey)
-    await this.redisObjs.redis.del(accessTokenKey)
-    await this.redisObjs.redis.del(`${RedisKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
+    const refreshToken = await this.redis.get(accessTokenKey)
+    await this.redis.del(accessTokenKey)
+    await this.redis.del(`${RedisKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {

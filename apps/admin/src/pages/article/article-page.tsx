@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import { ListArticleDto } from '@ying/shared'
+import type { ListArticleDto } from '@ying/shared'
 import type { ArticleEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
@@ -14,7 +14,6 @@ import { IntlShow } from '@/components/intl'
 import { IconButton, Iconify } from '@/components/icon'
 import { useTable } from '@/hooks'
 import { articleApi } from '@/api'
-import { useConfig } from '@/store'
 import { useRouter } from '@/router/hooks'
 import { type BasicStatusOption, BasicStatusOptions } from '@/constant'
 
@@ -42,7 +41,6 @@ export default function ArticlePage() {
     getListCount: articleApi.listCount
   })
 
-  const { config } = useConfig()
   const articleModalProps = useDialogOpen<ArticleEntity>()
   const articleDrawerProps = useDialogOpen<number>()
   const articlePromotionModalProps = useDialogOpen<TPromotionData>()
@@ -133,7 +131,7 @@ export default function ArticlePage() {
                 onClick: () =>
                   articlePromotionModalProps.onOpen({
                     title: `推广-${record.name}`,
-                    link: `${config?.clientUrl}/article/${record.id}`
+                    link: `${import.meta.env.APP_CLIENT_URL}/article/${record.id}`
                   })
               },
               {

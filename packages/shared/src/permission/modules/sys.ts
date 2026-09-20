@@ -13,7 +13,6 @@ export const sys = GP('系统管理', {
   }),
   setting: GP('系统设置', {
     clearPermissionCache: GP('清除系统权限缓存'),
-    clearDriftFile: GP('清除游离文件'),
-    updateSetting: GP('更新配置')
+    clearDriftFile: GP('清除游离文件')
   })
 })

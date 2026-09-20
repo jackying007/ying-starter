@@ -19,7 +19,6 @@ import type { CreateFeedbackDto, CreateVisitorDto, NoticeSubscribeDto } from '@y
 
 import { ClientScope, Public, UID } from '@/common/decorator'
 import { FileServiceToken, AbstractFileService } from '@/common/modules/storage'
-import { type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
 
 import { FeedbackService } from '@/business/modules/feedback'
 import { VisitorService } from '@/business/modules/notification'
@@ -31,8 +30,6 @@ export class CommonController {
   constructor(
     @Inject(FileServiceToken)
     readonly fileService: AbstractFileService,
-    @Inject(RedisToken)
-    readonly redisObjs: RedisObjs,
     readonly feedbackService: FeedbackService,
     readonly visitorService: VisitorService,
     readonly pushRecordService: PushRecordService

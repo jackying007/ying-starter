@@ -29,7 +29,7 @@ export class UserStatByTypeVo {
 
 export const updateUserInfoDto = z.object({
   name: z.string().nonempty('validation.nickname_should_not_be_empty').optional(),
-  avatarId: z.number().optional()
+  avatarId: z.number().nullish()
 })
 
 export type UpdateUserInfoDto = z.infer<typeof updateUserInfoDto>

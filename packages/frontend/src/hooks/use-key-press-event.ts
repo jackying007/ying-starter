@@ -9,7 +9,7 @@ export type KeyboardEventHandler = (event: KeyboardEvent) => void
 
 export type UseKeyPressEventOptions<T> = {
   event?: 'keydown' | 'keypress' | 'keyup'
-  targetRef?: RefObject<T>
+  targetRef?: RefObject<T | null>
   eventOptions?: boolean | AddEventListenerOptions
 }
 

@@ -2,9 +2,10 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Inject, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import type { Request } from 'express'
+import { Redis } from 'ioredis'
 import type { TPermission } from '@ying/shared/permission'
 import { PERMISSION_SIGN } from '@/common/decorator'
-import { RedisKey, type RedisObjs, RedisToken } from '@/common/modules/redis/constant'
+import { RedisKey, RedisToken } from '@/common/modules/redis/constant'
 import { SysAuthService } from '../auth.service'
 
 @Injectable()
@@ -14,7 +15,7 @@ export class AdminPermissionGuard implements CanActivate {
   @Inject()
   private readonly authService: SysAuthService
   @Inject(RedisToken)
-  private readonly redisObjs: RedisObjs
+  private readonly redis: Redis
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const handler = context.getHandler()
@@ -32,7 +33,7 @@ export class AdminPermissionGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>()
     const userId = request.user?.id
     const KEY = `${RedisKey.AdminAuthPermission}:${userId}`
-    const userPermissionCodesStr = await this.redisObjs.redis.get(KEY)
+    const userPermissionCodesStr = await this.redis.get(KEY)
     let userPermissionCodes: string[] = []
 
     if (!userPermissionCodesStr) {
@@ -40,7 +41,7 @@ export class AdminPermissionGuard implements CanActivate {
         const userInfo = await this.authService.getUserInfo(userId)
         if (userInfo.permissions) {
           userPermissionCodes = userInfo.permissions.map(el => el.code)
-          await this.redisObjs.redis.set(KEY, JSON.stringify(userPermissionCodes))
+          await this.redis.set(KEY, JSON.stringify(userPermissionCodes))
         }
       }
     } else {

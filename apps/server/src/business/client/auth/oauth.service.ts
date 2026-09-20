@@ -4,11 +4,12 @@ import { generateCodeVerifier, decodeIdToken, Google, GitHub } from 'arctic'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 import { nanoid } from 'nanoid'
+import { Redis } from 'ioredis'
 
 import { type OAuthProvider, OAuthAccountEntity, UserEntity } from '@ying/shared'
 
 import { authConfig } from '@/config'
-import { type RedisObjs, RedisToken, RedisKey } from '@/common/modules/redis'
+import { RedisToken, RedisKey } from '@/common/modules/redis'
 
 export type OAuthAccountInfo = {
   providerAccountId: string
@@ -34,7 +35,7 @@ export class OAuthService {
     @Inject(authConfig.KEY)
     private readonly authConf: ConfigType<typeof authConfig>,
     @Inject(RedisToken)
-    private readonly redisObjs: RedisObjs,
+    private readonly redis: Redis,
     @InjectDataSource()
     private dataSource: DataSource
   ) {
@@ -90,7 +91,7 @@ export class OAuthService {
   async createGoogleAuthURL() {
     const state = nanoid()
     const codeVerifier = generateCodeVerifier()
-    await this.redisObjs.redis.set(`${RedisKey.OAuth}:${state}`, codeVerifier, 'EX', 5 * 60)
+    await this.redis.set(`${RedisKey.OAuth}:${state}`, codeVerifier, 'EX', 5 * 60)
     return this.google.createAuthorizationURL(`${state}`, codeVerifier, ['profile', 'email'])
   }
 
@@ -100,11 +101,11 @@ export class OAuthService {
 
   async validateGoogleCallback(code: string, state: string): Promise<OAuthAccountInfo> {
     const key = `${RedisKey.OAuth}:${state}`
-    const codeVerifier = await this.redisObjs.redis.get(key)
+    const codeVerifier = await this.redis.get(key)
     if (!codeVerifier) {
       throw new Error('Invalid or expired state')
     }
-    await this.redisObjs.redis.del(key)
+    await this.redis.del(key)
     const tokens = await this.google.validateAuthorizationCode(code, codeVerifier)
     const idToken = tokens.idToken()
     const info = decodeIdToken(idToken) as GoogleUserInfo

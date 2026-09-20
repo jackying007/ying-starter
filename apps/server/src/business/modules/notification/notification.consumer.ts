@@ -4,11 +4,12 @@ import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Job } from 'bullmq'
 import { Repository } from 'typeorm'
 import { WebPushError } from 'web-push'
+import { Redis } from 'ioredis'
 
 import { PushRecordStatus, PushTaskStatus } from '@ying/shared'
 import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/shared'
 
-import { RedisToken, type RedisObjs } from '@/common/modules/redis/constant'
+import { RedisToken } from '@/common/modules/redis/constant'
 
 import { NotificationService } from './notification.service'
 
@@ -37,7 +38,7 @@ export class NotificationConsumer extends WorkerHost {
     @InjectRepository(PushTaskEntity)
     readonly pushTaskRepository: Repository<PushTaskEntity>,
     @Inject(RedisToken)
-    readonly redisObjs: RedisObjs,
+    readonly redis: Redis,
     readonly notificationService: NotificationService
   ) {
     super()
@@ -95,7 +96,7 @@ export class NotificationConsumer extends WorkerHost {
       pushRecord.status = PushRecordStatus.Fail
       await this.pushRecordRepository.save(pushRecord)
     } finally {
-      const redis = this.redisObjs.redis
+      const redis = this.redis
       let processLength = Number(await redis.get(`push_task_${pushTaskId}_process_length`))
       if (processLength !== undefined || processLength !== null) {
         processLength = processLength - 1
