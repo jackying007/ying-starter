@@ -1,24 +1,18 @@
-import { type EntitySubscriberInterface, DataSource, EventSubscriber, Repository } from 'typeorm'
-import { InjectRepository } from '@nestjs/typeorm'
-import type { ConfigType } from '@nestjs/config'
-import { Inject } from '@nestjs/common'
+import type { EntitySubscriberInterface, Repository } from 'typeorm'
+import { EventSubscriber } from 'typeorm'
 import { FileEntity } from '@ying/shared'
 import { storageConfig } from '@/config'
-import { FileServiceToken, ExpirSeconds } from './constant'
+import { dataSource } from '@/common/modules/db'
+import { ExpirSeconds } from './constant'
 import { AbstractFileService } from './abstract.file.service'
 
 @EventSubscriber()
 export class FileSubscriber implements EntitySubscriberInterface<FileEntity> {
-  constructor(
-    dataSource: DataSource,
-    @Inject(storageConfig.KEY)
-    private readonly storageConf: ConfigType<typeof storageConfig>,
-    @InjectRepository(FileEntity)
-    private readonly fileRepository: Repository<FileEntity>,
-    @Inject(FileServiceToken)
-    private readonly fileService: AbstractFileService
-  ) {
-    if (this.storageConf.mode == 'minio') {
+  private readonly fileRepository: Repository<FileEntity>
+
+  constructor(private readonly fileService: AbstractFileService) {
+    this.fileRepository = dataSource.getRepository(FileEntity)
+    if (storageConfig.mode === 'minio') {
       dataSource.subscribers.push(this)
     }
   }

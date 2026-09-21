@@ -1,23 +1,28 @@
 import { dirname, join } from 'path'
-import { writeFileSync, unlink, existsSync, mkdirSync, type PathLike } from 'fs'
-import { DataSource, In } from 'typeorm'
+import { writeFile, unlink, access, mkdir } from 'fs/promises'
+import { In } from 'typeorm'
 import { nanoid } from 'nanoid'
 import { FileEntity } from '@ying/shared'
+import { apiConfig } from '@/config'
+import { dataSource } from '@/common/modules/db'
 import type { AddFileOptions, UploadFileOptions } from './abstract.file.service'
 import { AbstractFileService } from './abstract.file.service'
 
-export class LocalFileService extends AbstractFileService {
-  private readonly serverUrl: string
-  constructor(dataSource: DataSource, serverUrl: string) {
-    super(dataSource)
-    this.serverUrl = serverUrl
+async function exists(path: string) {
+  try {
+    await access(path)
+    return true
+  } catch {
+    return false
   }
+}
 
-  checkDirExistAndCreate(filePath: string) {
+export class LocalFileService extends AbstractFileService {
+  async checkDirExistAndCreate(filePath: string) {
     const dir = dirname(filePath)
-    if (!existsSync(dir)) {
-      this.checkDirExistAndCreate(dir)
-      mkdirSync(dir)
+    if (!exists(dir)) {
+      await this.checkDirExistAndCreate(dir)
+      await mkdir(dir)
     }
   }
 
@@ -27,14 +32,15 @@ export class LocalFileService extends AbstractFileService {
   }
 
   async uploadFile({ file, fileType, from, userId, extra }: UploadFileOptions) {
-    const ext = this.getFileExt(file.originalname)
+    const ext = this.getFileExt(file.name)
     const fileName = nanoid()
     const objectName = `${fileType}/${fileName}.${ext}`
 
     const filePath = join(import.meta.dirname, `../../../../storage/${objectName}`)
 
     this.checkDirExistAndCreate(filePath)
-    writeFileSync(filePath, file.buffer)
+    const buffer = Buffer.from(await file.arrayBuffer())
+    await writeFile(filePath, buffer)
 
     const url = this.getPresignedUrl(objectName)
 
@@ -67,21 +73,13 @@ export class LocalFileService extends AbstractFileService {
   }
 
   getPresignedUrl(objectName: string) {
-    return this.serverUrl + '/storage/' + objectName
-  }
-
-  private deleteDiskFile(path: PathLike) {
-    return new Promise(re => {
-      unlink(path, re)
-    })
+    return apiConfig.serverUrl + '/storage/' + objectName
   }
 
   async deleteFiles(files: FileEntity[]) {
-    await this.dataSource.transaction(async t => {
+    await dataSource.transaction(async t => {
       await t.delete(FileEntity, { id: In(files.map(el => el.id)) })
-      await Promise.all(
-        files.map(el => this.deleteDiskFile(join(import.meta.dirname, `../../../../storage/${el.path}`)))
-      )
+      await Promise.all(files.map(el => unlink(join(import.meta.dirname, `../../../../storage/${el.path}`))))
     })
   }
 }

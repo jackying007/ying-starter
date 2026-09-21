@@ -1,6 +1,4 @@
-import { registerAs } from '@nestjs/config'
-
-export const redisConfig = registerAs('redisConfig', () => {
+export const redisConfig = (() => {
   if (!process.env.REDIS_HOST) {
     throw new Error('REDIS_HOST is not exist')
   }
@@ -13,4 +11,4 @@ export const redisConfig = registerAs('redisConfig', () => {
     pass: process.env.REDIS_PASSWORD,
     db: process.env.REDIS_DB ? Number(process.env.REDIS_DB) : 0
   }
-})
+})()

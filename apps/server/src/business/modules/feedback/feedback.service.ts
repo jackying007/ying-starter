@@ -1,19 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
-
+import { Like } from 'typeorm'
 import type { ListFeedbackDto } from '@ying/shared'
 import { FeedbackEntity } from '@ying/shared'
-
+import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 
-@Injectable()
 export class FeedbackService extends BaseService<FeedbackEntity> {
-  constructor(
-    @InjectRepository(FeedbackEntity)
-    readonly feedbackRepository: Repository<FeedbackEntity>
-  ) {
-    super(feedbackRepository)
+  constructor() {
+    super(dataSource.getRepository(FeedbackEntity))
   }
 
   buildListQuery(dto: ListFeedbackDto) {
@@ -27,7 +20,7 @@ export class FeedbackService extends BaseService<FeedbackEntity> {
 
   list(dto: ListFeedbackDto) {
     const { where, skip, take } = this.buildListQuery(dto)
-    return this.feedbackRepository.find({
+    return this.repository.find({
       where,
       skip,
       take,
@@ -39,6 +32,6 @@ export class FeedbackService extends BaseService<FeedbackEntity> {
 
   listCount(dto: ListFeedbackDto) {
     const { where } = this.buildListQuery(dto)
-    return this.feedbackRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 }

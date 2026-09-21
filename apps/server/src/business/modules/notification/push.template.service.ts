@@ -1,19 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
-
+import { Like } from 'typeorm'
 import type { ListPushTemplateDto, CreateOrUpdatePushTemplateDto } from '@ying/shared'
 import { PushTemplateEntity } from '@ying/shared'
-
 import { BaseService } from '@/common/service/base.service'
+import { dataSource } from '@/common/modules/db'
 
-@Injectable()
 export class PushTemplateService extends BaseService<PushTemplateEntity> {
-  constructor(
-    @InjectRepository(PushTemplateEntity)
-    readonly pushTemplateRepository: Repository<PushTemplateEntity>
-  ) {
-    super(pushTemplateRepository)
+  constructor() {
+    super(dataSource.getRepository(PushTemplateEntity))
   }
 
   async createOrUpdate(dto: CreateOrUpdatePushTemplateDto) {
@@ -25,7 +18,7 @@ export class PushTemplateService extends BaseService<PushTemplateEntity> {
   }
 
   detail(id: number) {
-    return this.pushTemplateRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: {
         image: true
@@ -45,7 +38,7 @@ export class PushTemplateService extends BaseService<PushTemplateEntity> {
 
   list(dto: ListPushTemplateDto) {
     const { where, take, skip } = this.buildListQuery(dto)
-    return this.pushTemplateRepository.find({
+    return this.repository.find({
       where,
       skip,
       take,
@@ -60,6 +53,6 @@ export class PushTemplateService extends BaseService<PushTemplateEntity> {
 
   listCount(dto: ListPushTemplateDto) {
     const { where } = this.buildListQuery(dto)
-    return this.pushTemplateRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 }

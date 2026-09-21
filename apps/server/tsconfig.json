@@ -1,31 +1,32 @@
 {
   "compilerOptions": {
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "resolvePackageJsonExports": true,
-    "declaration": false,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "esnext",
+    "strict": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "noErrorTruncation": true,
-    "maxNodeModuleJsDepth": 2,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
-    "sourceMap": false,
-    "resolveJsonModule": true,
-    "types": ["vitest/globals", "node"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "rootDir": "./src",
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "**/*spec.ts",
+    "typeorm.config.ts",
+    "migrations",
+    "logs",
+    "storage",
+    "scripts"
+  ]
 }

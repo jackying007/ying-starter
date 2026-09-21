@@ -14,7 +14,7 @@ export async function parseXLSXDefaultSheet<T extends object>(fileBuffer: Buffer
   const data: T[] = []
   const keys: string[] = []
   worksheet.eachRow((row, rowNumber) => {
-    const obj = {} as T
+    const obj = {} as any
     row.eachCell((cell, cellNumber) => {
       if (rowNumber === 1) {
         keys[cellNumber] = cell.value as string

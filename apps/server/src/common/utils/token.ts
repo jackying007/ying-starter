@@ -1,4 +1,6 @@
-import type { Request } from 'express'
+import { Context } from 'hono'
+import { getCookie } from 'hono/cookie'
+import ms, { type StringValue } from 'ms'
 
 export function parseAuthHeader(headerValue: string) {
   if (typeof headerValue !== 'string') {
@@ -8,24 +10,23 @@ export function parseAuthHeader(headerValue: string) {
   return matches && { scheme: matches[1], value: matches[2] }
 }
 
-export function getTokenFromHeaders(headers: Request['headers']) {
-  let token: string | undefined
-  const authorization = headers['authorization']
+export function getTokenFromAuthorization(authorization: string | undefined) {
   if (authorization) {
     const authParams = parseAuthHeader(authorization)
     if (authParams && 'bearer' === authParams.scheme.toLowerCase()) {
-      token = authParams.value
+      return authParams.value
     }
   }
-  return token
 }
 
-export function getTokenFromRequest(request: Request) {
-  const cookies = request.cookies as TCookies | undefined
-  return getTokenFromHeaders(request.headers) ?? cookies?.accessToken
+export function getAccessTokenFromContext(c: Context) {
+  return getTokenFromAuthorization(c.req.header('Authorization')) ?? getCookie(c, 'accessToken')
 }
 
-export function getRefreshTokenFromRequest(request: Request) {
-  const cookies = request.cookies as TCookies | undefined
-  return (request.headers['refreshToken'] as string | undefined) ?? cookies?.refreshToken
+export function getRefreshTokenFromContext(c: Context) {
+  return c.req.header('refreshToken') ?? getCookie(c, 'refreshToken')
+}
+
+export function getExpTime(expiresIn: StringValue) {
+  return Math.floor((Date.now() + ms(expiresIn)) / 1000)
 }

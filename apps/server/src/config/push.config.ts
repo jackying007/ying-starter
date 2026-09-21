@@ -1,6 +1,4 @@
-import { registerAs } from '@nestjs/config'
-
-export const pushConfig = registerAs('pushConfig', () => {
+export const pushConfig = (() => {
   // if (!process.env.VAPID_SUBJECT) {
   //   throw new Error('VAPID_SUBJECT is not exist')
   // }
@@ -16,4 +14,4 @@ export const pushConfig = registerAs('pushConfig', () => {
     publicKey: process.env.VAPID_PUBLIC_KEY,
     privateKey: process.env.VAPID_PRIVATE_KEY
   }
-})
+})()

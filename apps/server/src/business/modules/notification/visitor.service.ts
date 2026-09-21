@@ -1,40 +1,33 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
-
 import type { CreateVisitorDto, ListVisitorDto, NoticeSubscribeDto } from '@ying/shared'
 import { VisitorEntity, UserEntity } from '@ying/shared'
-
 import { BaseService } from '@/common/service/base.service'
+import { dataSource } from '@/common/modules/db'
 
-@Injectable()
 export class VisitorService extends BaseService<VisitorEntity> {
-  constructor(
-    @InjectRepository(VisitorEntity)
-    readonly visitorRepository: Repository<VisitorEntity>,
-    @InjectRepository(UserEntity)
-    readonly userRepository: Repository<UserEntity>
-  ) {
-    super(visitorRepository)
+  private readonly userRepository: Repository<UserEntity>
+  constructor() {
+    super(dataSource.getRepository(VisitorEntity))
+    this.userRepository = dataSource.getRepository(UserEntity)
   }
 
   async createVisitor(dto: CreateVisitorDto) {
-    const existVisitor = await this.visitorRepository.findOne({
+    const existVisitor = await this.repository.findOne({
       where: {
         visitorId: dto.visitorId
       }
     })
     if (existVisitor) return
-    await this.visitorRepository.save(this.visitorRepository.create(dto))
+    await this.repository.save(this.repository.create(dto))
     return
   }
 
   subscribe(dto: NoticeSubscribeDto) {
-    return this.visitorRepository.update({ visitorId: dto.visitorId }, { pushSubscription: dto.pushSubscription })
+    return this.repository.update({ visitorId: dto.visitorId }, { pushSubscription: dto.pushSubscription })
   }
 
   async bindUser(visitorId: string, userId: number) {
-    const existVisitor = await this.visitorRepository.findOne({
+    const existVisitor = await this.repository.findOne({
       where: { visitorId },
       relations: {
         users: true
@@ -52,7 +45,7 @@ export class VisitorService extends BaseService<VisitorEntity> {
     } else {
       existVisitor.users = [existUser]
     }
-    return this.visitorRepository.save(existVisitor)
+    return this.repository.save(existVisitor)
   }
 
   buildListQuery(dto: ListVisitorDto) {
@@ -68,7 +61,7 @@ export class VisitorService extends BaseService<VisitorEntity> {
   list(dto: ListVisitorDto) {
     const { where, take, skip } = this.buildListQuery(dto)
 
-    return this.visitorRepository.find({
+    return this.repository.find({
       where,
       relations: {
         users: true
@@ -84,6 +77,6 @@ export class VisitorService extends BaseService<VisitorEntity> {
   listCount(dto: ListVisitorDto) {
     const { where } = this.buildListQuery(dto)
 
-    return this.visitorRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 }

@@ -1,23 +1,15 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-
 import type { ListPushRecordDto } from '@ying/shared'
 import { PushRecordEntity } from '@ying/shared'
-
 import { BaseService } from '@/common/service/base.service'
+import { dataSource } from '@/common/modules/db'
 
-@Injectable()
 export class PushRecordService extends BaseService<PushRecordEntity> {
-  constructor(
-    @InjectRepository(PushRecordEntity)
-    readonly pushRecordRepository: Repository<PushRecordEntity>
-  ) {
-    super(pushRecordRepository)
+  constructor() {
+    super(dataSource.getRepository(PushRecordEntity))
   }
 
   detail(id: number) {
-    return this.pushRecordRepository.findOne({
+    return this.repository.findOne({
       where: { id }
     })
   }
@@ -36,7 +28,7 @@ export class PushRecordService extends BaseService<PushRecordEntity> {
 
   list(dto: ListPushRecordDto) {
     const { where, take, skip } = this.buildListQuery(dto)
-    return this.pushRecordRepository.find({
+    return this.repository.find({
       where,
       relations: {
         pushTask: true
@@ -51,10 +43,10 @@ export class PushRecordService extends BaseService<PushRecordEntity> {
 
   listCount(dto: ListPushRecordDto) {
     const { where } = this.buildListQuery(dto)
-    return this.pushRecordRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 
-  click(id: string) {
-    return this.pushRecordRepository.update(id, { clicked: 1 })
+  click(id: number) {
+    return this.repository.update(id, { clicked: 1 })
   }
 }

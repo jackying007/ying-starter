@@ -1,7 +1,6 @@
-import { registerAs } from '@nestjs/config'
 import type { StringValue } from 'ms'
 
-export const authConfig = registerAs('authConfig', () => {
+export const authConfig = (() => {
   if (!process.env.AUTH_ADMIN_ACCESS_TOKEN_SECRET) throw new Error('AUTH_ADMIN_ACCESS_TOKEN_SECRET is not exist')
   if (!process.env.AUTH_ADMIN_ACCESS_TOKEN_EXPIRES_IN)
     throw new Error('AUTH_ADMIN_ACCESS_TOKEN_EXPIRES_IN is not exist')
@@ -34,4 +33,4 @@ export const authConfig = registerAs('authConfig', () => {
     authClientUrl: process.env.AUTH_CLIENT_URL,
     oauthCallbackBaseUrl: process.env.OAUTH_CALLBACK_BASE_URL
   }
-})
+})()

@@ -1,45 +1,41 @@
-import type { ConfigType } from '@nestjs/config'
-import { DataSource, In } from 'typeorm'
+import { In } from 'typeorm'
 import { Client } from 'minio'
 import { nanoid } from 'nanoid'
 import { FileEntity } from '@ying/shared'
 import { storageConfig } from '@/config'
+import { dataSource } from '@/common/modules/db'
 import { ExpirSeconds } from './constant'
 import type { AddFileOptions, UploadFileOptions } from './abstract.file.service'
 import { AbstractFileService } from './abstract.file.service'
 
 export class MinioFileService extends AbstractFileService {
-  private readonly storageConf: ConfigType<typeof storageConfig>
-
   private minioClient: Client
 
-  constructor(dataSource: DataSource, storageConf: ConfigType<typeof storageConfig>) {
-    super(dataSource)
-    this.storageConf = storageConf
-
+  constructor() {
+    super()
     this.minioClient = new Client({
-      endPoint: this.storageConf.host,
-      port: this.storageConf.port,
-      useSSL: this.storageConf.port === 443,
-      accessKey: this.storageConf.accessKey,
-      secretKey: this.storageConf.secretKey
+      endPoint: storageConfig.host,
+      port: storageConfig.port,
+      useSSL: storageConfig.port === 443,
+      accessKey: storageConfig.accessKey,
+      secretKey: storageConfig.secretKey
     })
     void this.initMinioClient()
   }
 
   private async initMinioClient() {
-    const bucketExists = await this.minioClient.bucketExists(this.storageConf.bucket)
+    const bucketExists = await this.minioClient.bucketExists(storageConfig.bucket)
     if (!bucketExists) {
-      await this.minioClient.makeBucket(this.storageConf.bucket)
+      await this.minioClient.makeBucket(storageConfig.bucket)
     }
   }
 
   async uploadFile({ file, fileType, from, userId, extra }: UploadFileOptions) {
     const fileName = nanoid()
     const objectName = `${fileType}/${fileName}`
-
-    await this.minioClient.putObject(this.storageConf.bucket, objectName, file.buffer, undefined, {
-      'Content-Type': file.mimetype,
+    const buffer = Buffer.from(await file.arrayBuffer())
+    await this.minioClient.putObject(storageConfig.bucket, objectName, buffer, undefined, {
+      'Content-Type': file.type,
       from,
       userId
     })
@@ -73,15 +69,15 @@ export class MinioFileService extends AbstractFileService {
   }
 
   getPresignedUrl(objectName: string) {
-    return this.minioClient.presignedUrl('get', this.storageConf.bucket, objectName, ExpirSeconds)
+    return this.minioClient.presignedUrl('get', storageConfig.bucket, objectName, ExpirSeconds)
   }
 
   async deleteFiles(files: FileEntity[]) {
-    await this.dataSource.transaction(async t => {
+    await dataSource.transaction(async t => {
       await t.delete(FileEntity, { id: In(files.map(el => el.id)) })
 
       await this.minioClient.removeObjects(
-        this.storageConf.bucket,
+        storageConfig.bucket,
         files.filter(el => !el.isExternal).map(el => el.path)
       )
     })

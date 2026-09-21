@@ -1,13 +1,11 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
+import { Like } from 'typeorm'
 import type { Column } from 'exceljs'
 import dayjs from 'dayjs'
-
+import { HTTPException } from 'hono/http-exception'
 import { UserEntity } from '@ying/shared'
 import type { ListUserDto, ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
-
 import { BaseService } from '@/common/service/base.service'
+import { dataSource } from '@/common/modules/db'
 import { dataToXLSXDefaultSheetAndGetBuffer, generatePass } from '@/common/utils'
 
 const columns: Partial<Column>[] = [
@@ -19,13 +17,9 @@ const columns: Partial<Column>[] = [
   { key: 'createAt', header: '创建时间', width: 30 }
 ]
 
-@Injectable()
 export class UserService extends BaseService<UserEntity> {
-  constructor(
-    @InjectRepository(UserEntity)
-    readonly userRepository: Repository<UserEntity>
-  ) {
-    super(userRepository)
+  constructor() {
+    super(dataSource.getRepository(UserEntity))
   }
 
   list(listUserDto: ListUserDto) {
@@ -64,7 +58,7 @@ export class UserService extends BaseService<UserEntity> {
   }
 
   findById(id: number) {
-    return this.userRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: {
         avatar: true,
@@ -75,23 +69,23 @@ export class UserService extends BaseService<UserEntity> {
   }
 
   updateInfo(dto: UpdateUserInfoDto, id: number) {
-    return this.userRepository.update({ id }, dto)
+    return this.repository.update({ id }, dto)
   }
 
   async resetPassword(dto: ResetPasswordDto, id: number) {
-    const existingUser = await this.userRepository.findOne({
+    const existingUser = await this.repository.findOne({
       where: { id }
     })
 
-    if (!existingUser) throw new InternalServerErrorException('error.user_not_exists')
+    if (!existingUser) throw new HTTPException(500, { message: 'error.user_not_exists' })
 
     if (existingUser.password && (!dto.oldPassword || existingUser.password !== generatePass(dto.oldPassword))) {
-      throw new InternalServerErrorException('error.old_password_error')
+      throw new HTTPException(500, { message: 'error.old_password_error' })
     }
 
     existingUser.password = generatePass(dto.newPassword)
 
-    await this.userRepository.save(existingUser)
+    await this.repository.save(existingUser)
   }
 
   async export(dto: ListUserDto) {

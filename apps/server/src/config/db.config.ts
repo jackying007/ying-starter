@@ -1,6 +1,4 @@
-import { registerAs } from '@nestjs/config'
-
-export const dbConfig = registerAs('dbConfig', () => {
+export const dbConfig = (() => {
   if (!process.env.DB_HOST) {
     throw new Error('DB_HOST is not exist')
   }
@@ -26,4 +24,4 @@ export const dbConfig = registerAs('dbConfig', () => {
     logging: !!process.env.DB_LOGGING,
     synchronize: !!process.env.DB_SYNCHRONIZE
   }
-})
+})()

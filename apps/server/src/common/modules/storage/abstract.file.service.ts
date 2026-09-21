@@ -1,9 +1,9 @@
-import { DataSource } from 'typeorm'
 import { type ListFileDto, FileSourceType, FileType, FileEntity } from '@ying/shared'
+import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 
 export type UploadFileOptions = {
-  file: MulterFile
+  file: File
   fileType: FileType
   from: FileSourceType
   userId: number
@@ -18,11 +18,8 @@ export type AddFileOptions = {
 }
 
 export abstract class AbstractFileService extends BaseService<FileEntity> {
-  protected readonly dataSource: DataSource
-
-  constructor(dataSource: DataSource) {
+  constructor() {
     super(dataSource.getRepository(FileEntity))
-    this.dataSource = dataSource
   }
 
   list(dto: ListFileDto) {
@@ -74,9 +71,9 @@ export abstract class AbstractFileService extends BaseService<FileEntity> {
   }
 
   findUnreferencedFiles() {
-    const metadata = this.dataSource.getMetadata(FileEntity)
+    const metadata = dataSource.getMetadata(FileEntity)
 
-    const refs = this.dataSource.entityMetadatas.flatMap(meta =>
+    const refs = dataSource.entityMetadatas.flatMap(meta =>
       meta.foreignKeys
         .filter(fk => fk.referencedEntityMetadata?.target === metadata.target)
         .map(fk => ({
@@ -85,7 +82,7 @@ export abstract class AbstractFileService extends BaseService<FileEntity> {
         }))
     )
 
-    const qb = this.dataSource.getRepository(FileEntity).createQueryBuilder('f')
+    const qb = dataSource.getRepository(FileEntity).createQueryBuilder('f')
 
     refs.forEach((ref, index) => {
       qb.andWhere(`

@@ -1,23 +1,14 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
-
-import { PushRecordStatus } from '@ying/shared'
-
-import { PushRecordEntity, PushTaskEntity, type TaskStatus } from '@ying/shared'
+import { PushRecordEntity, PushTaskEntity, PushRecordStatus, type TaskStatus } from '@ying/shared'
 import type { CreateOrUpdatePushTaskDto, ListPushTaskDto } from '@ying/shared'
-
 import { BaseService } from '@/common/service/base.service'
+import { dataSource } from '@/common/modules/db'
 
-@Injectable()
 export class PushTaskService extends BaseService<PushTaskEntity> {
-  constructor(
-    @InjectRepository(PushTaskEntity)
-    readonly pushTaskRepository: Repository<PushTaskEntity>,
-    @InjectRepository(PushRecordEntity)
-    readonly pushRecordRepository: Repository<PushRecordEntity>
-  ) {
-    super(pushTaskRepository)
+  private readonly pushRecordRepository: Repository<PushRecordEntity>
+  constructor() {
+    super(dataSource.getRepository(PushTaskEntity))
+    this.pushRecordRepository = dataSource.getRepository(PushRecordEntity)
   }
 
   async createOrUpdate(dto: CreateOrUpdatePushTaskDto) {
@@ -29,7 +20,7 @@ export class PushTaskService extends BaseService<PushTaskEntity> {
   }
 
   detail(id: number) {
-    return this.pushTaskRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: {
         pushTemplate: true
@@ -49,7 +40,7 @@ export class PushTaskService extends BaseService<PushTaskEntity> {
   async list(dto: ListPushTaskDto) {
     const { where, take, skip } = this.buildListQuery(dto)
 
-    const pushTasks = await this.pushTaskRepository.find({
+    const pushTasks = await this.repository.find({
       where,
       skip,
       take,
@@ -89,6 +80,6 @@ export class PushTaskService extends BaseService<PushTaskEntity> {
 
   listCount(dto: ListPushTaskDto) {
     const { where } = this.buildListQuery(dto)
-    return this.pushTaskRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 }

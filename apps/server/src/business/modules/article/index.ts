@@ -1,2 +1,3 @@
-export * from './article.service'
-export * from './article.module'
+import { ArticleService } from './article.service'
+
+export const articleService = new ArticleService()

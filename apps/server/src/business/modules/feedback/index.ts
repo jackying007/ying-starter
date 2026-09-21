@@ -1,2 +1,3 @@
-export * from './feedback.service'
-export * from './feedback.module'
+import { FeedbackService } from './feedback.service'
+
+export const feedbackService = new FeedbackService()

@@ -1,34 +1,34 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { FindOperator, Repository } from 'typeorm'
-
+import { Repository } from 'typeorm'
 import { type StatDto, UserStatType } from '@ying/shared'
 import { UserEntity } from '@ying/shared'
-
 import { StatService } from '@/common/service/stat.service'
+import { dataSource } from '@/common/modules/db'
 
-@Injectable()
 export class UserStatService extends StatService {
-  constructor(
-    @InjectRepository(UserEntity)
-    readonly userRepository: Repository<UserEntity>
-  ) {
+  private readonly userRepository: Repository<UserEntity>
+  constructor() {
     super()
+    this.userRepository = dataSource.getRepository(UserEntity)
   }
 
   async getUserGrowthTotal() {
     return this.userRepository.count()
   }
 
-  async getUserGrowthTrendByType(betweens: FindOperator<Date>[], name?: UserStatType) {
+  async getUserGrowthTrendByType(
+    betweens: {
+      start: Date
+      end: Date
+    }[],
+    name?: UserStatType
+  ) {
     const data = await Promise.all(
       betweens.map(between => {
         const builder = this.userRepository
           .createQueryBuilder('user')
           .leftJoinAndSelect('user.oauthAccounts', 'oauthAccounts')
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        builder.where('user.createAt BETWEEN :start AND :end', { start: between.value[0], end: between.value[1] })
+        builder.where('user.createAt BETWEEN :start AND :end', { start: between.start, end: between.end })
 
         if (name) {
           if (name === UserStatType.Register) {

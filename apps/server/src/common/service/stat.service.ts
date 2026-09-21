@@ -1,9 +1,5 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { Between } from 'typeorm'
-
 import type { StatDto } from '@ying/shared'
 
-@Injectable()
 export class StatService {
   buildBetweenList(dto: StatDto) {
     const { date, type } = dto
@@ -18,7 +14,7 @@ export class StatService {
     } else if (type === 'hour') {
       splitMilliseconds = 1000 * 60 * 60
     } else {
-      throw new InternalServerErrorException('invalid type!')
+      throw new Error('invalid type!')
     }
 
     startDateNum = Date.parse(date[0])
@@ -39,7 +35,10 @@ export class StatService {
 
       return {
         splitName,
-        between: Between(start, end)
+        between: {
+          start,
+          end
+        }
       }
     })
 

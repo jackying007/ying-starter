@@ -1,19 +1,13 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
-
+import { Like } from 'typeorm'
+import { HTTPException } from 'hono/http-exception'
 import type { CreateOrUpdateArticleDto, ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
 import { ArticleEntity, FileEntity } from '@ying/shared'
-
+import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 
-@Injectable()
 export class ArticleService extends BaseService<ArticleEntity> {
-  constructor(
-    @InjectRepository(ArticleEntity)
-    readonly articleRepository: Repository<ArticleEntity>
-  ) {
-    super(articleRepository)
+  constructor() {
+    super(dataSource.getRepository(ArticleEntity))
   }
 
   buildListQuery(dto: ListArticleDto) {
@@ -29,7 +23,7 @@ export class ArticleService extends BaseService<ArticleEntity> {
   list(dto: ListArticleDto) {
     const { where, skip, take } = this.buildListQuery(dto)
 
-    return this.articleRepository.find({
+    return this.repository.find({
       where,
       skip,
       take,
@@ -45,11 +39,11 @@ export class ArticleService extends BaseService<ArticleEntity> {
 
   listCount(dto: ListArticleDto) {
     const { where } = this.buildListQuery(dto)
-    return this.articleRepository.countBy(where)
+    return this.repository.countBy(where)
   }
 
   detail(id: number) {
-    return this.articleRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: {
         cover: true,
@@ -59,7 +53,7 @@ export class ArticleService extends BaseService<ArticleEntity> {
   }
 
   async view(id: number) {
-    await this.articleRepository.increment({ id }, 'view', 1)
+    await this.repository.increment({ id }, 'view', 1)
   }
 
   createOrUpdate(dto: CreateOrUpdateArticleDto) {
@@ -72,7 +66,7 @@ export class ArticleService extends BaseService<ArticleEntity> {
 
   async updateContent(dto: UpdateArticleContentDto) {
     const article = await this.repository.findOneBy({ id: dto.id })
-    if (!article) throw new InternalServerErrorException()
+    if (!article) throw new HTTPException(500)
 
     article.content = dto.content
     article.associatedFiles = dto.associatedFileIds?.map(id => {
@@ -81,6 +75,6 @@ export class ArticleService extends BaseService<ArticleEntity> {
       return file
     })
 
-    await this.repository.save(article)
+    return this.repository.save(article)
   }
 }

@@ -1,41 +1,35 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { IsNull, Not, Repository } from 'typeorm'
-import type { Queue } from 'bullmq'
-import { InjectQueue } from '@nestjs/bullmq'
 import type { PushSubscription } from 'web-push'
 import { match as langMatch } from '@formatjs/intl-localematcher'
-import { Redis } from 'ioredis'
-
-import { type LngKeys, PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
-import { VisitorEntity, PushTemplateEntity, PushTaskEntity, type PushData } from '@ying/shared'
+import {
+  VisitorEntity,
+  PushTemplateEntity,
+  PushTaskEntity,
+  PushTaskStatus,
+  clientLanguagesConfig,
+  type LngKeys,
+  type PushData
+} from '@ying/shared'
 import type { SetPushTaskDto, SendPushTemplateDto } from '@ying/shared'
-
-import { PushService } from '@/common/modules/push/push.service'
-import { RedisToken } from '@/common/modules/redis/constant'
-
-import type { TNotificationJobs } from './notification.consumer'
+import { dataSource } from '@/common/modules/db'
+import { pushService } from '@/common/modules/push'
+import { redis } from '@/common/modules/redis'
+import { notificationQueue } from './notification-queue'
 
 const fallbackLng = clientLanguagesConfig.fallbackLng
 
-@Injectable()
 export class NotificationService {
-  constructor(
-    @InjectRepository(VisitorEntity)
-    readonly visitorRepository: Repository<VisitorEntity>,
-    @InjectRepository(PushTemplateEntity)
-    readonly pushTemplateRepository: Repository<PushTemplateEntity>,
-    @InjectRepository(PushTaskEntity)
-    readonly pushTaskRepository: Repository<PushTaskEntity>,
-    readonly pushService: PushService,
-    @Inject(RedisToken)
-    readonly redis: Redis,
-    @InjectQueue('notification')
-    readonly notificationQueue: Queue<TNotificationJobs>
-  ) {}
+  private readonly visitorRepository: Repository<VisitorEntity>
+  private readonly pushTemplateRepository: Repository<PushTemplateEntity>
+  private readonly pushTaskRepository: Repository<PushTaskEntity>
+  constructor() {
+    this.visitorRepository = dataSource.getRepository(VisitorEntity)
+    this.pushTemplateRepository = dataSource.getRepository(PushTemplateEntity)
+    this.pushTaskRepository = dataSource.getRepository(PushTaskEntity)
+  }
 
   sendPushData(pushSubscription: PushSubscription, pushData: PushData & { pushRecordId?: number }) {
-    return this.pushService.sendNotification(pushSubscription, JSON.stringify(pushData))
+    return pushService.sendNotification(pushSubscription, JSON.stringify(pushData))
   }
 
   getPushData(visitor: VisitorEntity, pushTemplate: PushTemplateEntity) {
@@ -98,11 +92,11 @@ export class NotificationService {
       return
     }
 
-    await this.redis.set(`push_task_${pushTask.id}_process_length`, visitors.length)
+    await redis.set(`push_task_${pushTask.id}_process_length`, visitors.length)
 
     visitors.forEach(visitor => {
       if (!visitor.pushSubscription) return
-      void this.notificationQueue.add(
+      void notificationQueue.add(
         'pushRecord',
         {
           visitorId: visitor.visitorId,
@@ -123,7 +117,7 @@ export class NotificationService {
   }
 
   async executePushTaskByTiming(dto: SetPushTaskDto) {
-    await this.notificationQueue.add(
+    await notificationQueue.add(
       'pushTask',
       {
         pushTaskId: dto.id
@@ -137,7 +131,7 @@ export class NotificationService {
   }
 
   async stopTimingPushTask(id: number) {
-    await this.notificationQueue.remove(`pushTask_${id}`)
+    await notificationQueue.remove(`pushTask_${id}`)
     await this.pushTaskRepository.update(id, { status: PushTaskStatus.Wait, time: null })
   }
 }

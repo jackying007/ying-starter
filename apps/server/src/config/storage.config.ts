@@ -1,6 +1,4 @@
-import { registerAs } from '@nestjs/config'
-
-export const storageConfig = registerAs('storageConfig', () => {
+export const storageConfig = (() => {
   if (!process.env.STORAGE_MODE) {
     throw new Error('STORAGE_MODE is not exist')
   }
@@ -30,4 +28,4 @@ export const storageConfig = registerAs('storageConfig', () => {
     accessKey: process.env.MINIO_ACCESS_KEY ?? '',
     secretKey: process.env.MINIO_SECRET_KEY ?? ''
   }
-})
+})()
