@@ -3,8 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv -c -- tsx watch --clear-screen=false src/main.ts",
-    "build": "tsc",
-    "start": "node dist/main.js"
+    "build": "tsup",
+    "start": "dotenv -c -- node dist/main.js"
   },
   "dependencies": {
     "@faker-js/faker": "^9.5.1",
