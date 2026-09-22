@@ -10,13 +10,12 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-import type { ClientAuthVo, ClientLoginVo } from '@ying/shared'
 import { authConfig } from '@/config'
 import { redis } from '@/common/modules/redis'
 import { mailService } from '@/common/modules/mail'
 import { generatePass, getExpTime } from '@/common/utils'
 import { dataSource } from '@/common/modules/db'
-import { getI18n } from '@/business/i18n'
+import type { I18nVariables } from '@/business/i18n'
 import { CacheKey } from '.'
 
 const randomCode = customAlphabet('0123456789', 6)
@@ -46,7 +45,7 @@ export class AuthService {
     return true
   }
 
-  async register(dto: ClientRegisterDto, t: ReturnType<typeof getI18n>) {
+  async register(dto: ClientRegisterDto, t: I18nVariables['t']) {
     await dataSource.transaction(async transaction => {
       const existingUser = await transaction.findOne(UserEntity, {
         where: { email: dto.email }
@@ -86,7 +85,7 @@ export class AuthService {
     await this.userRepository.update({ email: dto.email }, { emailVerified: true })
   }
 
-  async sign(user: UserEntity): Promise<ClientAuthVo> {
+  async sign(user: UserEntity) {
     const accessToken = await sign(
       {
         id: user.id,
@@ -111,7 +110,7 @@ export class AuthService {
     }
   }
 
-  async login(dto: ClientLoginDto, t: ReturnType<typeof getI18n>): Promise<ClientLoginVo> {
+  async login(dto: ClientLoginDto, t: I18nVariables['t']) {
     const user = await this.userRepository.findOne({
       where: {
         email: dto.email
@@ -161,7 +160,7 @@ export class AuthService {
     await redis.del(`${CacheKey.ClientAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
-  async forgotPassword(dto: ForgotPasswordDto, t: ReturnType<typeof getI18n>) {
+  async forgotPassword(dto: ForgotPasswordDto, t: I18nVariables['t']) {
     const existingUser = await this.userRepository.findOne({
       where: { email: dto.email }
     })

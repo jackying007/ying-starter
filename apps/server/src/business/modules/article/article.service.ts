@@ -1,6 +1,6 @@
 import { Like } from 'typeorm'
 import { HTTPException } from 'hono/http-exception'
-import type { CreateOrUpdateArticleDto, ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
+import type { ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
 import { ArticleEntity, FileEntity } from '@ying/shared'
 import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
@@ -54,14 +54,6 @@ export class ArticleService extends BaseService<ArticleEntity> {
 
   async view(id: number) {
     await this.repository.increment({ id }, 'view', 1)
-  }
-
-  createOrUpdate(dto: CreateOrUpdateArticleDto) {
-    if (dto.id) {
-      return this.updateById(dto.id, dto)
-    } else {
-      return this.create(dto)
-    }
   }
 
   async updateContent(dto: UpdateArticleContentDto) {

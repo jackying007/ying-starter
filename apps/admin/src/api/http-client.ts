@@ -1,10 +1,9 @@
 import { HttpRequest } from '@jying/http'
-import { isBaseVo } from '@ying/shared'
+import { nullToUndefined } from '@ying/utils'
 import { clearUserStore } from '@/store'
 import { globalEvent } from '@/event-emitter'
 import { isRefreshRequest, refreshToken } from './refresh-token'
 import { HttpError } from './http-error'
-import { nullToUndefined } from './helpers'
 
 export const http = new HttpRequest({
   baseURL: import.meta.env.APP_API_BASE
@@ -12,7 +11,7 @@ export const http = new HttpRequest({
 
 http.addHooks({
   afterResponse: ({ type, data }) => {
-    if (type === 'json' && isBaseVo(data)) return nullToUndefined(data.data)
+    if (type === 'json') return nullToUndefined(data)
     return data
   },
   beforeError: async (fetchRes, options) => {

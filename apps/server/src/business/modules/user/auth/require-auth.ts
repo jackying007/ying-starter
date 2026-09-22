@@ -3,11 +3,7 @@ import { HTTPException } from 'hono/http-exception'
 import { getAccessTokenFromContext } from '@/common/utils'
 import { authService } from '.'
 
-export const requireAuth = async (
-  c: Context<{
-    Variables: AuthVariables
-  }>
-) => {
+export const requireAuth = async (c: Context) => {
   try {
     const accesstoken = getAccessTokenFromContext(c)
     if (!accesstoken) throw Error

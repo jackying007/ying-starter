@@ -17,5 +17,3 @@ export const admin = new Hono()
   .route('/push-template', pushTemplate)
   .route('/push-task', pushTask)
   .route('/push-record', pushRecord)
-
-export type AdminAPI = typeof admin

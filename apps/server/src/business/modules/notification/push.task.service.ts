@@ -1,6 +1,6 @@
 import { Like, Repository } from 'typeorm'
 import { PushRecordEntity, PushTaskEntity, PushRecordStatus, type TaskStatus } from '@ying/shared'
-import type { CreateOrUpdatePushTaskDto, ListPushTaskDto } from '@ying/shared'
+import type { ListPushTaskDto } from '@ying/shared'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
 
@@ -9,14 +9,6 @@ export class PushTaskService extends BaseService<PushTaskEntity> {
   constructor() {
     super(dataSource.getRepository(PushTaskEntity))
     this.pushRecordRepository = dataSource.getRepository(PushRecordEntity)
-  }
-
-  async createOrUpdate(dto: CreateOrUpdatePushTaskDto) {
-    if (dto.id) {
-      return this.updateById(dto.id, dto)
-    } else {
-      return this.create(dto)
-    }
   }
 
   detail(id: number) {

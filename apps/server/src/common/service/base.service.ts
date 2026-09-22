@@ -1,10 +1,4 @@
-import type {
-  DeepPartial,
-  FindOptionsWhere,
-  FindOptionsWhereProperty,
-  FindOptionsSelectByString,
-  QueryDeepPartialEntity
-} from 'typeorm'
+import type { DeepPartial, FindOptionsWhere, FindOptionsWhereProperty, FindOptionsSelectByString } from 'typeorm'
 import { Between, Repository, SelectQueryBuilder, ObjectId } from 'typeorm'
 import type { ListDto } from '@ying/shared'
 import { AbstractBaseEntity } from '@ying/shared'
@@ -51,12 +45,8 @@ export class BaseService<TEntity extends AbstractBaseEntity> {
     return this.repository.findOneBy(where)
   }
 
-  create(dto: DeepPartial<TEntity>) {
+  createOrUpdate(dto: DeepPartial<TEntity>) {
     return this.repository.save(this.repository.create(dto))
-  }
-
-  updateById(id: number, dto: QueryDeepPartialEntity<TEntity>) {
-    return this.repository.update(id, dto)
   }
 
   excludeColumns(columnsToExclude: FindOptionsSelectByString<TEntity>) {

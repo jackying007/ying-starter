@@ -255,3 +255,20 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, .
 export function omitArray<T extends Record<string, any>, K extends keyof T>(arr: T[], ...keys: K[]): Omit<T, K>[] {
   return arr.map(obj => omit(obj, ...keys))
 }
+
+export function nullToUndefined<T>(value: T): T {
+  if (value === null) {
+    return undefined as T
+  }
+  if (Array.isArray(value)) {
+    return value.map(nullToUndefined) as T
+  }
+  if (typeof value === 'object') {
+    const result = {} as Record<string, unknown>
+    for (const [key, val] of Object.entries(value as object)) {
+      result[key] = nullToUndefined(val)
+    }
+    return result as T
+  }
+  return value
+}

@@ -1,26 +1,36 @@
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { z } from 'zod'
+import { languageDetector } from 'hono/language'
 import {
+  clientLanguagesConfig,
   clientLoginDto,
   clientRegisterDto,
   verifyEmailDto,
   forgotPasswordDto,
   resetPasswordWithCodeDto
 } from '@ying/shared'
-import { zValidator } from '@/business/base-validator'
-import { authService, oauthService, requireAuth, oauthErrorHandler } from '@/business/modules/user/auth'
-import { getI18n } from '@/business/i18n'
 import { getRefreshTokenFromContext } from '@/common/utils'
 import { authConfig } from '@/config'
+import { i18nMiddleware } from '@/business/i18n'
+import { zValidator } from '@/business/base-validator'
+import { authService, oauthService, requireAuth, oauthErrorHandler } from '@/business/modules/user/auth'
 
-export const auth = new Hono<{ Variables: AuthVariables }>()
+export const auth = new Hono()
+  .use(
+    languageDetector({
+      supportedLanguages: clientLanguagesConfig.languages,
+      fallbackLanguage: clientLanguagesConfig.fallbackLng,
+      lookupCookie: 'lang'
+    }),
+    i18nMiddleware
+  )
   .post('/login', zValidator('json', clientLoginDto), async c =>
-    c.json(await authService.login(c.req.valid('json'), getI18n(c)))
+    c.json(await authService.login(c.req.valid('json'), c.get('t')))
   )
   .get('/refresh', async c => c.json(await authService.refreshToken(getRefreshTokenFromContext(c) ?? '')))
   .post('/register', zValidator('json', clientRegisterDto), async c => {
-    await authService.register(c.req.valid('json'), getI18n(c))
+    await authService.register(c.req.valid('json'), c.get('t'))
     return c.json(null)
   })
   .post('/verify-email', zValidator('json', verifyEmailDto), async c => {
@@ -28,7 +38,7 @@ export const auth = new Hono<{ Variables: AuthVariables }>()
     return c.json(null)
   })
   .post('/forgot-password', zValidator('json', forgotPasswordDto), async c => {
-    await authService.forgotPassword(c.req.valid('json'), getI18n(c))
+    await authService.forgotPassword(c.req.valid('json'), c.get('t'))
     return c.json(null)
   })
   .post('/reset-password', zValidator('json', resetPasswordWithCodeDto), async c => {

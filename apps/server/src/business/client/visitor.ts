@@ -13,6 +13,6 @@ export const visitor = new Hono()
   .post('/subscribe', zValidator('json', noticeSubscribeDto), async c =>
     c.json(await visitorService.subscribe(c.req.valid('json')))
   )
-  .get('/:id/bind', authValidator, zValidator('param', z.object({ id: z.string() })), async c => {
-    return c.json(await visitorService.bindUser(c.req.valid('param').id, c.get('userId')))
-  })
+  .get('/:id/bind', authValidator, zValidator('param', z.object({ id: z.string() })), async c =>
+    c.json(await visitorService.bindUser(c.req.valid('param').id, c.get('userId')))
+  )

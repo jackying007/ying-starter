@@ -1,12 +1,13 @@
 import { Hono } from 'hono'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { serve } from '@hono/node-server'
+import { styleText } from 'util'
 
 import { apiConfig } from '@/config'
 import { admin } from '@/business/admin'
 import { client } from '@/business/client'
 
-import { appMiddleware } from './app-middleware'
+import { processTimeMiddleware } from './app-middleware'
 import { appErrorHandler } from './app-error-handler'
 import { appLogger } from './app-logger'
 
@@ -14,7 +15,7 @@ const app = new Hono()
 app.use('/storage/*', serveStatic({ root: './storage', rewriteRequestPath: path => path.replace(/^\/storage/, '') }))
 
 const appAPI = new Hono()
-appAPI.use(appMiddleware)
+appAPI.use(processTimeMiddleware)
 appAPI.onError(appErrorHandler)
 appAPI.route('/admin', admin)
 appAPI.route('/client', client)
@@ -27,7 +28,7 @@ serve(
     hostname: '0.0.0.0',
     port: apiConfig.port
   },
-  () => appLogger.log(`🚀 Application is running on ${apiConfig.serverUrl}`)
+  () => appLogger.log(`🚀 Application is running on ${styleText('cyanBright', apiConfig.serverUrl)}`)
 )
 
 if (apiConfig.enableConsumer) import('./worker')

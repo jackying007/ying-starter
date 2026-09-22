@@ -1,5 +1,5 @@
 import { Like } from 'typeorm'
-import type { ListPushTemplateDto, CreateOrUpdatePushTemplateDto } from '@ying/shared'
+import type { ListPushTemplateDto } from '@ying/shared'
 import { PushTemplateEntity } from '@ying/shared'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
@@ -7,14 +7,6 @@ import { dataSource } from '@/common/modules/db'
 export class PushTemplateService extends BaseService<PushTemplateEntity> {
   constructor() {
     super(dataSource.getRepository(PushTemplateEntity))
-  }
-
-  async createOrUpdate(dto: CreateOrUpdatePushTemplateDto) {
-    if (dto.id) {
-      return this.updateById(dto.id, dto)
-    } else {
-      return this.create(dto)
-    }
   }
 
   detail(id: number) {

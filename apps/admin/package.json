@@ -1,5 +1,5 @@
 {
-  "name": "admin",
+  "name": "@ying/admin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -26,6 +26,7 @@
     "@jying/http": "workspace:*",
     "@tanstack/react-query": "^5.100.14",
     "@ying/frontend": "workspace:*",
+    "@ying/server": "workspace:*",
     "@ying/shared": "workspace:*",
     "@ying/utils": "workspace:*",
     "antd": "^6.5.3",
@@ -33,6 +34,7 @@
     "color": "^4.2.3",
     "dayjs": "^1.11.23",
     "framer-motion": "^11.18.2",
+    "hono": "^4.13.8",
     "js-cookie": "^3.0.5",
     "json-edit-react": "^1.27.0",
     "lodash-es": "^4.17.21",

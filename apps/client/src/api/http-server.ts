@@ -1,6 +1,6 @@
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { HttpRequest } from '@jying/http'
-import { isBaseVo } from '@ying/shared'
+import { nullToUndefined } from '@ying/utils'
 
 const getBaseURL = createIsomorphicFn()
   .server(() => import.meta.env.APP_SERVER_URL + import.meta.env.APP_API_BASE)
@@ -12,7 +12,7 @@ export const http = new HttpRequest({
 
 http.addHooks({
   afterResponse: ({ type, data }) => {
-    if (type === 'json' && isBaseVo(data)) return data.data
+    if (type === 'json') return nullToUndefined(data)
     return data
   }
 })
