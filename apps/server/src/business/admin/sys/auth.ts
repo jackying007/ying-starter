@@ -6,7 +6,7 @@ import { zValidator } from '@/business/base-validator'
 import { requireAuth, sysAuthService } from '@/business/modules/sys'
 import { getRefreshTokenFromContext } from '@/common/utils'
 
-export const auth = new Hono<{ Variables: AuthVariables }>()
+export const sysAuth = new Hono<{ Variables: AuthVariables }>()
   .post('/login', zValidator('json', adminLoginDto), async c => c.json(await sysAuthService.login(c.req.valid('json'))))
   .get('/refresh', async c => c.json(await sysAuthService.refreshToken(getRefreshTokenFromContext(c) ?? '')))
   .get('/logout', async c => {

@@ -5,7 +5,7 @@ import { omitArray } from '@ying/utils'
 import { zValidator, paramId } from '@/business/base-validator'
 import { authValidator, pmsValidator, sysUserService } from '@/business/modules/sys'
 
-export const user = new Hono()
+export const sysUser = new Hono()
   .use(authValidator, pmsValidator(pms.sys.user))
   .get('/list', zValidator('query', listSysUserDto), async c => {
     const users = await sysUserService.list(c.req.valid('query'))

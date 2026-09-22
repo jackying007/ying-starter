@@ -7,7 +7,7 @@ export function refreshToken(http: HttpRequest) {
   if (refreshTokenPromise) return refreshTokenPromise
   refreshTokenPromise = new Promise((resolve, reject) => {
     http
-      .get<string>('/sys/auth/refresh', {
+      .get<string>('/sys-auth/refresh', {
         additional: {
           __isRefreshToken: true
         }

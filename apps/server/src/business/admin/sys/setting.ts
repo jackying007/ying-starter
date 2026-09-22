@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { pms } from '@ying/shared/permission'
 import { authValidator, pmsValidator, sysSettingService } from '@/business/modules/sys'
 
-export const setting = new Hono()
+export const sysSetting = new Hono()
   .use(authValidator)
   .get('/clear-permission-cache', pmsValidator(pms.sys.setting.clearPermissionCache), async c => {
     c.get('userId')

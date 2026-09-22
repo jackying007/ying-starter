@@ -3,7 +3,7 @@ import { http } from './http-client'
 export * from './http-error'
 export * from './helpers'
 
-export const authApi = await import('./business/auth').then(res => res.default(http))
+export const sysAuthApi = await import('./business/sys.auth').then(res => res.default(http))
 export const sysRoleApi = await import('./business/sys.role').then(res => res.default(http))
 export const sysUserApi = await import('./business/sys.user').then(res => res.default(http))
 export const sysSettingApi = await import('./business/sys.setting').then(res => res.default(http))

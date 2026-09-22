@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { file } from './file'
-import { sys } from './sys'
+import { sysAuth, sysRole, sysUser, sysSetting } from './sys'
 import { feedback } from './feedback'
 import { user, userStat } from './user'
 import { article } from './article'
@@ -8,7 +8,10 @@ import { visitor, pushTemplate, pushTask, pushRecord } from './notification'
 
 export const admin = new Hono()
   .route('/file', file)
-  .route('/sys', sys)
+  .route('/sys-auth', sysAuth)
+  .route('/sys-role', sysRole)
+  .route('/sys-user', sysUser)
+  .route('/sys-setting', sysSetting)
   .route('/feedback', feedback)
   .route('/user', user)
   .route('/user-stat', userStat)

@@ -6,7 +6,7 @@ import type { SysUserEntity } from '@ying/shared'
 import type { TPermission } from '@ying/shared/permission'
 import { storage } from '@ying/frontend/utils'
 
-import { authApi } from '@/api'
+import { sysAuthApi } from '@/api'
 import { CookieEnum, StorageEnum } from '@/types/enum'
 
 type UserStore = {
@@ -64,11 +64,11 @@ export const clearUserStore = () => {
 }
 
 export const updateUserInfo = async () => {
-  const userInfo = await authApi.getUserInfo()
+  const userInfo = await sysAuthApi.getUserInfo()
   setUserInfo(userInfo)
 }
 
 export const logout = async () => {
-  await authApi.logout()
+  await sysAuthApi.logout()
   clearUserStore()
 }

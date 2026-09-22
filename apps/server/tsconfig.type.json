@@ -10,5 +10,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/app-types.ts", "src/app.d.ts"]
+  "include": ["src/types-admin.ts", "src/types-client.ts", "src/app.d.ts"]
 }
