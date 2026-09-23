@@ -1,7 +1,6 @@
 import { Like } from 'typeorm'
-import { HTTPException } from 'hono/http-exception'
 import type { ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
-import { ArticleEntity, FileEntity } from '@ying/shared'
+import { ArticleEntity, FileEntity } from '@ying/db-typeorm'
 import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 
@@ -42,14 +41,16 @@ export class ArticleService extends BaseService<ArticleEntity> {
     return this.repository.countBy(where)
   }
 
-  detail(id: number) {
-    return this.repository.findOne({
+  async detail(id: number) {
+    const article = await this.repository.findOne({
       where: { id },
       relations: {
         cover: true,
         associatedFiles: true
       }
     })
+    if (!article) throw new Error('article is not exist')
+    return article
   }
 
   async view(id: number) {
@@ -58,7 +59,7 @@ export class ArticleService extends BaseService<ArticleEntity> {
 
   async updateContent(dto: UpdateArticleContentDto) {
     const article = await this.repository.findOneBy({ id: dto.id })
-    if (!article) throw new HTTPException(500)
+    if (!article) throw new Error('article is not exist')
 
     article.content = dto.content
     article.associatedFiles = dto.associatedFileIds?.map(id => {

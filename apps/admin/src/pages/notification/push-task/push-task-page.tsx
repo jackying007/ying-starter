@@ -8,7 +8,7 @@ import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { PushTaskStatus } from '@ying/shared'
 import type { ListPushTaskDto } from '@ying/shared'
-import type { PushTaskEntity } from '@ying/shared'
+import type { PushTaskListVo } from '@ying/server/types-admin'
 
 import { useTable } from '@/hooks'
 import { notificationApi } from '@/api'
@@ -21,16 +21,19 @@ import { PushTaskSetModal } from './push-task-set-modal'
 
 export default function PushTaskPage() {
   const { message } = App.useApp()
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListPushTaskDto, PushTaskEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<
+    ListPushTaskDto,
+    PushTaskListVo[number]
+  >({
     key: 'push-task',
     getList: notificationApi.listPushTask,
     getListCount: notificationApi.listPushTaskCount
   })
 
-  const pushTaskModalProps = useDialogOpen<PushTaskEntity>()
-  const pushTaskSetModalProps = useDialogOpen<PushTaskEntity>()
+  const pushTaskModalProps = useDialogOpen<PushTaskListVo[number]>()
+  const pushTaskSetModalProps = useDialogOpen<PushTaskListVo[number]>()
 
-  const columns: ColumnsType<PushTaskEntity> = [
+  const columns: ColumnsType<PushTaskListVo[number]> = [
     {
       title: '任务名称',
       fixed: 'left',

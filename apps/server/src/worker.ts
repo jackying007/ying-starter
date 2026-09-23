@@ -1,1 +1,1 @@
-import '@/business/modules/notification/notification-worker'
+import '@/business/modules/notification/notification.worker'

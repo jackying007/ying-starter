@@ -5,17 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
 import { BasicStatus } from '@ying/shared'
-import { createRoleDto, updateRoleDto } from '@ying/shared'
-import type { CreateRoleDto, UpdateRoleDto } from '@ying/shared'
+import { createOrUpdateRoleDto, type CreateOrUpdateRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { sysRoleApi } from '@/api'
 import { defaultRoleValues } from './constant'
 
-const createResolver = zodResolver(createRoleDto)
-const updateResolver = zodResolver(updateRoleDto)
-
-export type RoleDrawerProps = ReturnType<typeof useDialogOpen<UpdateRoleDto>> & {
+export type RoleDrawerProps = ReturnType<typeof useDialogOpen<CreateOrUpdateRoleDto>> & {
   onSuccess?: VoidFunction
 }
 
@@ -33,8 +29,8 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
     handleSubmit,
     formState: { errors, isSubmitting },
     reset
-  } = useForm<CreateRoleDto & UpdateRoleDto>({
-    resolver: formValue ? updateResolver : createResolver,
+  } = useForm<CreateOrUpdateRoleDto>({
+    resolver: zodResolver(createOrUpdateRoleDto),
     defaultValues: defaultRoleValues
   })
 

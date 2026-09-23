@@ -2,8 +2,8 @@ import { Like } from 'typeorm'
 import type { Column } from 'exceljs'
 import dayjs from 'dayjs'
 import { HTTPException } from 'hono/http-exception'
-import { UserEntity } from '@ying/shared'
-import type { ListUserDto, ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
+import type { ListUserDto, ResetPasswordDto } from '@ying/shared'
+import { UserEntity } from '@ying/db-typeorm'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
 import { dataToXLSXDefaultSheetAndGetBuffer, generatePass } from '@/common/utils'
@@ -68,11 +68,7 @@ export class UserService extends BaseService<UserEntity> {
     })
   }
 
-  updateInfo(dto: UpdateUserInfoDto, id: number) {
-    return this.repository.update({ id }, dto)
-  }
-
-  async resetPassword(dto: ResetPasswordDto, id: number) {
+  async resetPassword(id: number, dto: ResetPasswordDto) {
     const existingUser = await this.repository.findOne({
       where: { id }
     })

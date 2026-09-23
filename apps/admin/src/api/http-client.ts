@@ -23,8 +23,8 @@ http.addHooks({
   },
   afterError: async fetchRes => {
     if (fetchRes.status === 401) clearUserStore()
-    const errRes = await fetchRes.json()
-    const httpError = new HttpError(errRes, {
+    const message = await fetchRes.text()
+    const httpError = new HttpError(message, {
       status: fetchRes.status,
       statusText: fetchRes.statusText
     })

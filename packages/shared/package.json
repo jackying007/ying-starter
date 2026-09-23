@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "nanoid": "^3.3.18",
-    "typeorm": "^0.3.31",
     "web-push": "^3.6.7",
     "zod": "^4.6.5"
   },

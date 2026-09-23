@@ -1,9 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { NotFound } from '@/layouts/not-found'
 
 export const Route = createFileRoute('/$lang')({
-  component: RouteComponent,
-  notFoundComponent: NotFound
+  component: RouteComponent
 })
 
 function RouteComponent() {

@@ -34,7 +34,6 @@
     "color": "^4.2.3",
     "dayjs": "^1.11.23",
     "framer-motion": "^11.18.2",
-    "hono": "^4.13.8",
     "js-cookie": "^3.0.5",
     "json-edit-react": "^1.27.0",
     "lodash-es": "^4.17.21",

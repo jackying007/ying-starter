@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { resetPasswordDto, updateUserInfoDto } from '@ying/shared'
 import { omit } from '@ying/utils'
-import { zValidator } from '@/business/base-validator'
+import { zValidator } from '@/business/base.validator'
 import { authValidator } from '@/business/modules/user/auth'
 import { userService } from '@/business/modules/user'
 
@@ -16,10 +16,14 @@ export const user = new Hono()
       hasPassword: Boolean(user.password)
     })
   })
-  .put('/', zValidator('json', updateUserInfoDto), async c =>
-    c.json(await userService.updateInfo(c.req.valid('json'), c.get('userId')))
-  )
+  .put('/', zValidator('json', updateUserInfoDto), async c => {
+    await userService.createOrUpdate({
+      id: c.get('userId'),
+      ...c.req.valid('json')
+    })
+    return c.json(null)
+  })
   .put('/reset-password', zValidator('json', resetPasswordDto), async c => {
-    await userService.resetPassword(c.req.valid('json'), c.get('userId'))
+    await userService.resetPassword(c.get('userId'), c.req.valid('json'))
     return c.json(null)
   })

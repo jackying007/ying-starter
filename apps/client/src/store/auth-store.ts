@@ -1,12 +1,12 @@
 import { create } from 'zustand'
-import type { ClientUserVo, ClientAuthVo } from '@ying/shared'
+import type { UserInfoVo } from '@ying/server/types-client'
 import { authAPI, userAPI } from '@/api'
 import { CookieEnum } from '@/enum'
 import { getCookie, setCookie, removeCookie } from '@/cookie'
 import { useMemo } from 'react'
 
 type AuthStore = {
-  userInfo?: ClientUserVo
+  userInfo?: UserInfoVo
   accessToken?: string
   refreshToken?: string
 }
@@ -37,14 +37,18 @@ export const hasAuth = () => {
   return !!getCookie(CookieEnum.AccessToken)
 }
 
-export function setUserInfo(userInfo: ClientUserVo) {
+export function setUserInfo(userInfo: UserInfoVo) {
   useAuthStore.setState({ userInfo })
 }
 
-export function setAuthTokens(authTokens: ClientAuthVo) {
-  setCookie(CookieEnum.AccessToken, authTokens.accessToken)
-  setCookie(CookieEnum.RefreshToken, authTokens.refreshToken)
-  useAuthStore.setState({ ...authTokens })
+export function setRefreshToken(refreshToken: string) {
+  setCookie(CookieEnum.RefreshToken, refreshToken)
+  useAuthStore.setState({ refreshToken })
+}
+
+export function setAccessToken(accessToken: string) {
+  setCookie(CookieEnum.AccessToken, accessToken)
+  useAuthStore.setState({ accessToken })
 }
 
 export const clearUserInfoAndAuthTokens = () => {

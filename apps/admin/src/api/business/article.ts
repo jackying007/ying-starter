@@ -1,13 +1,12 @@
 import type { HttpRequest } from '@jying/http'
 import type { CreateOrUpdateArticleDto, UpdateArticleContentDto, ListArticleDto, DeleteDto } from '@ying/shared'
-import type { ArticleEntity } from '@ying/shared'
-
+import type { ArticleListVo, ArticleVo } from '@ying/server/types-admin'
 import { timeDataTransform } from '../helpers'
 
 export default function (http: HttpRequest) {
   return {
     list(query: ListArticleDto) {
-      return http.get<ArticleEntity[]>('/article/list', { query: timeDataTransform(query, 'date') })
+      return http.get<ArticleListVo>('/article/list', { query: timeDataTransform(query, 'date') })
     },
     listCount(query: ListArticleDto) {
       return http.get<number>('/article/list-count', { query: timeDataTransform(query, 'date') })
@@ -25,7 +24,7 @@ export default function (http: HttpRequest) {
       return http.delete<void>('/article', { data })
     },
     detail(id: number) {
-      return http.get<ArticleEntity>(`/article/${id}`)
+      return http.get<ArticleVo>(`/article/${id}`)
     }
   }
 }

@@ -1,20 +1,13 @@
 import { IsNull, Not, Repository } from 'typeorm'
 import type { PushSubscription } from 'web-push'
 import { match as langMatch } from '@formatjs/intl-localematcher'
-import {
-  VisitorEntity,
-  PushTemplateEntity,
-  PushTaskEntity,
-  PushTaskStatus,
-  clientLanguagesConfig,
-  type LngKeys,
-  type PushData
-} from '@ying/shared'
-import type { SetPushTaskDto, SendPushTemplateDto } from '@ying/shared'
+import { PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
+import type { LngKeys, SetPushTaskDto, SendPushTemplateDto, PushData } from '@ying/shared'
+import { VisitorEntity, PushTemplateEntity, PushTaskEntity } from '@ying/db-typeorm'
 import { dataSource } from '@/common/modules/db'
 import { pushService } from '@/common/modules/push'
 import { redis } from '@/common/modules/redis'
-import { notificationQueue } from './notification-queue'
+import { notificationQueue } from './notification.queue'
 
 const fallbackLng = clientLanguagesConfig.fallbackLng
 

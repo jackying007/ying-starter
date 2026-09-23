@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
 import type { ListVisitorDto } from '@ying/shared'
-import type { VisitorEntity } from '@ying/shared'
+import type { VisitorListVo } from '@ying/server/types-admin'
 
 import { useTable } from '@/hooks'
 import { notificationApi } from '@/api'
@@ -15,7 +15,10 @@ import { JsonViewModal } from '@/components/json-view-modal'
 import { DeviceTypeOptions } from './constant'
 
 export default function VisitorPage() {
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListVisitorDto, VisitorEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<
+    ListVisitorDto,
+    VisitorListVo[number]
+  >({
     key: 'visitor',
     getList: notificationApi.listVisitor,
     getListCount: notificationApi.listVisitorCount
@@ -24,7 +27,7 @@ export default function VisitorPage() {
   const { message } = App.useApp()
   const jsonViewModalProps = useDialogOpen<object>()
 
-  const columns: ColumnsType<VisitorEntity> = [
+  const columns: ColumnsType<VisitorListVo[number]> = [
     {
       title: '浏览用户ID',
       width: 280,

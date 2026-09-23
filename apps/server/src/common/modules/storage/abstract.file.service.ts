@@ -1,4 +1,5 @@
-import { type ListFileDto, FileSourceType, FileType, FileEntity } from '@ying/shared'
+import { type ListFileDto, FileSourceType, FileType } from '@ying/shared'
+import { FileEntity } from '@ying/db-typeorm'
 import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 

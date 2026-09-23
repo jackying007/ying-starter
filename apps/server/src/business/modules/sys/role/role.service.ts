@@ -1,7 +1,7 @@
 import { Like, TreeRepository } from 'typeorm'
 import { createTreeFns } from '@ying/utils'
-import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
-import { SysPermissionEntity, SysRoleEntity } from '@ying/shared'
+import type { CreateOrUpdateRoleDto, ListRoleDto } from '@ying/shared'
+import { SysPermissionEntity, SysRoleEntity } from '@ying/db-typeorm'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
 import { redis } from '@/common/modules/redis'
@@ -56,7 +56,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
     return createTreeFns(list, 'code', 'parentCode').toTree(null)
   }
 
-  create(createRoleDto: CreateRoleDto) {
+  create(createRoleDto: CreateOrUpdateRoleDto) {
     const role = this.repository.create(createRoleDto)
     role.permissions = createRoleDto.permissionCodes.map(code => {
       const permission = new SysPermissionEntity()
@@ -66,12 +66,12 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
     return this.repository.save(role)
   }
 
-  async update(updateRoleDto: UpdateRoleDto) {
+  async update(updateRoleDto: CreateOrUpdateRoleDto) {
     const role = await this.repository.findOne({
       where: { id: updateRoleDto.id },
       relations: ['permissions', 'users']
     })
-    if (!role) return
+    if (!role) throw Error('role is not exist.')
 
     if (role.permissions.map(el => el.code).toString() !== updateRoleDto.permissionCodes.toString()) {
       role.permissions = updateRoleDto.permissionCodes.map(code => {
@@ -87,5 +87,13 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
 
     Object.assign(role, updateRoleDto)
     return this.repository.save(role)
+  }
+
+  createOrUpdate(dto: CreateOrUpdateRoleDto) {
+    if (dto.id) {
+      return this.update(dto)
+    } else {
+      return this.create(dto)
+    }
   }
 }

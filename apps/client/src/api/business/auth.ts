@@ -6,12 +6,12 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-import type { ClientLoginVo } from '@ying/shared'
+import type { AuthLoginVo } from '@ying/server/types-client'
 
 export default function (http: HttpRequest) {
   return {
     login(data: ClientLoginDto) {
-      return http.post<ClientLoginVo>('/auth/login', { data, skipAfterResponse: true })
+      return http.post<AuthLoginVo>('/auth/login', { data, skipAfterResponse: true })
     },
     logout() {
       return http.get<void>('/auth/logout')

@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 import { create } from 'zustand'
 import cookie from 'js-cookie'
 
-import type { SysUserEntity } from '@ying/shared'
 import type { TPermission } from '@ying/shared/permission'
 import { storage } from '@ying/frontend/utils'
+import type { SysAuthUserInfoVo } from '@ying/server/types-admin'
 
 import { sysAuthApi } from '@/api'
 import { CookieEnum, StorageEnum } from '@/types/enum'
@@ -12,11 +12,11 @@ import { CookieEnum, StorageEnum } from '@/types/enum'
 type UserStore = {
   accessToken?: string
   refreshToken?: string
-  userInfo?: SysUserEntity
+  userInfo?: SysAuthUserInfoVo
 }
 
 export const useUserStore = create<UserStore>()(() => {
-  const userInfo = storage.getItem<SysUserEntity>(StorageEnum.UserInfo)
+  const userInfo = storage.getItem<SysAuthUserInfoVo>(StorageEnum.UserInfo)
 
   return {
     accessToken: cookie.get(CookieEnum.AccessToken),
@@ -51,7 +51,7 @@ export const setRefreshToken = (refreshToken: string) => {
   cookie.set(CookieEnum.RefreshToken, refreshToken, { expires: 365 })
 }
 
-export const setUserInfo = (userInfo: SysUserEntity) => {
+export const setUserInfo = (userInfo: SysAuthUserInfoVo) => {
   useUserStore.setState({ userInfo })
   storage.setItem(StorageEnum.UserInfo, userInfo)
 }

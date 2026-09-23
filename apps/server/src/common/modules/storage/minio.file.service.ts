@@ -1,7 +1,7 @@
 import { In } from 'typeorm'
 import { Client } from 'minio'
 import { nanoid } from 'nanoid'
-import { FileEntity } from '@ying/shared'
+import { FileEntity } from '@ying/db-typeorm'
 import { storageConfig } from '@/config'
 import { dataSource } from '@/common/modules/db'
 import { ExpirSeconds } from './constant'

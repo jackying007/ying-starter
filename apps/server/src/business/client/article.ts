@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { listArticleDto } from '@ying/shared'
-import { zValidator, paramId } from '@/business/base-validator'
+import { zValidator, paramId } from '@/business/base.validator'
 import { articleService } from '@/business/modules/article'
 
 export const article = new Hono()

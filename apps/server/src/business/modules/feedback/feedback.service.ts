@@ -1,6 +1,6 @@
 import { Like } from 'typeorm'
 import type { ListFeedbackDto } from '@ying/shared'
-import { FeedbackEntity } from '@ying/shared'
+import { FeedbackEntity } from '@ying/db-typeorm'
 import { dataSource } from '@/common/modules/db'
 import { BaseService } from '@/common/service/base.service'
 

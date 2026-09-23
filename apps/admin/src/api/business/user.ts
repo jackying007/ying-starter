@@ -1,13 +1,12 @@
 import { HttpRequest } from '@jying/http'
-import type { ListUserDto, StatDto, UserStatByTypeVo, UserStatVo } from '@ying/shared'
-import type { UserEntity } from '@ying/shared'
-
+import type { ListUserDto, StatDto } from '@ying/shared'
+import type { UserListVo, UserStatByTypeVo, UserStatVo } from '@ying/server/types-admin'
 import { timeDataTransform } from '../helpers'
 
 export default function (http: HttpRequest) {
   return {
     list(query: ListUserDto) {
-      return http.get<UserEntity[]>('/user/list', { query: timeDataTransform(query, 'date') })
+      return http.get<UserListVo>('/user/list', { query: timeDataTransform(query, 'date') })
     },
     listCount(query: ListUserDto) {
       return http.get<number>('/user/list-count', { query: timeDataTransform(query, 'date') })

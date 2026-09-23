@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import { listRoleDto, createRoleDto, updateRoleDto } from '@ying/shared'
+import { listRoleDto, createOrUpdateRoleDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
-import { zValidator, paramId } from '@/business/base-validator'
+import { zValidator, paramId } from '@/business/base.validator'
 import { authValidator, pmsValidator, sysRoleService } from '@/business/modules/sys'
 
 export const sysRole = new Hono()
@@ -11,12 +11,15 @@ export const sysRole = new Hono()
     c.json(await sysRoleService.listCount(c.req.valid('query')))
   )
   .get('/permissions', async c => c.json(await sysRoleService.listPermissions()))
-  .delete('/:id', pmsValidator(pms.sys.role.delete), paramId, async c =>
-    c.json(await sysRoleService.delete(c.req.valid('param').id))
-  )
-  .post('/', pmsValidator(pms.sys.role.create), zValidator('json', createRoleDto), async c =>
-    c.json(await sysRoleService.create(c.req.valid('json')))
-  )
-  .put('/', pmsValidator(pms.sys.role.update), zValidator('json', updateRoleDto), async c =>
-    c.json(await sysRoleService.update(c.req.valid('json')))
-  )
+  .delete('/:id', pmsValidator(pms.sys.role.delete), paramId, async c => {
+    await sysRoleService.delete(c.req.valid('param').id)
+    return c.json(null)
+  })
+  .post('/', pmsValidator(pms.sys.role.create), zValidator('json', createOrUpdateRoleDto), async c => {
+    await sysRoleService.createOrUpdate(c.req.valid('json'))
+    return c.json(null)
+  })
+  .put('/', pmsValidator(pms.sys.role.update), zValidator('json', createOrUpdateRoleDto), async c => {
+    await sysRoleService.createOrUpdate(c.req.valid('json'))
+    return c.json(null)
+  })

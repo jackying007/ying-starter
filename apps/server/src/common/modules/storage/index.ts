@@ -6,7 +6,7 @@ import { MinioFileService } from './minio.file.service'
 import { FileSubscriber } from './file.subscriber'
 
 export * from './constant'
-export * from './file-middleware'
+export * from './file.middleware'
 
 export const fileService: AbstractFileService =
   storageConfig.mode === 'local' ? new LocalFileService() : new MinioFileService()

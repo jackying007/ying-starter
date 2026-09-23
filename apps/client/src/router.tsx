@@ -1,5 +1,7 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { createI18nInstance, getLang } from '@/i18n'
+import { NotFound } from '@/layouts/not-found'
+import { Error } from '@/layouts/error'
 import { routeTree } from './routeTree.gen'
 
 export async function getRouter() {
@@ -7,11 +9,12 @@ export async function getRouter() {
   const router = createTanStackRouter({
     routeTree,
     scrollRestoration: true,
-    defaultPreload: 'intent',
-    defaultPreloadStaleTime: 0,
     context: {
       i18n
-    }
+    },
+    defaultNotFoundComponent: NotFound,
+    // 这个组件写在 route 内还是会显示默认的
+    defaultErrorComponent: props => <Error {...props} />
   })
   return router
 }

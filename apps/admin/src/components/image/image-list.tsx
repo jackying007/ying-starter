@@ -4,9 +4,9 @@ import { EyeFilled, CheckCircleFilled, DeleteOutlined, CloseOutlined } from '@an
 import { Controller } from 'react-hook-form'
 
 import type { ListFileDto } from '@ying/shared'
-import type { FileEntity } from '@ying/shared'
 import { FileType } from '@ying/shared'
 import { cn } from '@ying/frontend/ui'
+import type { FileListVo } from '@ying/server/types-admin'
 
 import { commonApi } from '@/api'
 import { useTable } from '@/hooks/use-table'
@@ -16,8 +16,8 @@ import { FileSourceTypeOptions } from '@/constant'
 import { UploadImage } from './upload-image'
 
 type ImageListProps = {
-  selectedFiles?: FileEntity[]
-  setSelectedFiles?: Dispatch<SetStateAction<FileEntity[]>>
+  selectedFiles?: FileListVo
+  setSelectedFiles?: Dispatch<SetStateAction<FileListVo>>
   maxLength?: number
 }
 
@@ -25,7 +25,7 @@ export const ImageList = ({ selectedFiles, setSelectedFiles, maxLength = 1 }: Im
   const { message } = App.useApp()
   const token = useThemeToken()
 
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListFileDto, FileEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListFileDto, FileListVo[number]>({
     key: 'file-image',
     getList: commonApi.listFile,
     getListCount: commonApi.listFileCount,
@@ -38,7 +38,7 @@ export const ImageList = ({ selectedFiles, setSelectedFiles, maxLength = 1 }: Im
   const [previewUrl, setPreviewUrl] = useState('')
   const selectedFileIds = selectedFiles?.map(el => el.id) ?? []
 
-  const onClick = (file: FileEntity) => {
+  const onClick = (file: FileListVo[number]) => {
     if (!setSelectedFiles) return
     const index = selectedFileIds.findIndex(id => id === file.id)
     // 选择新图片

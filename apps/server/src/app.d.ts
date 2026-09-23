@@ -8,5 +8,3 @@ type UploadVariables = {
     [x: string]: string | File
   }
 }
-
-type HcJsonRes<T extends (...args: any[]) => any> = Awaited<ReturnType<Awaited<ReturnType<T>>['json']>>

@@ -1,15 +1,16 @@
 import { Hono } from 'hono'
 import { createFeedbackDto, FileSourceType, FileType } from '@ying/shared'
-import { paramId, zValidator } from '@/business/base-validator'
+import { paramId, zValidator } from '@/business/base.validator'
 import { authValidator } from '@/business/modules/user/auth'
 import { feedbackService } from '@/business/modules/feedback'
 import { pushRecordService } from '@/business/modules/notification'
 import { fileMiddleware, fileService } from '@/common/modules/storage'
 
 export const common = new Hono()
-  .post('/feedback', zValidator('json', createFeedbackDto), async c =>
-    c.json(await feedbackService.create(c.req.valid('json')))
-  )
+  .post('/feedback', zValidator('json', createFeedbackDto), async c => {
+    await feedbackService.createOrUpdate(c.req.valid('json'))
+    return c.json(null)
+  })
   .post('/file/image', authValidator, fileMiddleware({ fileType: /^image\// }), async c => {
     const file = c.get('uploadedFile')
     const body = c.get('uploadBody')
@@ -24,4 +25,7 @@ export const common = new Hono()
       })
     )
   })
-  .get('/notice/:id/click', paramId, async c => c.json(await pushRecordService.click(c.req.valid('param').id)))
+  .get('/notice/:id/click', paramId, async c => {
+    await pushRecordService.click(c.req.valid('param').id)
+    return c.json(null)
+  })

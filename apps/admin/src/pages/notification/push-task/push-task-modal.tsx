@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { createOrUpdatePushTaskDto, type CreateOrUpdatePushTaskDto, type ListPushTemplateDto } from '@ying/shared'
-import type { PushTaskEntity } from '@ying/shared'
+import type { PushTaskListVo } from '@ying/server/types-admin'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { useQueryWithRequery } from '@/hooks'
@@ -18,7 +18,7 @@ const defaultValues: Partial<CreateOrUpdatePushTaskDto> = {
   pushTemplateId: undefined
 }
 
-export type PushTaskModalProps = ReturnType<typeof useDialogOpen<PushTaskEntity>> & {
+export type PushTaskModalProps = ReturnType<typeof useDialogOpen<PushTaskListVo[number]>> & {
   onSuccess: VoidFunction
 }
 

@@ -13,7 +13,7 @@ import {
 import { getRefreshTokenFromContext } from '@/common/utils'
 import { authConfig } from '@/config'
 import { i18nMiddleware } from '@/business/i18n'
-import { zValidator } from '@/business/base-validator'
+import { zValidator } from '@/business/base.validator'
 import { authService, oauthService, requireAuth, oauthErrorHandler } from '@/business/modules/user/auth'
 
 export const auth = new Hono()

@@ -6,7 +6,7 @@ export function RouteLoadingProgress() {
 
   useEffect(() => {
     let lastHref = window.location.href
-    let timer: NodeJS.Timeout
+    let timer: ReturnType<typeof setTimeout>
 
     const handleRouteChange = () => {
       setProgress(0)

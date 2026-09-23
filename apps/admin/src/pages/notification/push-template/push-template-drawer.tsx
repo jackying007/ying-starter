@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { createOrUpdatePushTemplateDto } from '@ying/shared'
-import type { PushTemplateEntity } from '@ying/shared'
+import type { PushTemplateListVo } from '@ying/server/types-admin'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
 
 import { notificationApi } from '@/api'
@@ -12,11 +12,11 @@ import { ImageSelector } from '@/components/image'
 import { FormList } from '@/components/form/form-list'
 import { IntlInput, IntlTextArea } from '@/components/intl'
 
-type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<Partial<PushTemplateEntity>>> & {
+type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<Partial<PushTemplateListVo[number]>>> & {
   onSuccess?: VoidFunction
 }
 
-const defaultValue: Partial<PushTemplateEntity> = {
+const defaultValue: Partial<PushTemplateListVo[number]> = {
   name: undefined,
   title: undefined,
   link: undefined,

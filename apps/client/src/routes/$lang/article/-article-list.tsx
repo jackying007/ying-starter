@@ -1,4 +1,4 @@
-import type { ArticleEntity } from '@ying/shared'
+import type { ArticleListVo } from '@ying/server/types-client'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
 import { Paginations } from '@/components/paginations'
@@ -9,7 +9,7 @@ import { ArticleItem } from './-article-item'
 
 type ArticleListProps = {
   initialPage?: number
-  initialList?: ArticleEntity[]
+  initialList?: ArticleListVo
   initialListCount?: number
 }
 

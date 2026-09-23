@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { SelectFileType, useUpload, selectFile, useDialogOpen, type UseUploadOptions } from '@ying/frontend/hooks'
-import type { FileEntity } from '@ying/shared'
 import { cn } from '@ying/frontend/ui'
 import { PlusIcon, LoadingIconV1 } from '@ying/frontend/icons'
+import type { FileVo } from '@ying/server/types-client'
 
 import { CropImageModal } from './crop-image-modal'
 
-type UploadProps = UseUploadOptions<FileEntity> & {
+type UploadProps = UseUploadOptions<FileVo> & {
   className?: string
   disabled?: boolean
   defaultUrl?: string

@@ -1,12 +1,12 @@
 import { createContext, useContext } from 'react'
 import { Editor } from '@tiptap/react'
-import { FileEntity } from '@ying/shared'
+import type { FileVo } from '@ying/server/types-admin'
 import type { TEditorEmitter } from './emitter'
 
 export type EditorRootContextValue = {
   editor: Editor
   emitter?: TEditorEmitter
-  associatedFiles?: FileEntity[]
+  associatedFiles?: FileVo[]
 }
 
 export const EditorRootContext = createContext<EditorRootContextValue | undefined>(undefined)

@@ -4,14 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/app-type.d.ts"
+    "./types-admin": {
+      "types": "./dist/types-admin.d.ts"
+    },
+    "./types-client": {
+      "types": "./dist/types-client.d.ts"
     }
   },
   "scripts": {
     "dev": "dotenv -c -- tsx watch --clear-screen=false src/main.ts",
     "build": "tsup",
-    "start": "dotenv -c -- node dist/main.js"
+    "start": "dotenv -c -- node dist/main.js",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint"
+  },
+  "lint-staged": {
+    "*.ts": "pnpm lint"
   },
   "dependencies": {
     "@faker-js/faker": "^9.5.1",
@@ -20,6 +28,7 @@
     "@hono/zod-validator": "^0.9.1",
     "@ying/shared": "workspace:*",
     "@ying/utils": "workspace:*",
+    "@ying/db-typeorm": "workspace:*",
     "arctic": "^3.7.0",
     "bullmq": "^6.3.8",
     "dayjs": "^1.11.23",
@@ -38,7 +47,6 @@
   },
   "devDependencies": {
     "@types/ms": "^2.1.0",
-    "@types/node": "^26.1.1",
     "@types/nodemailer": "^6.4.17",
     "@types/web-push": "^3.6.4",
     "dotenv-cli": "^11.0.0",

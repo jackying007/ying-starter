@@ -2,7 +2,7 @@
 
 ## 简介
 
-这是一个使用 Pnpm + Turborepo 的 Monorepo 单仓全栈项目，基于 NestJS 实现服务端，Vite + React 实现后台管理系统，Vite + TanStack Start 实现客户端。集成了基本的后台管理系统的角色权限控制逻辑，基于 Tiptap 的内容管理，注册登录和第三方 Oauth 登录逻辑，客户端多语言，Web 离线消息推送。
+这是一个使用 Pnpm + Turborepo 的 Monorepo 单仓全栈项目，基于 Hono 实现服务端，Vite + React 实现后台管理系统，Vite + TanStack Start 实现客户端。集成了基本的后台管理系统的角色权限控制逻辑，基于 Tiptap 的内容管理，注册登录和第三方 Oauth 登录逻辑，客户端多语言，Web 离线消息推送。
 
 后台管理端
 
@@ -25,15 +25,14 @@
 
 服务端
 
-- Nestjs
+- Hono
 - TypeORM
-- MySQL
+- Postgres
 - Redis
-- MinIO
 
 ## 开发环境版本
 
-- node v24.15.0
+- node v24.18.1
 - pnpm v10.33.4
 
 ## 开发环境启动

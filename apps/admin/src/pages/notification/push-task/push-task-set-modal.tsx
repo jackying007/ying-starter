@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import dayjs from 'dayjs'
 
 import { setPushTaskDto } from '@ying/shared'
-import type { PushTaskEntity } from '@ying/shared'
+import type { PushTaskListVo } from '@ying/server/types-admin'
 import { useDialogOpen } from '@ying/frontend/hooks'
 
 import { notificationApi } from '@/api'
 
-export type PushTaskSetProps = ReturnType<typeof useDialogOpen<PushTaskEntity>> & {
+export type PushTaskSetProps = ReturnType<typeof useDialogOpen<PushTaskListVo[number]>> & {
   onSuccess: VoidFunction
 }
 

@@ -1,7 +1,7 @@
 import type { DeepPartial, FindOptionsWhere, FindOptionsWhereProperty, FindOptionsSelectByString } from 'typeorm'
 import { Between, Repository, SelectQueryBuilder, ObjectId } from 'typeorm'
 import type { ListDto } from '@ying/shared'
-import { AbstractBaseEntity } from '@ying/shared'
+import { AbstractBaseEntity } from '@ying/db-typeorm'
 
 export class BaseService<TEntity extends AbstractBaseEntity> {
   constructor(readonly repository: Repository<TEntity>) {}

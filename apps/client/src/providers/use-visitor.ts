@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { load } from '@fingerprintjs/fingerprintjs'
 import UAParser from 'ua-parser-js'
 
-import type { UserEntity } from '@ying/shared'
+import type { UserInfoVo } from '@ying/server/types-client'
 import { storage } from '@ying/frontend/utils'
 
 import { StorageEnum } from '@/enum'
@@ -30,7 +30,7 @@ async function bindUser(visitorId: string) {
   await commonAPI.bindUser(visitorId)
 }
 
-function isUserNewDevice(user: UserEntity, visitorId: string) {
+function isUserNewDevice(user: UserInfoVo, visitorId: string) {
   return !user.visitors?.some(el => el.visitorId === visitorId)
 }
 

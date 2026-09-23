@@ -1,9 +1,9 @@
-import type { ApexOptions } from 'apexcharts'
+import type { Props } from 'react-apexcharts'
 import { merge } from 'lodash-es'
 
 import { useThemeToken } from '@/hooks'
 
-export default function useChart(options: ApexOptions) {
+export default function useChart(options: Props['options']) {
   const theme = useThemeToken()
 
   const LABEL_TOTAL = {
@@ -202,5 +202,5 @@ export default function useChart(options: ApexOptions) {
     ]
   }
 
-  return merge({}, baseOptions, options) as ApexOptions
+  return merge({}, baseOptions, options) as Props['options']
 }

@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
 import type { ListArticleDto } from '@ying/shared'
-import type { ArticleEntity } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
+import type { ArticleListVo } from '@ying/server/types-admin'
 
 import { Page, PageQuery, PageOperations } from '@/layouts/page'
 import { PromotionModal, type TPromotionData } from '@/components/promotion-modal'
@@ -35,17 +35,17 @@ export default function ArticlePage() {
     selectedRowKeys,
     setSelectedRowKeys,
     rowSelection
-  } = useTable<ListArticleDto, ArticleEntity>({
+  } = useTable<ListArticleDto, ArticleListVo[number]>({
     key: 'article',
     getList: articleApi.list,
     getListCount: articleApi.listCount
   })
 
-  const articleModalProps = useDialogOpen<ArticleEntity>()
+  const articleModalProps = useDialogOpen<ArticleListVo[number]>()
   const articleDrawerProps = useDialogOpen<number>()
   const articlePromotionModalProps = useDialogOpen<TPromotionData>()
 
-  const columns: ColumnsType<ArticleEntity> = [
+  const columns: ColumnsType<ArticleListVo[number]> = [
     {
       title: '文章名称',
       dataIndex: 'name',

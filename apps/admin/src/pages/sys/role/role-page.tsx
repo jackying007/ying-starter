@@ -4,9 +4,9 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, UpdateRoleDto } from '@ying/shared'
-import type { SysRoleEntity } from '@ying/shared'
+import type { ListRoleDto, CreateOrUpdateRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
+import type { SysRoleListVo } from '@ying/server/types-admin'
 
 import { useTable } from '@/hooks'
 import { sysRoleApi } from '@/api'
@@ -17,15 +17,15 @@ import { RoleDrawer } from './role-drawer'
 
 export default function RolePage() {
   const { message } = App.useApp()
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListRoleDto, SysRoleEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListRoleDto, SysRoleListVo[number]>({
     key: 'role',
     getList: sysRoleApi.list,
     getListCount: sysRoleApi.listCount
   })
 
-  const roleDrawerPros = useDialogOpen<UpdateRoleDto>()
+  const roleDrawerPros = useDialogOpen<CreateOrUpdateRoleDto>()
 
-  const columns: ColumnsType<SysRoleEntity> = [
+  const columns: ColumnsType<SysRoleListVo[number]> = [
     {
       title: '角色名称',
       dataIndex: 'name',

@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 
 import type { LngKeys } from '@ying/shared'
-import type { ArticleEntity } from '@ying/shared'
+import type { ArticleListVo } from '@ying/server/types-client'
 import { cn, Badge } from '@ying/frontend/ui'
 import { LazyImage } from '@ying/frontend/components'
 
 type ArticleItemProps = {
-  article: ArticleEntity
+  article: ArticleListVo[number]
 }
 
 export const ArticleItem = ({ article }: ArticleItemProps) => {

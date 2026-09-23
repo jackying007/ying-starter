@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { statDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
-import { zValidator } from '@/business/base-validator'
+import { zValidator } from '@/business/base.validator'
 import { userStatService } from '@/business/modules/user'
 import { authValidator, pmsValidator } from '@/business/modules/sys'
 

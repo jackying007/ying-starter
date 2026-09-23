@@ -1,4 +1,4 @@
-import { App, Button, Input, Space } from 'antd'
+import { App, Button, Input, Space, Image } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Controller } from 'react-hook-form'
 import { useEffect } from 'react'
@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 
 import { useDialogOpen } from '@ying/frontend/hooks'
 import type { ListPushTemplateDto } from '@ying/shared'
-import type { ArticleEntity, PushTemplateEntity } from '@ying/shared'
+import type { ArticleListVo, PushTemplateListVo } from '@ying/server/types-admin'
 
 import { useTable } from '@/hooks'
 import { notificationApi } from '@/api'
@@ -23,15 +23,15 @@ export default function PushTemplatePage() {
 
   const { control, resetParams, list, listLoading, pagination, reload } = useTable<
     ListPushTemplateDto,
-    PushTemplateEntity
+    PushTemplateListVo[number]
   >({
     key: 'push-template',
     getList: notificationApi.listPushTemplate,
     getListCount: notificationApi.listPushTemplateCount
   })
 
-  const pushTemplateDrawerProps = useDialogOpen<Partial<PushTemplateEntity>>()
-  const sendNotificationModalProps = useDialogOpen<PushTemplateEntity>()
+  const pushTemplateDrawerProps = useDialogOpen<Partial<PushTemplateListVo[number]>>()
+  const sendNotificationModalProps = useDialogOpen<PushTemplateListVo[number]>()
 
   const location = useLocation()
   const { onOpen: openPushTemplateDrawer } = pushTemplateDrawerProps
@@ -39,7 +39,7 @@ export default function PushTemplatePage() {
     const state = location.state
     if (state) {
       if (state.type === 'setArticle') {
-        const record = state.record as ArticleEntity
+        const record = state.record as ArticleListVo[number]
         openPushTemplateDrawer({
           name: record.name,
           title: record.title,
@@ -50,7 +50,7 @@ export default function PushTemplatePage() {
     }
   }, [location, openPushTemplateDrawer])
 
-  const columns: ColumnsType<PushTemplateEntity> = [
+  const columns: ColumnsType<PushTemplateListVo[number]> = [
     {
       title: '模板名称',
       width: 150,
@@ -71,6 +71,14 @@ export default function PushTemplatePage() {
       ellipsis: true,
       dataIndex: 'body',
       render: (_, record) => <IntlShow value={record.body} />
+    },
+    {
+      title: '内容图片',
+      dataIndex: 'image',
+      align: 'center',
+      width: 120,
+      render: (_, record) =>
+        record.image && <Image src={record.image.url} className="rounded-sm w-13! h-13! object-cover" />
     },
     {
       title: '创建时间',

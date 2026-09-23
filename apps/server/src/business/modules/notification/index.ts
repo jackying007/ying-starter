@@ -3,7 +3,7 @@ import { PushTemplateService } from './push.template.service'
 import { PushTaskService } from './push.task.service'
 import { PushRecordService } from './push.record.service'
 import { NotificationService } from './notification.service'
-import { NotificationConsumer } from './notification-consumer'
+import { NotificationConsumer } from './notification.consumer'
 
 export const visitorService = new VisitorService()
 export const pushTemplateService = new PushTemplateService()

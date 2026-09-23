@@ -3,10 +3,8 @@ import type { ColumnsType } from 'antd/es/table'
 import { Controller, type UseFormGetValues } from 'react-hook-form'
 import { useState } from 'react'
 import dayjs from 'dayjs'
-
 import type { ListUserDto } from '@ying/shared'
-import type { UserEntity } from '@ying/shared'
-
+import type { UserListVo } from '@ying/server/types-admin'
 import { downloadExcel, userApi } from '@/api'
 import { useTable } from '@/hooks'
 import { Page, PageQuery } from '@/layouts/page'
@@ -39,14 +37,14 @@ function ExportButton({ getParams }: { getParams: UseFormGetValues<ListUserDto> 
 }
 
 export default function UserPage() {
-  const { control, resetParams, getParams, list, listLoading, pagination } = useTable<ListUserDto, UserEntity>({
+  const { control, resetParams, getParams, list, listLoading, pagination } = useTable<ListUserDto, UserListVo[number]>({
     key: 'user',
     getList: userApi.list,
     getListCount: userApi.listCount
   })
 
   const { colorTextSecondary } = useThemeToken()
-  const columns: ColumnsType<UserEntity> = [
+  const columns: ColumnsType<UserListVo[number]> = [
     {
       title: '用户',
       width: 350,

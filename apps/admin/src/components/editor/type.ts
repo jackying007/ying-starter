@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 import type { TEditorEmitter } from '@ying/frontend/editor'
-import type { FileEntity } from '@ying/shared'
+import type { FileVo } from '@ying/server/types-admin'
 
 export type EditorHandle = {
   setContent: (val: string) => void
@@ -12,6 +12,6 @@ export type EditorProps = {
   placeholder?: string
   defaultValue?: string
   onChange?: (text: string) => void
-  associatedFiles?: FileEntity[]
+  associatedFiles?: FileVo[]
   emitter?: TEditorEmitter
 }

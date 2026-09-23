@@ -1,6 +1,6 @@
 import { Like, Repository } from 'typeorm'
 import type { CreateVisitorDto, ListVisitorDto, NoticeSubscribeDto } from '@ying/shared'
-import { VisitorEntity, UserEntity } from '@ying/shared'
+import { VisitorEntity, UserEntity } from '@ying/db-typeorm'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
 

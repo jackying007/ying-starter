@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { PlusOutlined, BorderInnerOutlined, Loading3QuartersOutlined } from '@ant-design/icons'
-import type { FileEntity } from '@ying/shared'
 import { SelectFileType, selectFile, useUpload, type UseUploadOptions, useDialogOpen } from '@ying/frontend/hooks'
 import { cn } from '@ying/frontend/ui'
+import type { FileVo } from '@ying/server/types-admin'
 import { CropImageModal } from './crop-image-modal'
 
-type UploadProps = UseUploadOptions<FileEntity> & {
+type UploadProps = UseUploadOptions<FileVo> & {
   className?: string
   defaultUrl?: string
   mustCrop?: boolean
@@ -28,7 +28,7 @@ export const UploadImage = ({
   const [url, setUrl] = useState<string>()
   const showUrl = url ?? defaultUrl
 
-  const { loading, startUpload } = useUpload<FileEntity>({
+  const { loading, startUpload } = useUpload<FileVo>({
     handleUpload,
     onSuccess: fileEntity => {
       if (willSetUrl) setUrl(fileEntity.url)

@@ -18,7 +18,7 @@ export function NavVertical({ show, onMenuClick }: NavProps) {
   const { themeLayout, navCollapsed } = settings
   const isVertical = themeLayout === ThemeNavLayout.Vertical
   const { screenMap } = useResponsive()
-  const { defaultOpenKeys, selectedKeys, menuList, onOpenChange, onClick } = useNavContext()
+  const { defaultOpenKeys, selectedKeys, menuList, onClick } = useNavContext()
 
   const toggleCollapsed = () => {
     setSettings({
@@ -56,7 +56,7 @@ export function NavVertical({ show, onMenuClick }: NavProps) {
           defaultOpenKeys={navCollapsed ? [] : defaultOpenKeys}
           defaultSelectedKeys={selectedKeys}
           selectedKeys={selectedKeys}
-          onOpenChange={onOpenChange}
+          // onOpenChange={onOpenChange}
           onClick={menuInfo => {
             onClick(menuInfo)
             onMenuClick?.()

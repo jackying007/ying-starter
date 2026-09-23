@@ -1,7 +1,6 @@
 import { HttpRequest } from '@jying/http'
-import type { ListFileDto, ListFeedbackDto } from '@ying/shared'
-import type { FileEntity, TFileExtra, FeedbackEntity } from '@ying/shared'
-
+import type { ListFileDto, ListFeedbackDto, TFileExtra } from '@ying/shared'
+import type { FileListVo, FileVo, FeedbackListVo } from '@ying/server/types-admin'
 import { timeDataTransform } from '../helpers'
 
 export default function (http: HttpRequest) {
@@ -10,25 +9,25 @@ export default function (http: HttpRequest) {
       const form = new FormData()
       form.append('file', file)
       form.append('extra', JSON.stringify(extra))
-      return http.post<FileEntity>('/file/image', { body: form })
+      return http.post<FileVo>('/file/image', { body: form })
     },
     listFile(query: ListFileDto) {
-      return http.get<FileEntity[]>('/file/list', { query: timeDataTransform(query, 'date') })
+      return http.get<FileListVo>('/file/list', { query: timeDataTransform(query, 'date') })
     },
     listFileCount(query: ListFileDto) {
       return http.get<number>('/file/list-count', { query: timeDataTransform(query, 'date') })
     },
     deleteFile(id: number) {
-      return http.delete(`/file/${id}`)
+      return http.delete<void>(`/file/${id}`)
     },
-    listFeedback(query: ListFeedbackDto): Promise<FeedbackEntity[]> {
-      return http.get('/feedback/list', { query: timeDataTransform(query, 'date') })
+    listFeedback(query: ListFeedbackDto) {
+      return http.get<FeedbackListVo>('/feedback/list', { query: timeDataTransform(query, 'date') })
     },
     listFeedbackCount(query: ListFeedbackDto): Promise<number> {
-      return http.get('/feedback/list-count', { query: timeDataTransform(query, 'date') })
+      return http.get<number>('/feedback/list-count', { query: timeDataTransform(query, 'date') })
     },
     deleteFeedback(id: number) {
-      return http.delete(`/feedback/${id}`)
+      return http.delete<void>(`/feedback/${id}`)
     }
   }
 }

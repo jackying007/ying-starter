@@ -7,9 +7,9 @@ import { apiConfig } from '@/config'
 import { admin } from '@/business/admin'
 import { client } from '@/business/client'
 
-import { processTimeMiddleware } from './app-middleware'
-import { appErrorHandler } from './app-error-handler'
-import { appLogger } from './app-logger'
+import { processTimeMiddleware } from './app.middleware'
+import { appErrorHandler } from './app.error.handler'
+import { appLogger } from './app.logger'
 
 const app = new Hono()
 app.use('/storage/*', serveStatic({ root: './storage', rewriteRequestPath: path => path.replace(/^\/storage/, '') }))

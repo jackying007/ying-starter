@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { SysRoleEntity, SysUserEntity, FileSourceType, FileType } from '@ying/shared'
+import { FileSourceType, FileType } from '@ying/shared'
 import type { ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
+import { SysRoleEntity, SysUserEntity } from '@ying/db-typeorm'
 import { generatePass } from '@/common/utils'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'

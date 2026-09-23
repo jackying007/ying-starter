@@ -1,6 +1,6 @@
 import type { EntitySubscriberInterface, Repository } from 'typeorm'
 import { EventSubscriber } from 'typeorm'
-import { FileEntity } from '@ying/shared'
+import { FileEntity } from '@ying/db-typeorm'
 import { storageConfig } from '@/config'
 import { dataSource } from '@/common/modules/db'
 import { ExpirSeconds } from './constant'

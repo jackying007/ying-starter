@@ -2,11 +2,9 @@ import { useEffect } from 'react'
 import { Form, Input, App, InputNumber, Select, Modal } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { createOrUpdateArticleDto } from '@ying/shared'
-import type { ArticleEntity } from '@ying/shared'
 import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
-
+import type { ArticleListVo } from '@ying/server/types-admin'
 import { Tags } from '@/components/tags'
 import { ImageSelector } from '@/components/image'
 import { IntlInput } from '@/components/intl'
@@ -14,7 +12,7 @@ import { articleApi } from '@/api'
 import { BasicStatusOptions } from '@/constant'
 import { defaultValues } from './constant'
 
-type ArticleModalProps = ReturnType<typeof useDialogOpen<ArticleEntity>> & {
+type ArticleModalProps = ReturnType<typeof useDialogOpen<ArticleListVo[number]>> & {
   onSuccess?: VoidFunction
 }
 

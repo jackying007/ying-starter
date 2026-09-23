@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import { type StatDto, UserStatType } from '@ying/shared'
-import { UserEntity } from '@ying/shared'
+import { UserEntity } from '@ying/db-typeorm'
 import { StatService } from '@/common/service/stat.service'
 import { dataSource } from '@/common/modules/db'
 

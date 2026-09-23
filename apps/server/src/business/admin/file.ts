@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { FileSourceType, FileType, listFileDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
-import { zValidator, paramId } from '@/business/base-validator'
+import { zValidator, paramId } from '@/business/base.validator'
 import { authValidator, pmsValidator } from '@/business/modules/sys'
 import { fileService } from '@/common/modules/storage'
 import { fileMiddleware } from '@/common/modules/storage'

@@ -1,5 +1,5 @@
 import type { ListPushRecordDto } from '@ying/shared'
-import { PushRecordEntity } from '@ying/shared'
+import { PushRecordEntity } from '@ying/db-typeorm'
 import { BaseService } from '@/common/service/base.service'
 import { dataSource } from '@/common/modules/db'
 

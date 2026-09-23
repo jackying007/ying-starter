@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { getOption } from '@ying/utils'
 import { useDialogOpen } from '@ying/frontend/hooks'
 import type { ListPushRecordDto, ListPushTaskDto } from '@ying/shared'
-import type { PushRecordEntity } from '@ying/shared'
+import type { PushRecordListVo } from '@ying/server/types-admin'
 
 import { useQueryWithRequery, useTable } from '@/hooks'
 import { notificationApi } from '@/api'
@@ -16,11 +16,13 @@ import { JsonViewModal } from '@/components/json-view-modal'
 import { type PushRecordStatusOption, PushRecordStatusOptions } from './constant'
 
 export default function PushRecordPage() {
-  const { control, resetParams, list, listLoading, pagination } = useTable<ListPushRecordDto, PushRecordEntity>({
-    key: 'push-record',
-    getList: notificationApi.listPushRecord,
-    getListCount: notificationApi.listPushRecordCount
-  })
+  const { control, resetParams, list, listLoading, pagination } = useTable<ListPushRecordDto, PushRecordListVo[number]>(
+    {
+      key: 'push-record',
+      getList: notificationApi.listPushRecord,
+      getListCount: notificationApi.listPushRecordCount
+    }
+  )
 
   const { data: pushTasks, requery } = useQueryWithRequery({
     key: 'push-task-select-list',
@@ -32,7 +34,7 @@ export default function PushRecordPage() {
 
   const jsonViewModalProps = useDialogOpen<object>()
 
-  const columns: ColumnsType<PushRecordEntity> = [
+  const columns: ColumnsType<PushRecordListVo[number]> = [
     {
       title: '推送任务',
       dataIndex: 'pushTask',

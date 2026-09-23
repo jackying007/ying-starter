@@ -18,15 +18,5 @@
     }
   },
   "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "**/*spec.ts",
-    "typeorm.config.ts",
-    "migrations",
-    "logs",
-    "storage",
-    "scripts"
-  ]
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "logs", "storage"]
 }

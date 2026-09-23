@@ -3,10 +3,8 @@ import { App, Drawer, Button, Space } from 'antd'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-
 import { uniqueBy } from '@ying/utils'
 import { clientLanguagesConfig, type LngKeys } from '@ying/shared'
-import { FileEntity } from '@ying/shared'
 import { updateArticleContentDto, type UpdateArticleContentDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/frontend/hooks'
 import {
@@ -17,7 +15,7 @@ import {
   type LazyImageAttr,
   type LazyImageListAttr
 } from '@ying/frontend/editor'
-
+import type { FileVo } from '@ying/server/types-admin'
 import { type EditorHandle, FullScreenEditor } from '@/components/editor'
 import { IntlSwitch } from '@/components/intl'
 import { articleApi } from '@/api'
@@ -50,7 +48,7 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
     refetchOnWindowFocus: false
   })
 
-  const [newAssociatedFiles, setNewAssociatedFiles] = useState<FileEntity[]>()
+  const [newAssociatedFiles, setNewAssociatedFiles] = useState<FileVo[]>()
   const associatedFiles = useMemo(
     () => uniqueBy([...(article?.associatedFiles ?? []), ...(newAssociatedFiles ?? [])], 'id'),
     [article, newAssociatedFiles]
@@ -69,7 +67,7 @@ export function ArticleContentDrawer({ open, formValue, onSuccess, onClose }: Ar
   }, [article, reset])
 
   useEffect(() => {
-    function onAddNewAssociatedFiles(files: FileEntity[]) {
+    function onAddNewAssociatedFiles(files: FileVo[]) {
       setNewAssociatedFiles(files)
     }
     editorEmitter.on('add-associated-files', onAddNewAssociatedFiles)

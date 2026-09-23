@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis'
 import { redisConfig } from '@/config'
-import { appLogger } from '@/app-logger'
+import { appLogger } from '@/app.logger'
 
 export const redis = new Redis({
   host: redisConfig.host,

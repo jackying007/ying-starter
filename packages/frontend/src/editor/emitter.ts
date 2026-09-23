@@ -1,9 +1,9 @@
 import mitt from 'mitt'
-import type { FileEntity } from '@ying/shared'
+import type { FileVo } from '@ying/server/types-admin'
 
 export type Events = {
-  'add-associated-files': FileEntity[]
-  'edit-lazy-image-list': FileEntity[]
+  'add-associated-files': FileVo[]
+  'edit-lazy-image-list': FileVo[]
 }
 
 export const editorEmitter = mitt<Events>()
