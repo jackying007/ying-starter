@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { type TableProps, Table, type PaginationProps, Pagination } from 'antd'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import { useThemeToken } from '@/hooks'
 import { ScrollbarThickness } from '@/constant'
 import { useViewportRemainingHeight } from './use-viewport-remaining-height'

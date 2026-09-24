@@ -1,7 +1,13 @@
 import { useImperativeHandle, useState } from 'react'
 
-import { useEditor, EditorRootContext, EditorContent, defaultExtensions, editorEmitter } from '@ying/frontend/editor'
-import { cn } from '@ying/frontend/ui'
+import {
+  useEditor,
+  EditorRootContext,
+  EditorContent,
+  defaultExtensions,
+  editorEmitter
+} from '@ying/shared-react/editor'
+import { cn } from '@ying/shared-react/ui'
 
 import { useThemeToken } from '@/hooks'
 

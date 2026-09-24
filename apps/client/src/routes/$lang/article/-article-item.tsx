@@ -5,8 +5,8 @@ import { useNavigate } from '@tanstack/react-router'
 
 import type { LngKeys } from '@ying/shared'
 import type { ArticleListVo } from '@ying/server/types-client'
-import { cn, Badge } from '@ying/frontend/ui'
-import { LazyImage } from '@ying/frontend/components'
+import { cn, Badge } from '@ying/shared-react/ui'
+import { LazyImage } from '@ying/shared-react/components'
 
 type ArticleItemProps = {
   article: ArticleListVo[number]

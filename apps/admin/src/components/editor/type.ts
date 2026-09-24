@@ -1,5 +1,5 @@
 import type { Ref } from 'react'
-import type { TEditorEmitter } from '@ying/frontend/editor'
+import type { TEditorEmitter } from '@ying/shared-react/editor'
 import type { FileVo } from '@ying/server/types-admin'
 
 export type EditorHandle = {

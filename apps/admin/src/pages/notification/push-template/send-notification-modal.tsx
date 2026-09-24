@@ -3,7 +3,7 @@ import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 import { sendPushTemplateDto } from '@ying/shared'
 import type { PushTemplateListVo } from '@ying/server/types-admin'
 

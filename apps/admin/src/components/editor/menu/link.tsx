@@ -1,5 +1,5 @@
 import { LuLink } from 'react-icons/lu'
-import { useEditorContext, useEditorState, MenuButton } from '@ying/frontend/editor'
+import { useEditorContext, useEditorState, MenuButton } from '@ying/shared-react/editor'
 import { usePrompt } from '@/hooks'
 
 export const MenuLink = () => {

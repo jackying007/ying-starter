@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 
 import { PushTaskStatus } from '@ying/shared'
 import type { ListPushTaskDto } from '@ying/shared'

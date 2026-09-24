@@ -1,7 +1,7 @@
 import { App, Button, Modal, QRCode } from 'antd'
 
-import { useDialogOpen } from '@ying/frontend/hooks'
-import { copyText, doDownload } from '@ying/frontend/utils'
+import { useDialogOpen } from '@ying/shared-react/hooks'
+import { copyText, doDownload } from '@ying/shared-web'
 
 export type TPromotionData = {
   title?: string

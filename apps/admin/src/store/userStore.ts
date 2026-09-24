@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import cookie from 'js-cookie'
 
 import type { TPermission } from '@ying/shared/permission'
-import { storage } from '@ying/frontend/utils'
+import { storage } from '@ying/shared-web'
 import type { SysAuthUserInfoVo } from '@ying/server/types-admin'
 
 import { sysAuthApi } from '@/api'

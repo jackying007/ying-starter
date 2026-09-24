@@ -3,7 +3,7 @@ import { load } from '@fingerprintjs/fingerprintjs'
 import UAParser from 'ua-parser-js'
 
 import type { UserInfoVo } from '@ying/server/types-client'
-import { storage } from '@ying/frontend/utils'
+import { storage } from '@ying/shared-web'
 
 import { StorageEnum } from '@/enum'
 import { commonAPI } from '@/api'

@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { updateSysUserPasswordDto, type UpdateSysUserPasswordDto } from '@ying/shared'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 
 import { sysUserApi } from '@/api'
 

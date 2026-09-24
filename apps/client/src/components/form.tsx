@@ -11,7 +11,7 @@ import {
   type FieldValues
 } from 'react-hook-form'
 import type { TFunction } from 'i18next'
-import { cn, Label } from '@ying/frontend/ui'
+import { cn, Label } from '@ying/shared-react/ui'
 
 type FormContextValue = {
   t?: TFunction

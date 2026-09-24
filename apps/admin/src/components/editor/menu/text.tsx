@@ -1,6 +1,6 @@
 import { Select } from 'antd'
 
-import { useEditorContext, useEditorState } from '@ying/frontend/editor'
+import { useEditorContext, useEditorState } from '@ying/shared-react/editor'
 import type { PropsWithClassName } from '@/types'
 
 const TextOptions = [

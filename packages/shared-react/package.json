@@ -1,12 +1,11 @@
 {
-  "name": "@ying/frontend",
+  "name": "@ying/shared-react",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
     "./styles": "./src/styles.css",
     "./hooks": "./src/hooks/index.ts",
-    "./utils": "./src/utils/index.ts",
     "./icons": "./src/icons/index.ts",
     "./ui": "./src/ui/index.ts",
     "./components": "./src/components/index.ts",

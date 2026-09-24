@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 
 import type { ListFileDto } from '@ying/shared'
 import { FileType } from '@ying/shared'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import type { FileListVo } from '@ying/server/types-admin'
 
 import { commonApi } from '@/api'

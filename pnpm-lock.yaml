@@ -80,15 +80,18 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.103.2(react@19.3.0)
-      '@ying/frontend':
-        specifier: workspace:*
-        version: link:../../packages/frontend
       '@ying/server':
         specifier: workspace:*
         version: link:../server
       '@ying/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@ying/shared-react':
+        specifier: workspace:*
+        version: link:../../packages/shared-react
+      '@ying/shared-web':
+        specifier: workspace:*
+        version: link:../../packages/shared-web
       '@ying/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -249,15 +252,18 @@ importers:
       '@tanstack/router-plugin':
         specifier: ^1.132.0
         version: 1.168.40(@tanstack/react-router@1.170.38(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.63.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(tsx@4.23.15)(yaml@2.9.1))
-      '@ying/frontend':
-        specifier: workspace:*
-        version: link:../../packages/frontend
       '@ying/server':
         specifier: workspace:*
         version: link:../server
       '@ying/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@ying/shared-react':
+        specifier: workspace:*
+        version: link:../../packages/shared-react
+      '@ying/shared-web':
+        specifier: workspace:*
+        version: link:../../packages/shared-web
       '@ying/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -466,7 +472,33 @@ importers:
         specifier: ^4.23.15
         version: 4.23.15
 
-  packages/frontend:
+  packages/http:
+    dependencies:
+      qs:
+        specifier: ^6.14.0
+        version: 6.16.0
+    devDependencies:
+      '@types/qs':
+        specifier: ^6.15.1
+        version: 6.15.1
+
+  packages/shared:
+    dependencies:
+      nanoid:
+        specifier: ^3.3.18
+        version: 3.3.19
+      web-push:
+        specifier: ^3.6.7
+        version: 3.6.7
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
+    devDependencies:
+      '@types/web-push':
+        specifier: ^3.6.4
+        version: 3.6.4
+
+  packages/shared-react:
     dependencies:
       '@tiptap/extension-text-align':
         specifier: ^3.27.1
@@ -545,31 +577,7 @@ importers:
         specifier: ^4.3.2
         version: 4.3.3
 
-  packages/http:
-    dependencies:
-      qs:
-        specifier: ^6.14.0
-        version: 6.16.0
-    devDependencies:
-      '@types/qs':
-        specifier: ^6.15.1
-        version: 6.15.1
-
-  packages/shared:
-    dependencies:
-      nanoid:
-        specifier: ^3.3.18
-        version: 3.3.19
-      web-push:
-        specifier: ^3.6.7
-        version: 3.6.7
-      zod:
-        specifier: ^4.6.5
-        version: 4.6.5
-    devDependencies:
-      '@types/web-push':
-        specifier: ^3.6.4
-        version: 3.6.4
+  packages/shared-web: {}
 
   packages/utils:
     dependencies:

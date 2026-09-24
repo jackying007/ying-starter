@@ -1,6 +1,6 @@
 import { cloneElement, type CSSProperties, type ReactElement } from 'react'
 import { Divider, type MenuProps, Dropdown, type DropdownProps } from 'antd'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 import { useUserInfo, logout } from '@/store/userStore'
 import { useThemeToken } from '@/hooks'
 import { UserInfoModal } from './user-info-modal'

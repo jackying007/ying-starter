@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
 import { resetPasswordDto, type ResetPasswordDto } from '@ying/shared'
-import { Input, Button } from '@ying/frontend/ui'
+import { Input, Button } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { useAuthStore, logout } from '@/store/auth-store'

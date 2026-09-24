@@ -1,5 +1,5 @@
 import type { ErrorComponentProps } from '@tanstack/react-router'
-import { Button } from '@ying/frontend/ui'
+import { Button } from '@ying/shared-react/ui'
 import { TipError } from '@/components/tip-error'
 import { MaxWidthWrapper } from './max-width-wrapper'
 

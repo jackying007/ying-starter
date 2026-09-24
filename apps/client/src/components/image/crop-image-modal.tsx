@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { useDialogOpen } from '@ying/frontend/hooks'
+import type { useDialogOpen } from '@ying/shared-react/hooks'
 import {
   Button,
   Dialog,
@@ -10,9 +10,9 @@ import {
   DialogContent,
   DialogFooter,
   DialogClose
-} from '@ying/frontend/ui'
-import type { TCropImageHandle, TSaveRes } from '@ying/frontend/components'
-import { CropImage } from '@ying/frontend/components'
+} from '@ying/shared-react/ui'
+import type { TCropImageHandle, TSaveRes } from '@ying/shared-react/components'
+import { CropImage } from '@ying/shared-react/components'
 
 type CropImageModalProps = ReturnType<typeof useDialogOpen<File>> & {
   onCrop?: (res: TSaveRes) => void

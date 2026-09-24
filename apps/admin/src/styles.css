@@ -1,6 +1,6 @@
 @import 'simplebar-react/dist/simplebar.min.css';
-@import '@ying/frontend/styles';
-@source "../node_modules/@ying/frontend/src";
+@import '@ying/shared-react/styles';
+@source "../node_modules/@ying/shared-react/src";
 
 :root {
   --primary: #00a76f;

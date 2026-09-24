@@ -1,6 +1,6 @@
 import { type CSSProperties } from 'react'
 import { NavLink } from 'react-router-dom'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 
 import { useThemeToken } from '@/hooks'
 

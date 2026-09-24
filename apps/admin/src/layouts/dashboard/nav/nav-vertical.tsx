@@ -1,6 +1,6 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import { Scrollbar } from '@/components/scrollbar'
 import { useResponsive, useThemeToken } from '@/hooks'
 import { useSettings, setSettings } from '@/store'

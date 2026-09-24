@@ -1,5 +1,5 @@
 import { Drawer } from 'antd'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 import { IconButton, Iconify } from '@/components/icon'
 import { useThemeToken } from '@/hooks'
 import { NavVertical } from './nav-vertical'

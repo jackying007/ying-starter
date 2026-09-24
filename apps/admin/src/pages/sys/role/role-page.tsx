@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
 import type { ListRoleDto, CreateOrUpdateRoleDto } from '@ying/shared'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 import type { SysRoleListVo } from '@ying/server/types-admin'
 
 import { useTable } from '@/hooks'

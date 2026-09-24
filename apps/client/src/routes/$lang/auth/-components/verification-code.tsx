@@ -1,5 +1,5 @@
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@ying/frontend/ui'
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@ying/shared-react/ui'
 
 type VerificationCodeProps = {
   value?: string

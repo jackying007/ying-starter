@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { BasicStatus } from '@ying/shared'
 import { createOrUpdateSysUserDto } from '@ying/shared'
 import type { CreateOrUpdateSysUserDto, ListRoleDto } from '@ying/shared'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 
 import { useQueryWithRequery } from '@/hooks'
 import { sysRoleApi, sysUserApi } from '@/api'

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { PushSubscription } from 'web-push'
-import { storage } from '@ying/frontend/utils'
+import { storage } from '@ying/shared-web'
 import { commonAPI } from '@/api'
 import { StorageEnum } from '@/enum'
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useParams } from '@tanstack/react-router'
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@ying/frontend/ui'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@ying/shared-react/ui'
 import { languages } from '@/i18n/config'
 import { CookieEnum } from '@/enum'
 import { getCookie, setCookie } from '@/cookie'

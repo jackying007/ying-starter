@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import dayjs from 'dayjs'
 import { useLocation } from 'react-router-dom'
 
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 import type { ListPushTemplateDto } from '@ying/shared'
 import type { ArticleListVo, PushTemplateListVo } from '@ying/server/types-admin'
 

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import { Link as TanstackRouterLink } from '@tanstack/react-router'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 
 type LinkProps = ComponentProps<typeof TanstackRouterLink>
 

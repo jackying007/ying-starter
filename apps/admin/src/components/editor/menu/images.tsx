@@ -3,8 +3,8 @@ import { FaImages } from 'react-icons/fa'
 import { Modal } from 'antd'
 
 import type { FileVo } from '@ying/server/types-admin'
-import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
-import { useEditorContext, MenuButton, type Events } from '@ying/frontend/editor'
+import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
+import { useEditorContext, MenuButton, type Events } from '@ying/shared-react/editor'
 
 import { ImageSelector } from '@/components/image'
 

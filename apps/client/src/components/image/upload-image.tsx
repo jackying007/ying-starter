@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { SelectFileType, useUpload, selectFile, useDialogOpen, type UseUploadOptions } from '@ying/frontend/hooks'
-import { cn } from '@ying/frontend/ui'
-import { PlusIcon, LoadingIconV1 } from '@ying/frontend/icons'
+import { SelectFileType, useUpload, selectFile, useDialogOpen, type UseUploadOptions } from '@ying/shared-react/hooks'
+import { cn } from '@ying/shared-react/ui'
+import { PlusIcon, LoadingIconV1 } from '@ying/shared-react/icons'
 import type { FileVo } from '@ying/server/types-client'
 
 import { CropImageModal } from './crop-image-modal'

@@ -1,5 +1,5 @@
 import { useRouterState } from '@tanstack/react-router'
-import { useMounted } from '@ying/frontend/hooks'
+import { useMounted } from '@ying/shared-react/hooks'
 import { LoadingBar } from '@/components/loading-bar'
 
 export function RouteLoading() {

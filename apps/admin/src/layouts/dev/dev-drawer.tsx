@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Drawer, Tabs, type TabsProps } from 'antd'
-import { useEvent } from '@ying/frontend/hooks'
+import { useEvent } from '@ying/shared-react/hooks'
 
 const tabs: TabsProps['items'] = []
 const initComponents = () => {

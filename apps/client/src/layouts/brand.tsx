@@ -1,5 +1,5 @@
 import { useParams } from '@tanstack/react-router'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import { Link } from '@/components/link'
 import type { PropsWithClassName } from '@/types'
 

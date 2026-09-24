@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { PlusOutlined, BorderInnerOutlined, Loading3QuartersOutlined } from '@ant-design/icons'
-import { SelectFileType, selectFile, useUpload, type UseUploadOptions, useDialogOpen } from '@ying/frontend/hooks'
-import { cn } from '@ying/frontend/ui'
+import { SelectFileType, selectFile, useUpload, type UseUploadOptions, useDialogOpen } from '@ying/shared-react/hooks'
+import { cn } from '@ying/shared-react/ui'
 import type { FileVo } from '@ying/server/types-admin'
 import { CropImageModal } from './crop-image-modal'
 

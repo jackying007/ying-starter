@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
 import { createFeedbackDto, type CreateFeedbackDto } from '@ying/shared'
-import { Card, CardContent, Input, Textarea, Button } from '@ying/frontend/ui'
+import { Card, CardContent, Input, Textarea, Button } from '@ying/shared-react/ui'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'

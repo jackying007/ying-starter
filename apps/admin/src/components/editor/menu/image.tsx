@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { FaImage } from 'react-icons/fa'
 
 import type { FileVo } from '@ying/server/types-admin'
-import { useEditorContext, MenuButton } from '@ying/frontend/editor'
+import { useEditorContext, MenuButton } from '@ying/shared-react/editor'
 
 import { ImageSelectorModal } from '@/components/image/image-selector-modal'
 

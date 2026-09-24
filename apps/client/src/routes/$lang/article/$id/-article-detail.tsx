@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next'
 
 import type { LngKeys } from '@ying/shared'
 import type { ArticleVo } from '@ying/server/types-client'
-import { Badge } from '@ying/frontend/ui'
-import { LazyImage } from '@ying/frontend/components'
+import { Badge } from '@ying/shared-react/ui'
+import { LazyImage } from '@ying/shared-react/components'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
 import { RichContent } from '@/components/rich-content'

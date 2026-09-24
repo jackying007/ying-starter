@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { TablePaginationConfig } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 
-import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/frontend/hooks'
+import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/shared-react/hooks'
 import type { ListDto } from '@ying/shared'
 
 export const useTable = <TParams extends ListDto, TData>(props: UsePaginationDataOptions<TParams, TData>) => {

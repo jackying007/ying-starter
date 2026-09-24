@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { BasicStatus } from '@ying/shared'
 import { createOrUpdateRoleDto, type CreateOrUpdateRoleDto } from '@ying/shared'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 
 import { sysRoleApi } from '@/api'
 import { defaultRoleValues } from './constant'

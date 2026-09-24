@@ -1,6 +1,6 @@
 import { FaGoogle, FaGithub } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@ying/frontend/ui'
+import { Button } from '@ying/shared-react/ui'
 import { useSignIn } from '@/hooks/use-sign-in'
 
 export const Social = () => {

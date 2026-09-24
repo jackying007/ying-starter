@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 
 import { clientLoginDto, type ClientLoginDto } from '@ying/shared'
-import { Button, buttonVariants, Input } from '@ying/frontend/ui'
+import { Button, buttonVariants, Input } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { Link } from '@/components/link'

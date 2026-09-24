@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { createOrUpdatePushTemplateDto } from '@ying/shared'
 import type { PushTemplateListVo } from '@ying/server/types-admin'
-import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
+import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
 
 import { notificationApi } from '@/api'
 import { ImageSelector } from '@/components/image'

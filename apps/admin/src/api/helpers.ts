@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { get, set } from 'lodash-es'
 
-import { doDownload } from '@ying/frontend/utils'
+import { doDownload } from '@ying/shared-web'
 
 export function timeDataTransform<T extends object>(data: T, fields: (keyof T)[] | keyof T) {
   if (fields) {
