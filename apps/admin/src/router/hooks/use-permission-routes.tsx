@@ -1,4 +1,4 @@
-import { deepCopy } from '@ying/utils'
+import { deepClone } from '@ying/utils'
 import { useUserPermission } from '@/store/userStore'
 import { MenuRoutes } from '@/router/routes/menu-routes'
 import { transformRoutesByPermission, flattenRoutesToRouteMetas, routerFilter, navMenuFilter } from './utils'
@@ -6,7 +6,7 @@ import { transformRoutesByPermission, flattenRoutesToRouteMetas, routerFilter, n
 export function usePermissionRoutes() {
   const permissions = useUserPermission()
 
-  const transformedRoutes = transformRoutesByPermission(deepCopy(MenuRoutes), permissions?.map(el => el.code) ?? [])
+  const transformedRoutes = transformRoutesByPermission(deepClone(MenuRoutes), permissions?.map(el => el.code) ?? [])
 
   const routeMetas = flattenRoutesToRouteMetas(transformedRoutes)
 

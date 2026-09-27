@@ -1,3 +1,7 @@
 export * from './other'
-export * as formatNumber from './format-number'
+export * from './deep-clone'
+export * from './unique'
+export * from './tree'
+export * from './format-number'
 export * from './log'
+export * from './event-emitter'

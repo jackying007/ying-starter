@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import { Editor } from '@tiptap/react'
 import type { FileVo } from '@ying/server/types-admin'
-import type { TEditorEmitter } from './emitter'
+import type { TEditorEmitter } from './event-emitter'
 
 export type EditorRootContextValue = {
   editor: Editor

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Card, Tooltip, Typography, Image } from 'antd'
 import type { ItemRender } from 'antd/es/upload/interface'
 import { m } from 'framer-motion'
-import { formatNumber } from '@ying/utils'
+import { fBytes } from '@ying/utils'
 import { varFade } from '@/components/animate/variants'
 import { IconButton, Iconify, SvgIcon } from '@/components/icon'
 import { getBlobUrl, getFileFormat, getFileIcon } from './utils'
@@ -60,7 +60,7 @@ export default function UploadListItem({ file, actions, thumbnail = false }: Pro
       <div className="ml-4 flex flex-col">
         <Typography.Text className="text-sm! font-medium!">{name}</Typography.Text>
         <Typography.Text type="secondary" className="text-xs!">
-          {formatNumber.fBytes(size)}
+          {fBytes(size)}
         </Typography.Text>
       </div>
       {closeButton}

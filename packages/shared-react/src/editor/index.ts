@@ -3,7 +3,7 @@ export * from '@tiptap/starter-kit'
 export * from '@tiptap/extension-text-align'
 export * from '@tiptap/extension-text-style'
 
-export * from './emitter'
+export * from './event-emitter'
 export * from './provider'
 export * from './base-state'
 export * from './menu-button'

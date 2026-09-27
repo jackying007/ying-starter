@@ -38,7 +38,6 @@
     "js-cookie": "^3.0.5",
     "json-edit-react": "^1.27.0",
     "lodash-es": "^4.17.21",
-    "mitt": "^3.0.1",
     "react": "^19.2.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^19.2.0",

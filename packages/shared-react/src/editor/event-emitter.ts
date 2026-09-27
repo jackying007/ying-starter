@@ -1,4 +1,4 @@
-import mitt from 'mitt'
+import { EventEmitter } from '@ying/utils'
 import type { FileVo } from '@ying/server/types-admin'
 
 export type Events = {
@@ -6,6 +6,6 @@ export type Events = {
   'edit-lazy-image-list': FileVo[]
 }
 
-export const editorEmitter = mitt<Events>()
+export const editorEmitter = new EventEmitter<Events>()
 
 export type TEditorEmitter = typeof editorEmitter
