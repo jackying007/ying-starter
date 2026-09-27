@@ -4,7 +4,7 @@ import { serve } from '@hono/node-server'
 import { styleText } from 'util'
 
 import { apiConfig } from '@/config'
-import { admin } from '@/business/admin'
+import { admin, initSocketIo as initAdminSocketIo } from '@/business/admin'
 import { client } from '@/business/client'
 
 import { processTimeMiddleware } from './app.middleware'
@@ -22,7 +22,7 @@ appAPI.route('/client', client)
 
 app.route('/api', appAPI)
 
-serve(
+const httpServer = serve(
   {
     fetch: app.fetch,
     hostname: '0.0.0.0',
@@ -30,5 +30,7 @@ serve(
   },
   () => appLogger.log(`🚀 Application is running on ${styleText('cyanBright', apiConfig.serverUrl)}`)
 )
+
+initAdminSocketIo(httpServer)
 
 if (apiConfig.enableConsumer) import('./worker')

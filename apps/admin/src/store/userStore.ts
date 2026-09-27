@@ -26,6 +26,7 @@ export const useUserStore = create<UserStore>()(() => {
 })
 
 export const useAccessToken = () => useUserStore(state => state.accessToken)
+export const useRefreshToken = () => useUserStore(state => state.refreshToken)
 export const useUserInfo = () => useUserStore(state => state.userInfo)
 export const useUserPermission = () => useUserStore(state => state.userInfo?.permissions)
 

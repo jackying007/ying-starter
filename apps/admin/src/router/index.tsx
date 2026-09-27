@@ -23,11 +23,7 @@ export default function Router() {
     let currentShowMsg = ''
     function onApiErrorMsg(msg: string) {
       if (currentShowMsg) return
-      if (Array.isArray(msg)) {
-        currentShowMsg = msg[0]
-      } else {
-        currentShowMsg = msg
-      }
+      currentShowMsg = msg
       message.error(currentShowMsg, undefined, () => (currentShowMsg = ''))
     }
     globalEvent.on('API_ERROR_MSG', onApiErrorMsg)

@@ -2,9 +2,7 @@ import { useEffect } from 'react'
 import { create } from 'zustand'
 import { io, Socket } from 'socket.io-client'
 
-// import { ClientToServerEvents, ServerToClientEvents } from '@ying/shared'
-
-import { useAccessToken } from './userStore'
+import { useRefreshToken } from './userStore'
 
 type SocketStore = {
   socket?: Socket
@@ -16,18 +14,18 @@ export const useSocketStore = create<SocketStore>(() => ({
 }))
 
 export const useSocketIo = () => {
-  const accessToken = useAccessToken()
+  const refreshToken = useRefreshToken()
 
   useEffect(() => {
-    if (!accessToken) return
+    if (!refreshToken) return
 
     const socket = io({
+      path: '/admin-socket.io',
       auth: {
-        token: accessToken
+        token: refreshToken
       },
       transports: ['websocket']
     })
-
     socket.on('connect', () => {
       useSocketStore.setState({ connected: true })
     })
@@ -35,14 +33,10 @@ export const useSocketIo = () => {
       useSocketStore.setState({ connected: false })
     })
 
-    socket.on('authFail', () => {
-      console.error('ws 授权失败.')
-    })
-
     useSocketStore.setState({ socket })
 
     return () => {
       socket.disconnect()
     }
-  }, [accessToken])
+  }, [refreshToken])
 }

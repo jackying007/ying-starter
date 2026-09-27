@@ -5,6 +5,7 @@ import { feedback } from './feedback'
 import { user, userStat } from './user'
 import { article } from './article'
 import { visitor, pushTemplate, pushTask, pushRecord } from './notification'
+export * from './socket.io'
 
 export const admin = new Hono()
   .route('/file', file)

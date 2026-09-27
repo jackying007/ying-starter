@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.APP_SERVER_URL
         },
-        '/socket.io': {
+        '/admin-socket.io': {
           target: env.APP_SERVER_URL,
           ws: true
         }
