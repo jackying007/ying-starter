@@ -1,7 +1,7 @@
 import { useTransition } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNotificationSw } from '@/providers/use-notification-sw'
-import { Button } from '@ying/frontend/ui'
+import { Button } from '@ying/shared-react/ui'
 
 export const Notification = () => {
   const { t } = useTranslation()

@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { FaImage } from 'react-icons/fa'
 
-import type { FileEntity } from '@ying/shared'
-import { useEditorContext, MenuButton } from '@ying/frontend/editor'
+import type { FileVo } from '@ying/server/types-admin'
+import { useEditorContext, MenuButton } from '@ying/shared-react/editor'
 
 import { ImageSelectorModal } from '@/components/image/image-selector-modal'
 
 export const MenuImage = () => {
   const [open, setOpen] = useState(false)
   const { editor, emitter } = useEditorContext()
-  const onSelectFiles = (files: FileEntity[]) => {
+  const onSelectFiles = (files: FileVo[]) => {
     if (!files.length) return
     emitter?.emit('add-associated-files', files)
     editor

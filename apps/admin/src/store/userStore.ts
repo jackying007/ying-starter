@@ -2,21 +2,21 @@ import { useCallback } from 'react'
 import { create } from 'zustand'
 import cookie from 'js-cookie'
 
-import type { SysUserEntity } from '@ying/shared'
 import type { TPermission } from '@ying/shared/permission'
-import { storage } from '@ying/frontend/utils'
+import { storage } from '@ying/shared-web'
+import type { SysAuthUserInfoVo } from '@ying/server/types-admin'
 
-import { authApi } from '@/api'
+import { sysAuthApi } from '@/api'
 import { CookieEnum, StorageEnum } from '@/types/enum'
 
 type UserStore = {
   accessToken?: string
   refreshToken?: string
-  userInfo?: SysUserEntity
+  userInfo?: SysAuthUserInfoVo
 }
 
 export const useUserStore = create<UserStore>()(() => {
-  const userInfo = storage.getItem<SysUserEntity>(StorageEnum.UserInfo)
+  const userInfo = storage.getItem<SysAuthUserInfoVo>(StorageEnum.UserInfo)
 
   return {
     accessToken: cookie.get(CookieEnum.AccessToken),
@@ -26,6 +26,7 @@ export const useUserStore = create<UserStore>()(() => {
 })
 
 export const useAccessToken = () => useUserStore(state => state.accessToken)
+export const useRefreshToken = () => useUserStore(state => state.refreshToken)
 export const useUserInfo = () => useUserStore(state => state.userInfo)
 export const useUserPermission = () => useUserStore(state => state.userInfo?.permissions)
 
@@ -51,7 +52,7 @@ export const setRefreshToken = (refreshToken: string) => {
   cookie.set(CookieEnum.RefreshToken, refreshToken, { expires: 365 })
 }
 
-export const setUserInfo = (userInfo: SysUserEntity) => {
+export const setUserInfo = (userInfo: SysAuthUserInfoVo) => {
   useUserStore.setState({ userInfo })
   storage.setItem(StorageEnum.UserInfo, userInfo)
 }
@@ -64,11 +65,11 @@ export const clearUserStore = () => {
 }
 
 export const updateUserInfo = async () => {
-  const userInfo = await authApi.getUserInfo()
+  const userInfo = await sysAuthApi.getUserInfo()
   setUserInfo(userInfo)
 }
 
 export const logout = async () => {
-  await authApi.logout()
+  await sysAuthApi.logout()
   clearUserStore()
 }

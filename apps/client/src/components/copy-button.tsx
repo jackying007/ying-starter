@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { LuCheck, LuClipboard } from 'react-icons/lu'
 
-import { copyText } from '@ying/frontend/utils'
-import { cn, Button, type buttonVariants, type VariantProps } from '@ying/frontend/ui'
+import { copyText } from '@ying/shared-web'
+import { cn, Button, type buttonVariants, type VariantProps } from '@ying/shared-react/ui'
 
 type CopyButtonProps = VariantProps<typeof buttonVariants> & {
   className?: string

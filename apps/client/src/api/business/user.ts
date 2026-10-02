@@ -1,11 +1,11 @@
 import type { HttpRequest } from '@jying/http'
 import type { ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
-import type { ClientUserVo } from '@ying/shared'
+import type { UserInfoVo } from '@ying/server/types-client'
 
 export default function (http: HttpRequest) {
   return {
     getInfo() {
-      return http.get<ClientUserVo>('/user/info')
+      return http.get<UserInfoVo>('/user/info')
     },
     updateUserInfo(data: UpdateUserInfoDto) {
       return http.put<void>('/user', { data })

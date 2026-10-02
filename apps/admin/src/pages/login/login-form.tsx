@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import type { AdminLoginDto } from '@ying/shared'
 
 import { setAccessToken, setRefreshToken, setUserInfo } from '@/store'
-import { authApi } from '@/api'
+import { sysAuthApi } from '@/api'
 
 import { LoginStateEnum, useLoginStateContext } from './provider'
 
@@ -12,10 +12,10 @@ const useSignIn = () => {
 
   const signIn = useCallback(
     async (data: AdminLoginDto) => {
-      const authTokens = await authApi.login(data)
+      const authTokens = await sysAuthApi.login(data)
       setAccessToken(authTokens.accessToken)
       setRefreshToken(authTokens.refreshToken)
-      const userInfo = await authApi.getUserInfo()
+      const userInfo = await sysAuthApi.getUserInfo()
       setUserInfo(userInfo)
 
       setTimeout(() => {

@@ -3,7 +3,7 @@ import { ColorPicker } from 'antd'
 import type { Color } from 'antd/es/color-picker'
 import { FaFillDrip } from 'react-icons/fa'
 import { LuCircleX, LuPipette } from 'react-icons/lu'
-import { useEditorContext, useEditorState, MenuButton } from '@ying/frontend/editor'
+import { useEditorContext, useEditorState, MenuButton } from '@ying/shared-react/editor'
 
 export const MenuBgColor = () => {
   const [color, setColor] = useState<string>('#000000')

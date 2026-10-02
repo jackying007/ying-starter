@@ -4,13 +4,13 @@ import { EyeFilled, DeleteOutlined, PlusOutlined, DragOutlined } from '@ant-desi
 import { DndContext, type DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { FileEntity } from '@ying/shared'
+import type { FileVo } from '@ying/server/types-admin'
 import { ImageSelectorModal, type ImageSelectorModalRefHandle } from './image-selector-modal'
 
 type ImageSelectorProps = {
   maxLength?: number
-  defaultValue?: FileEntity[] | FileEntity
-  onChange?: (files: FileEntity[]) => void
+  defaultValue?: FileVo[] | FileVo
+  onChange?: (files: FileVo[]) => void
 }
 
 export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSelectorProps) => {
@@ -21,7 +21,7 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
 
   const imageSelectorModalRef = useRef<ImageSelectorModalRefHandle>(null)
 
-  const onSelect = (files: FileEntity[]) => {
+  const onSelect = (files: FileVo[]) => {
     setImages(files)
     onChange?.(files)
   }
@@ -38,10 +38,10 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
   }
 
   const [previewUrl, setPreviewUrl] = useState('')
-  const onPreview = (file: FileEntity) => {
+  const onPreview = (file: FileVo) => {
     setPreviewUrl(file.url)
   }
-  const onDelete = (file: FileEntity) => {
+  const onDelete = (file: FileVo) => {
     const newImages = images.filter(el => el.id !== file.id)
     setImages(newImages)
     onChange?.(newImages)
@@ -90,9 +90,9 @@ export const ImageSelector = ({ maxLength = 5, defaultValue, onChange }: ImageSe
 }
 
 type SortableImageItemProps = {
-  item: FileEntity
-  onPreview: (item: FileEntity) => void
-  onDelete: (item: FileEntity) => void
+  item: FileVo
+  onPreview: (item: FileVo) => void
+  onDelete: (item: FileVo) => void
 }
 const SortableImageItem = ({ item, onPreview, onDelete }: SortableImageItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id })

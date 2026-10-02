@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { EmptyBoxIcon } from '@ying/frontend/icons'
+import { EmptyBoxIcon } from '@ying/shared-react/icons'
 
 type EmptyProps = {
   desc?: string

@@ -32,12 +32,12 @@ export class FileController {
   ) {}
 
   @Get('list')
-  fileList(@Query({ schema: listFileDto }) dto: ListFileDto) {
+  listFile(@Query({ schema: listFileDto }) dto: ListFileDto) {
     return this.fileService.list(dto)
   }
 
   @Get('list-count')
-  fileListCount(@Query({ schema: listFileDto }) dto: ListFileDto) {
+  listFileCount(@Query({ schema: listFileDto }) dto: ListFileDto) {
     return this.fileService.listCount(dto)
   }
 
@@ -50,7 +50,7 @@ export class FileController {
   @PermissionDecorator(pms.file.create)
   @Post('image')
   @UseInterceptors(FileInterceptor('file'))
-  upload(
+  uploadImage(
     @UploadedFile(
       new ParseFilePipe({
         validators: [

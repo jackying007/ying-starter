@@ -1,12 +1,11 @@
 import { memo } from 'react'
 import ApexChart from 'react-apexcharts'
+import type { Props as ApexChartProps } from 'react-apexcharts'
 
 import { useSettings } from '@/store'
 import { useThemeToken } from '@/hooks'
 
 import { StyledApexChart } from './styles'
-
-import type { Props as ApexChartProps } from 'react-apexcharts'
 
 export default memo(function Chart(props: ApexChartProps) {
   const { themeMode } = useSettings()

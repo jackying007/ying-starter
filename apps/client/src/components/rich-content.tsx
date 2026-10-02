@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { useMounted } from '@ying/frontend/hooks'
+import { useMounted } from '@ying/shared-react/hooks'
 import {
   type EditorRootContextValue,
   EditorRootContext,
   EditorContent,
   defaultExtensions,
   useEditor
-} from '@ying/frontend/editor'
+} from '@ying/shared-react/editor'
 
 type RichContentProps = Pick<EditorRootContextValue, 'associatedFiles'> & {
   htmlText?: string

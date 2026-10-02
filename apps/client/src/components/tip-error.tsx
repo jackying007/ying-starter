@@ -1,4 +1,4 @@
-import { ErrorIcon } from '@ying/frontend/icons'
+import { ErrorIcon } from '@ying/shared-react/icons'
 
 type TipErrorProps = {
   message?: string | null

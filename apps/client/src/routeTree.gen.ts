@@ -13,7 +13,6 @@ import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangProtectedRouteRouteImport } from './routes/$lang/_protected/route'
 import { Route as LangAuthRouteRouteImport } from './routes/$lang/auth/route'
-import { Route as LangTestRouteImport } from './routes/$lang/test'
 import { Route as LangProtectedProfileRouteImport } from './routes/$lang/_protected/profile'
 import { Route as LangProtectedResetPasswordRouteImport } from './routes/$lang/_protected/reset-password'
 import { Route as LangArticleIndexRouteImport } from './routes/$lang/article/index'
@@ -41,11 +40,6 @@ const LangProtectedRouteRoute = LangProtectedRouteRouteImport.update({
 const LangAuthRouteRoute = LangAuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => LangRouteRoute,
-} as any)
-const LangTestRoute = LangTestRouteImport.update({
-  id: '/test',
-  path: '/test',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangProtectedProfileRoute = LangProtectedProfileRouteImport.update({
@@ -98,7 +92,6 @@ const LangArticleIdIndexRoute = LangArticleIdIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRouteRouteWithChildren
-  '/$lang/test': typeof LangTestRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/profile': typeof LangProtectedProfileRoute
   '/$lang/reset-password': typeof LangProtectedResetPasswordRoute
@@ -113,7 +106,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/$lang': typeof LangIndexRoute
   '/$lang/auth': typeof LangAuthRouteRouteWithChildren
-  '/$lang/test': typeof LangTestRoute
   '/$lang/profile': typeof LangProtectedProfileRoute
   '/$lang/reset-password': typeof LangProtectedResetPasswordRoute
   '/$lang/auth/error': typeof LangAuthErrorRoute
@@ -129,7 +121,6 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/_protected': typeof LangProtectedRouteRouteWithChildren
   '/$lang/auth': typeof LangAuthRouteRouteWithChildren
-  '/$lang/test': typeof LangTestRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/_protected/profile': typeof LangProtectedProfileRoute
   '/$lang/_protected/reset-password': typeof LangProtectedResetPasswordRoute
@@ -146,7 +137,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/$lang'
     | '/$lang/auth'
-    | '/$lang/test'
     | '/$lang/'
     | '/$lang/profile'
     | '/$lang/reset-password'
@@ -161,7 +151,6 @@ export interface FileRouteTypes {
   to:
     | '/$lang'
     | '/$lang/auth'
-    | '/$lang/test'
     | '/$lang/profile'
     | '/$lang/reset-password'
     | '/$lang/auth/error'
@@ -176,7 +165,6 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/_protected'
     | '/$lang/auth'
-    | '/$lang/test'
     | '/$lang/'
     | '/$lang/_protected/profile'
     | '/$lang/_protected/reset-password'
@@ -221,13 +209,6 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/$lang/auth'
       preLoaderRoute: typeof LangAuthRouteRouteImport
-      parentRoute: typeof LangRouteRoute
-    }
-    '/$lang/test': {
-      id: '/$lang/test'
-      path: '/test'
-      fullPath: '/$lang/test'
-      preLoaderRoute: typeof LangTestRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/_protected/profile': {
@@ -330,7 +311,6 @@ const LangAuthRouteRouteWithChildren = LangAuthRouteRoute._addFileChildren(
 interface LangRouteRouteChildren {
   LangProtectedRouteRoute: typeof LangProtectedRouteRouteWithChildren
   LangAuthRouteRoute: typeof LangAuthRouteRouteWithChildren
-  LangTestRoute: typeof LangTestRoute
   LangIndexRoute: typeof LangIndexRoute
   LangArticleIndexRoute: typeof LangArticleIndexRoute
   LangFeedbackIndexRoute: typeof LangFeedbackIndexRoute
@@ -340,7 +320,6 @@ interface LangRouteRouteChildren {
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangProtectedRouteRoute: LangProtectedRouteRouteWithChildren,
   LangAuthRouteRoute: LangAuthRouteRouteWithChildren,
-  LangTestRoute: LangTestRoute,
   LangIndexRoute: LangIndexRoute,
   LangArticleIndexRoute: LangArticleIndexRoute,
   LangFeedbackIndexRoute: LangFeedbackIndexRoute,

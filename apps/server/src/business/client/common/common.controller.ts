@@ -43,7 +43,7 @@ export class CommonController {
 
   @Post('file/image')
   @UseInterceptors(FileInterceptor('file'))
-  upload(
+  uploadImage(
     @UploadedFile(
       new ParseFilePipe({
         validators: [

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
 import type { ListFeedbackDto } from '@ying/shared'
-import { FeedbackEntity } from '@ying/shared'
+import { FeedbackEntity } from '@ying/db-typeorm'
 
 import { BaseService } from '@/common/service/base.service'
 

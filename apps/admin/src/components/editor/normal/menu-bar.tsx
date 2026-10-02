@@ -13,7 +13,7 @@ import {
   LuAlignRight
 } from 'react-icons/lu'
 
-import { useEditorContext, useEditorState, editorBaseStateSelector, MenuButton } from '@ying/frontend/editor'
+import { useEditorContext, useEditorState, editorBaseStateSelector, MenuButton } from '@ying/shared-react/editor'
 
 import { MenuText, MenuTextColor, MenuBgColor, MenuLink, MenuImage, MenuImages } from '../menu'
 import { useThemeToken } from '@/hooks'

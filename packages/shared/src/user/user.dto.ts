@@ -14,19 +14,6 @@ export enum UserStatType {
   Github = 'github'
 }
 
-export class UserStatVo {
-  categories: string[]
-  list: number[]
-}
-
-export class UserStatByTypeVo {
-  categories: string[]
-  types: {
-    name: UserStatType
-    data: number[]
-  }[]
-}
-
 export const updateUserInfoDto = z.object({
   name: z.string().nonempty('validation.nickname_should_not_be_empty').optional(),
   avatarId: z.number().nullish()

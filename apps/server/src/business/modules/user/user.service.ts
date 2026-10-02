@@ -4,7 +4,7 @@ import { Like, Repository } from 'typeorm'
 import type { Column } from 'exceljs'
 import dayjs from 'dayjs'
 
-import { UserEntity } from '@ying/shared'
+import { UserEntity } from '@ying/db-typeorm'
 import type { ListUserDto, ResetPasswordDto, UpdateUserInfoDto } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'

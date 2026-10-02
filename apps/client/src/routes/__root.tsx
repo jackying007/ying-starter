@@ -1,8 +1,6 @@
 import { HeadContent, Scripts, createRootRouteWithContext, useParams } from '@tanstack/react-router'
-// import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-// import { TanStackDevtools } from '@tanstack/react-devtools'
-
-import { NotFound } from '@/layouts/not-found'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { AppProvider } from '@/providers/app'
 import type { AppRouterContext } from '@/types'
@@ -43,8 +41,7 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
       ]
     }
   },
-  shellComponent: RootDocument,
-  notFoundComponent: NotFound
+  shellComponent: RootDocument
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -57,7 +54,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <AppProvider>{children}</AppProvider>
-        {/* <TanStackDevtools
+        <TanStackDevtools
           config={{
             position: 'bottom-right'
           }}
@@ -67,7 +64,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               render: <TanStackRouterDevtoolsPanel />
             }
           ]}
-        /> */}
+        />
         <Scripts />
       </body>
     </html>

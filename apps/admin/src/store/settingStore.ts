@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { storage } from '@ying/frontend/utils'
+import { storage } from '@ying/shared-web'
 
 import { StorageEnum, ThemeColorPresets, ThemeNavLayout, ThemeMode } from '@/types/enum'
 import { colorPresets } from '@/theme/config'

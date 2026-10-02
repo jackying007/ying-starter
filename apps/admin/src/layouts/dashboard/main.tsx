@@ -1,4 +1,4 @@
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import { useSettings } from '@/store'
 import { useThemeToken } from '@/hooks'
 import type { Ref } from 'react'

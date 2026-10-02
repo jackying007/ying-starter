@@ -14,6 +14,7 @@
     "build:apps": "turbo run build --filter=./apps/*",
     "build:pkgs": "turbo run build --filter=./packages/*",
     "lint": "turbo run lint",
+    "check": "turbo run check",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "turbo-prune": "turbo prune server --docker",
     "proxy": "ying-tunnel lhp",

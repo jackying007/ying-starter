@@ -1,5 +1,5 @@
 import type { LinkProps } from '@tanstack/react-router'
-import { cn, buttonVariants } from '@ying/frontend/ui'
+import { cn, buttonVariants } from '@ying/shared-react/ui'
 import { Link } from '@/components/link'
 
 interface BackButtonProps {

@@ -1,7 +1,7 @@
 import type { BaseType } from 'antd/es/typography/Base'
 
 import { BasicStatus, FileType, FileSourceType } from '@ying/shared'
-import { getScrollbarThickness } from '@ying/frontend/utils'
+import { getScrollbarThickness } from '@ying/shared-web'
 
 export type TypeOption<T> = {
   label: string

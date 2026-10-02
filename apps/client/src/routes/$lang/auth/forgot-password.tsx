@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { resetPasswordWithCodeDto, type ResetPasswordWithCodeDto } from '@ying/shared'
-import { Input, Button } from '@ying/frontend/ui'
+import { Input, Button } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { TipError } from '@/components/tip-error'

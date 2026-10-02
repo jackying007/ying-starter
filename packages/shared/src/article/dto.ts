@@ -20,7 +20,7 @@ export type CreateOrUpdateArticleDto = z.infer<typeof createOrUpdateArticleDto>
 
 export const updateArticleContentDto = z.object({
   id: z.number(),
-  content: zIntlText({ canEmpty: true }),
+  content: zIntlText({ canEmpty: true }).optional(),
   associatedFileIds: z.array(z.number()).optional()
 })
 export type UpdateArticleContentDto = z.infer<typeof updateArticleContentDto>

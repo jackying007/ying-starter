@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Card, DatePicker, Spin, Select, Space } from 'antd'
+import type { Props } from 'react-apexcharts'
 
 import dayjs from 'dayjs'
 import { useQuery } from '@tanstack/react-query'
@@ -34,7 +35,7 @@ export function UserTrend() {
     staleTime: 10 * 1000
   })
 
-  const series: ApexAxisChartSeries = data?.types || []
+  const series: Props['series'] = data?.types || []
   const chartOptions = useChart({
     xaxis: {
       type: 'category',

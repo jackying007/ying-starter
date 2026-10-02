@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@ying/frontend/ui'
+} from '@ying/shared-react/ui'
 import { LoadingBar } from '@/components/loading-bar'
 
 export type PaginationsProps = {

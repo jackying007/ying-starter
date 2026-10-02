@@ -7,9 +7,9 @@ import type { PushSubscription } from 'web-push'
 import { match as langMatch } from '@formatjs/intl-localematcher'
 import { Redis } from 'ioredis'
 
-import { type LngKeys, PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
-import { VisitorEntity, PushTemplateEntity, PushTaskEntity, type PushData } from '@ying/shared'
-import type { SetPushTaskDto, SendPushTemplateDto } from '@ying/shared'
+import { PushTaskStatus, clientLanguagesConfig } from '@ying/shared'
+import type { SetPushTaskDto, SendPushTemplateDto, LngKeys, PushData } from '@ying/shared'
+import { VisitorEntity, PushTemplateEntity, PushTaskEntity } from '@ying/db-typeorm'
 
 import { PushService } from '@/common/modules/push/push.service'
 import { RedisToken } from '@/common/modules/redis/constant'

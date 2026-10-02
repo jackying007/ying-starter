@@ -1,9 +1,8 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import { Injectable, Logger } from '@nestjs/common'
-import type { Request } from 'express'
+import type { Request, Response } from 'express'
 import { Observable } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
-import { type BaseVo, isBaseVo, wrapBaseVo } from '@ying/shared'
 
 const bluePrefix = '\x1B[36m'
 const redPrefix = '\x1B[31m'
@@ -13,13 +12,20 @@ const resetSuffix = '\x1b[0m'
 
 @Injectable()
 export class AppInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<BaseVo<string | number, any>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const http = context.switchToHttp()
+    const { method, path, user } = http.getRequest<Request>()
+    const response = http.getResponse<Response>()
     const now = Date.now()
     return next.handle().pipe(
-      map(data => (isBaseVo(data) ? data : wrapBaseVo(0, data))),
+      map(data => {
+        if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
+          response.type('application/json')
+          return JSON.stringify(data)
+        }
+        return data
+      }),
       tap(() => {
-        const http = context.switchToHttp()
-        const { method, path, user } = http.getRequest<Request>()
         const useTime = Date.now() - now
         const userStr = user?.id ? `${orangePrefix}uid=[${user.id}]${resetSuffix} ` : ''
         if (useTime > 1000) {

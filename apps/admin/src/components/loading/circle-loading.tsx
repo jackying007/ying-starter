@@ -1,5 +1,5 @@
 import { Spin } from 'antd'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 
 export function CircleLoading({ className }: { className?: string }) {
   return (

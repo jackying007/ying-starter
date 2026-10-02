@@ -1,7 +1,7 @@
 import { Modal } from 'antd'
 import { JsonEditor } from 'json-edit-react'
 
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
 
 type JsonViewModalProps = ReturnType<typeof useDialogOpen<object>>
 

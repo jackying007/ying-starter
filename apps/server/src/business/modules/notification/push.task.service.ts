@@ -3,9 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
 import { PushRecordStatus } from '@ying/shared'
-
-import { PushRecordEntity, PushTaskEntity, type TaskStatus } from '@ying/shared'
-import type { CreateOrUpdatePushTaskDto, ListPushTaskDto } from '@ying/shared'
+import { PushRecordEntity, PushTaskEntity } from '@ying/db-typeorm'
+import type { CreateOrUpdatePushTaskDto, ListPushTaskDto, TaskStatus } from '@ying/shared'
 
 import { BaseService } from '@/common/service/base.service'
 

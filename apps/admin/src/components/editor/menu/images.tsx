@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { FaImages } from 'react-icons/fa'
 import { Modal } from 'antd'
 
-import type { FileEntity } from '@ying/shared'
-import { useDialogOpen, useRemount } from '@ying/frontend/hooks'
-import { useEditorContext, MenuButton, type Events } from '@ying/frontend/editor'
+import type { FileVo } from '@ying/server/types-admin'
+import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
+import { useEditorContext, MenuButton, type Events } from '@ying/shared-react/editor'
 
 import { ImageSelector } from '@/components/image'
 
@@ -27,7 +27,7 @@ export const MenuImages = () => {
 
 type ImageWallModalProps = ReturnType<typeof useDialogOpen>
 const ImageWallModal = ({ open, onOpen, onClose }: ImageWallModalProps) => {
-  const [images, setImages] = useState<FileEntity[]>()
+  const [images, setImages] = useState<FileVo[]>()
   const { editor, emitter } = useEditorContext()
 
   const onOk = () => {

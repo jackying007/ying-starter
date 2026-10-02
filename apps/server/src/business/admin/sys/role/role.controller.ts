@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { createRoleDto, listRoleDto, updateRoleDto } from '@ying/shared'
-import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
+import { createOrUpdateRoleDto, listRoleDto } from '@ying/shared'
+import type { CreateOrUpdateRoleDto, ListRoleDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { AdminScope, PermissionDecorator } from '@/common/decorator'
 import { SysRoleService } from './role.service'
 
 @PermissionDecorator(pms.sys.role)
 @AdminScope()
-@Controller('admin/sys/role')
+@Controller('admin/sys-role')
 export class SysRoleController {
   constructor(private readonly sysRoleService: SysRoleService) {}
 
@@ -28,13 +28,13 @@ export class SysRoleController {
 
   @PermissionDecorator(pms.sys.role.create)
   @Post()
-  create(@Body({ schema: createRoleDto }) dto: CreateRoleDto) {
+  create(@Body({ schema: createOrUpdateRoleDto }) dto: CreateOrUpdateRoleDto) {
     return this.sysRoleService.create(dto)
   }
 
   @PermissionDecorator(pms.sys.role.update)
   @Put()
-  update(@Body({ schema: updateRoleDto }) dto: UpdateRoleDto) {
+  update(@Body({ schema: createOrUpdateRoleDto }) dto: CreateOrUpdateRoleDto) {
     return this.sysRoleService.update(dto)
   }
 

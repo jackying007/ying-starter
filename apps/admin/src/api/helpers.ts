@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { get, set } from 'lodash-es'
 
-import { doDownload } from '@ying/frontend/utils'
+import { doDownload } from '@ying/shared-web'
 
 export function timeDataTransform<T extends object>(data: T, fields: (keyof T)[] | keyof T) {
   if (fields) {
@@ -41,21 +41,4 @@ export async function downloadExcel(response: Response) {
   const url = URL.createObjectURL(await response.blob())
   doDownload(url, fileName)
   URL.revokeObjectURL(url)
-}
-
-export function nullToUndefined<T>(value: T): T {
-  if (value === null) {
-    return undefined as T
-  }
-  if (Array.isArray(value)) {
-    return value.map(nullToUndefined) as T
-  }
-  if (typeof value === 'object') {
-    const result = {} as Record<string, unknown>
-    for (const [key, val] of Object.entries(value as object)) {
-      result[key] = nullToUndefined(val)
-    }
-    return result as T
-  }
-  return value
 }

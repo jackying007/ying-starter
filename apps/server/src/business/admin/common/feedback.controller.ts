@@ -14,12 +14,12 @@ export class FeedbackController {
   constructor(readonly feedbackService: FeedbackService) {}
 
   @Get('list')
-  feedbackList(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
+  listFeedback(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
     return this.feedbackService.list(dto)
   }
 
   @Get('list-count')
-  feedbackListCount(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
+  listFeedbackCount(@Query({ schema: listFeedbackDto }) dto: ListFeedbackDto) {
     return this.feedbackService.listCount(dto)
   }
 

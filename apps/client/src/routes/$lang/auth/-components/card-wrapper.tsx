@@ -1,5 +1,5 @@
 import type { LinkProps } from '@tanstack/react-router'
-import { Card, CardHeader, CardContent, CardFooter } from '@ying/frontend/ui'
+import { Card, CardHeader, CardContent, CardFooter } from '@ying/shared-react/ui'
 import { Header } from './header'
 import { BackButton } from './back-button'
 

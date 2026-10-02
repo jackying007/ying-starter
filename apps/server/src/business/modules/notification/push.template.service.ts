@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
+import { Like, Raw, Repository } from 'typeorm'
 
 import type { ListPushTemplateDto, CreateOrUpdatePushTemplateDto } from '@ying/shared'
-import { PushTemplateEntity } from '@ying/shared'
+import { PushTemplateEntity } from '@ying/db-typeorm'
 
 import { BaseService } from '@/common/service/base.service'
 
@@ -38,7 +38,7 @@ export class PushTemplateService extends BaseService<PushTemplateEntity> {
     const { name, title } = dto
     Object.assign(listQuery.where, {
       name: name ? Like(`%${name}%`) : undefined,
-      title: title ? Like(`%${title}%`) : undefined
+      title: title ? Raw(() => `title::text LIKE :title`, { title: `%${title}%` }) : undefined
     })
     return listQuery
   }

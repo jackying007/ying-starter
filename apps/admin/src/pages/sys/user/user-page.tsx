@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 
 import { getOption } from '@ying/utils'
 import type { ListRoleDto, ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
-import type { SysUserEntity } from '@ying/shared'
-import { useDialogOpen } from '@ying/frontend/hooks'
+import { useDialogOpen } from '@ying/shared-react/hooks'
+import type { SysUserListVo } from '@ying/server/types-admin'
 
 import { useThemeToken } from '@/hooks'
 import { useQueryWithRequery, useTable } from '@/hooks'
@@ -28,7 +28,10 @@ export default function UserPage() {
     }
   })
 
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListSysUserDto, SysUserEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<
+    ListSysUserDto,
+    SysUserListVo[number]
+  >({
     key: 'sys-user',
     getList: sysUserApi.list,
     getListCount: sysUserApi.listCount
@@ -38,7 +41,7 @@ export default function UserPage() {
   const userDrawerProps = useDialogOpen<CreateOrUpdateSysUserDto>()
 
   const { colorTextSecondary } = useThemeToken()
-  const columns: ColumnsType<SysUserEntity> = [
+  const columns: ColumnsType<SysUserListVo[number]> = [
     {
       title: '用户',
       width: 180,
@@ -72,13 +75,13 @@ export default function UserPage() {
       dataIndex: 'role',
       minWidth: 240,
       render: (_, record) => (
-        <>
+        <div className="flex gap-1">
           {record.roles.map(el => (
             <Tag color="cyan" key={el.id}>
               {el.name}
             </Tag>
           ))}
-        </>
+        </div>
       )
     },
     { title: '备注', dataIndex: 'remark', minWidth: 240 },
@@ -146,7 +149,7 @@ export default function UserPage() {
             )}
           />
           <Controller
-            name="name"
+            name="account"
             control={control}
             render={({ field }) => (
               <Space.Compact>

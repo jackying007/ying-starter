@@ -7,7 +7,7 @@ import { WebPushError } from 'web-push'
 import { Redis } from 'ioredis'
 
 import { PushRecordStatus, PushTaskStatus } from '@ying/shared'
-import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/shared'
+import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/db-typeorm'
 
 import { RedisToken } from '@/common/modules/redis/constant'
 

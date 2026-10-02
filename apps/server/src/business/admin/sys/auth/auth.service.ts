@@ -15,7 +15,7 @@ import { Redis } from 'ioredis'
 import { unique } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
 import type { AdminLoginDto, UpdateSysUserSelfPasswordDto, UpdateSysUserSelfUserInfoDto } from '@ying/shared'
-import { SysPermissionEntity, SysUserEntity } from '@ying/shared'
+import { SysPermissionEntity, SysUserEntity } from '@ying/db-typeorm'
 
 import { authConfig } from '@/config'
 import { comparePass, generatePass } from '@/common/utils'

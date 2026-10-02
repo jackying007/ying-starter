@@ -8,11 +8,8 @@
       "outputs": ["dist/**", "artifacts/**"]
     },
     "lint": {},
+    "check": {},
     "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev:test": {
       "cache": false,
       "persistent": true
     }

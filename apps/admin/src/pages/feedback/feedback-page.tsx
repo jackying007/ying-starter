@@ -2,10 +2,8 @@ import { App, Input, Space } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
-
 import type { ListFeedbackDto } from '@ying/shared'
-import type { FeedbackEntity } from '@ying/shared'
-
+import type { FeedbackListVo } from '@ying/server/types-admin'
 import { commonApi } from '@/api'
 import { useTable } from '@/hooks'
 import { Page, PageQuery, PageOperations } from '@/layouts/page'
@@ -13,13 +11,16 @@ import { Page, PageQuery, PageOperations } from '@/layouts/page'
 export default function FeedbackPage() {
   const { message } = App.useApp()
 
-  const { control, resetParams, list, listLoading, pagination, reload } = useTable<ListFeedbackDto, FeedbackEntity>({
+  const { control, resetParams, list, listLoading, pagination, reload } = useTable<
+    ListFeedbackDto,
+    FeedbackListVo[number]
+  >({
     key: 'feedback',
     getList: commonApi.listFeedback,
     getListCount: commonApi.listFeedbackCount
   })
 
-  const columns: ColumnsType<FeedbackEntity> = [
+  const columns: ColumnsType<FeedbackListVo[number]> = [
     {
       title: '邮箱',
       dataIndex: 'email',

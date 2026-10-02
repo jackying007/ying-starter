@@ -2,7 +2,6 @@ import { http } from './http-client'
 
 export * from './http-error'
 
-export const testAPI = await import('./business/test').then(res => res.default(http))
 export const authAPI = await import('./business/auth').then(res => res.default(http))
 export const userAPI = await import('./business/user').then(res => res.default(http))
 export const commonAPI = await import('./business/common').then(res => res.default(http))

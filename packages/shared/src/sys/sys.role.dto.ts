@@ -8,7 +8,8 @@ export const listRoleDto = listDto.extend({
 
 export type ListRoleDto = z.infer<typeof listRoleDto>
 
-export const createRoleDto = z.object({
+export const createOrUpdateRoleDto = z.object({
+  id: z.number().optional(),
   name: z.string().nonempty('角色名称不能为空').max(32),
   status: z.number().pipe(z.enum(BasicStatus)),
   remark: z.string().max(200).optional(),
@@ -16,10 +17,4 @@ export const createRoleDto = z.object({
   permissionCodes: z.array(z.string())
 })
 
-export type CreateRoleDto = z.infer<typeof createRoleDto>
-
-export const updateRoleDto = createRoleDto.extend({
-  id: z.number()
-})
-
-export type UpdateRoleDto = z.infer<typeof updateRoleDto>
+export type CreateOrUpdateRoleDto = z.infer<typeof createOrUpdateRoleDto>

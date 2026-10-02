@@ -1,29 +1,3 @@
-export function createTreeFns<T extends { children?: T[] }>(
-  array: T[] = [],
-  idField = 'id',
-  parentIdFiled = 'parentId'
-) {
-  function toTree(parentId: any): T[] {
-    return array
-      .filter(el => el[parentIdFiled as keyof T] === parentId)
-      .map(el => ({ ...el, children: toTree(el[idField as keyof T]) }))
-  }
-
-  return {
-    toTree
-  }
-}
-
-export function flattenTrees<T extends { children?: T[] }>(trees: T[] = []): T[] {
-  return trees.reduce<T[]>((prev, cur) => {
-    if (cur.children) {
-      return prev.concat(cur, ...flattenTrees(cur.children))
-    } else {
-      return prev.concat(cur)
-    }
-  }, [])
-}
-
 export function debounce<T extends (...args: any[]) => void>(
   callback: T,
   delay = 200
@@ -39,55 +13,6 @@ export function debounce<T extends (...args: any[]) => void>(
 
 export function getOption<T extends { label: string; value: string | number }>(arr: T[], value: number): T | undefined {
   return arr.find(el => el.value === value)
-}
-
-export function uniqueNumbers(arr: (number | number[])[]): number[] {
-  return [...new Set(arr.flat(Infinity) as number[])]
-}
-
-export function uniqueBy<T, K extends keyof T>(arr: T[], key: K): T[] {
-  const seen = new Set<T[K]>()
-  return arr.filter(item => {
-    const value = item[key]
-    if (seen.has(value)) {
-      return false
-    }
-    seen.add(value)
-    return true
-  })
-}
-
-export function unique<T>(arr: T[]): T[] {
-  const obj: { [key in string]: number } = {}
-  arr.forEach(el => (obj[JSON.stringify(el)] = 1))
-  return Object.keys(obj).map(el => JSON.parse(el))
-}
-
-export function deepCopyArray<T>(arr: T[]): T[] {
-  return arr.map(item => deepCopy(item))
-}
-
-export function deepCopy<T>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') {
-    return obj
-  }
-
-  if (Array.isArray(obj)) {
-    const arrCopy: T[] = []
-    for (const item of obj) {
-      arrCopy.push(deepCopy(item))
-    }
-    return arrCopy as unknown as T
-  }
-
-  const objCopy: { [key: string]: any } = {}
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      objCopy[key] = deepCopy(obj[key])
-    }
-  }
-
-  return objCopy as T
 }
 
 // 让传入异步函数最少经过固定的秒数才返回内容
@@ -254,4 +179,25 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, .
 
 export function omitArray<T extends Record<string, any>, K extends keyof T>(arr: T[], ...keys: K[]): Omit<T, K>[] {
   return arr.map(obj => omit(obj, ...keys))
+}
+
+export function nullToUndefined<T>(value: T): T {
+  if (value === null) {
+    return undefined as T
+  }
+  if (Array.isArray(value)) {
+    return value.map(nullToUndefined) as T
+  }
+  if (typeof value === 'object') {
+    const result = {} as Record<string, unknown>
+    for (const [key, val] of Object.entries(value as object)) {
+      result[key] = nullToUndefined(val)
+    }
+    return result as T
+  }
+  return value
+}
+
+export function mapOptional<T, R>(value: T | undefined | '', fn: (value: T) => R): R | undefined {
+  return value === undefined || value === '' ? undefined : fn(value)
 }

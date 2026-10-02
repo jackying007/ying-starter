@@ -1,7 +1,7 @@
-import mitt from 'mitt'
+import { EventEmitter } from '@ying/utils'
 
 export type Events = {
   API_ERROR_MSG: string
 }
 
-export const globalEvent = mitt<Events>()
+export const globalEvent = new EventEmitter<Events>()

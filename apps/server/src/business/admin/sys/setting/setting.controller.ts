@@ -5,7 +5,7 @@ import { SysSettingService } from './setting.service'
 
 @PermissionDecorator(pms.sys.setting)
 @AdminScope()
-@Controller('admin/sys/setting')
+@Controller('admin/sys-setting')
 export class SysSettingController {
   constructor(private readonly sysSettingService: SysSettingService) {}
 

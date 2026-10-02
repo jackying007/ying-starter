@@ -13,7 +13,7 @@ import { AdminScope, Public, UID } from '@/common/decorator'
 import { getRefreshTokenFromRequest } from '@/common/utils'
 import { SysAuthService } from './auth.service'
 
-@Controller('admin/sys/auth')
+@Controller('admin/sys-auth')
 @AdminScope()
 export class SysAuthController {
   constructor(private readonly authService: SysAuthService) {}

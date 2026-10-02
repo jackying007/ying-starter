@@ -1,4 +1,4 @@
-import { SuccessIcon } from '@ying/frontend/icons'
+import { SuccessIcon } from '@ying/shared-react/icons'
 
 type TipSuccessProps = {
   message?: string

@@ -5,7 +5,7 @@ import type { InputProps } from 'antd/lib/input'
 import { clientLanguagesConfig, type LngKeys, type TIntlText } from '@ying/shared'
 
 import { IntlSwitch } from './intl-switch'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 
 const { fallbackLng, languages } = clientLanguagesConfig
 

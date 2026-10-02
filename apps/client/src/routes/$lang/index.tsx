@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
-import { buttonVariants } from '@ying/frontend/ui'
+import { buttonVariants } from '@ying/shared-react/ui'
 
 import ProgrammingSVG from '@/svgs/programming.svg?react'
 import FolderSVG from '@/svgs/folder.svg?react'

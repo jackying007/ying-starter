@@ -5,7 +5,7 @@ export const listSysUserDto = listDto.extend({
   name: z.string().optional(),
   account: z.string().optional(),
   status: z.coerce.number().pipe(z.enum(BasicStatus)).optional(),
-  roleIds: z.array(z.coerce.number()).optional()
+  roleIds: z.preprocess(value => (Array.isArray(value) ? value : [value]), z.array(z.coerce.number())).optional()
 })
 
 export type ListSysUserDto = z.infer<typeof listSysUserDto>

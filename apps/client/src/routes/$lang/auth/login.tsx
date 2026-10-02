@@ -6,14 +6,14 @@ import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 
 import { clientLoginDto, type ClientLoginDto } from '@ying/shared'
-import { Button, buttonVariants, Input } from '@ying/frontend/ui'
+import { Button, buttonVariants, Input } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { Link } from '@/components/link'
 import { TipError } from '@/components/tip-error'
 import { TipSuccess } from '@/components/tip-success'
 
-import { setAuthTokens } from '@/store/auth-store'
+import { setRefreshToken, setAccessToken } from '@/store/auth-store'
 import { HttpError, authAPI } from '@/api'
 
 import { CardWrapper } from './-components/card-wrapper'
@@ -41,7 +41,8 @@ function RouteComponent() {
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      setAuthTokens({ accessToken, refreshToken })
+      setRefreshToken(refreshToken)
+      setAccessToken(accessToken)
       navigate({ to: '/$lang', params, replace: true })
     }
   }, [accessToken, refreshToken, navigate, params])
@@ -69,7 +70,9 @@ function RouteComponent() {
     try {
       const loginRes = await authAPI.login(values)
       if (loginRes.status === 0) {
-        setAuthTokens(loginRes.data)
+        const { refreshToken, accessToken } = loginRes.data
+        setRefreshToken(refreshToken)
+        setAccessToken(accessToken)
         navigate({ to: '/$lang', params, replace: true })
       } else if (loginRes.status === 'emailNotVerified') {
         setEmailToBeVerified(values.email)

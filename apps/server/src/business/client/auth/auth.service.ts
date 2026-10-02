@@ -7,7 +7,7 @@ import { customAlphabet } from 'nanoid'
 import { I18nContext } from 'nestjs-i18n'
 import ms from 'ms'
 import { Redis } from 'ioredis'
-import { UserEntity } from '@ying/shared'
+import { UserEntity } from '@ying/db-typeorm'
 import type {
   ClientLoginDto,
   ClientRegisterDto,
@@ -15,8 +15,7 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-import type { ClientAuthVo, ClientLoginVo } from '@ying/shared'
-import { wrapBaseVo } from '@ying/shared'
+import { wrapBaseVo } from '@/business/base.vo'
 import { authConfig } from '@/config'
 import { RedisToken } from '@/common/modules/redis/constant'
 import { MailService } from '@/common/modules/mail/mail.service'
@@ -108,7 +107,7 @@ export class AuthService {
     await this.userRepository.update({ email: dto.email }, { emailVerified: true })
   }
 
-  async sign(user: UserEntity): Promise<ClientAuthVo> {
+  async sign(user: UserEntity) {
     const payload: TClientPayload = {
       id: user.id
     }
@@ -133,7 +132,7 @@ export class AuthService {
     }
   }
 
-  async login(dto: ClientLoginDto): Promise<ClientLoginVo> {
+  async login(dto: ClientLoginDto) {
     const user = await this.userRepository.findOne({
       where: {
         email: dto.email

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { Modal } from 'antd'
-import { useDialogOpen } from '@ying/frontend/hooks'
-import { CropImage, type TCropImageHandle, type TSaveRes } from '@ying/frontend/components'
+import { useDialogOpen } from '@ying/shared-react/hooks'
+import { CropImage, type TCropImageHandle, type TSaveRes } from '@ying/shared-react/components'
 
 export type CropImageModalProps = ReturnType<typeof useDialogOpen<File>> & {
   onCrop?: (res: TSaveRes) => void

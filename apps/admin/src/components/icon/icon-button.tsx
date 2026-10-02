@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { CSSProperties, Ref, MouseEventHandler, MouseEvent, ReactNode } from 'react'
 import type { IconProps } from '@iconify/react'
-import { cn } from '@ying/frontend/ui'
+import { cn } from '@ying/shared-react/ui'
 import { Iconify } from './iconify-icon'
 
 type Props = {

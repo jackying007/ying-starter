@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useSettings } from '@/store'
+import { useSettings, useSocketIo } from '@/store'
 import { useThemeToken } from '@/hooks'
 import { NavContextProvider, NavVertical, NavHorizontal } from './nav'
 import { Header } from './header'
@@ -7,6 +7,7 @@ import { Main } from './main'
 import { MultiTabs } from './multi-tabs'
 
 export default function DashboardLayout() {
+  useSocketIo()
   const { colorBgLayout, colorTextBase } = useThemeToken()
   const { multiTab } = useSettings()
 

@@ -1,12 +1,13 @@
 import { Card, Select } from 'antd'
 import { useState } from 'react'
+import type { Props } from 'react-apexcharts'
 
 import Chart from '@/components/chart/chart'
 import useChart from '@/components/chart/useChart'
 
 export default function AreaDownload() {
   const [year, setYear] = useState('2023')
-  const series: Record<string, ApexAxisChartSeries> = {
+  const series: Record<string, Props['series']> = {
     '2022': [
       { name: 'China', data: [10, 41, 35, 51, 49, 61, 69, 91, 148, 35, 51] },
       { name: 'America', data: [10, 34, 13, 56, 77, 88, 99, 45, 13, 56, 77] }
@@ -39,7 +40,7 @@ export default function AreaDownload() {
   )
 }
 
-function ChartArea({ series }: { series: ApexAxisChartSeries }) {
+function ChartArea({ series }: { series: Props['series'] }) {
   const chartOptions = useChart({
     xaxis: {
       type: 'category',

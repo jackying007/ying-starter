@@ -14,7 +14,6 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   const apiConf = app.get<ConfigType<typeof apiConfig>>(apiConfig.KEY)
   const storageConf = app.get<ConfigType<typeof storageConfig>>(storageConfig.KEY)
-  app.enableCors()
   app.setGlobalPrefix('/api')
   app.useGlobalFilters(new OtherExceptionFilter())
   app.useGlobalFilters(new HttpExceptionFilter())

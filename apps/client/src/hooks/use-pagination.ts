@@ -1,5 +1,5 @@
 import type { ListDto } from '@ying/shared'
-import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/frontend/hooks'
+import { usePaginationParams, usePaginationData, type UsePaginationDataOptions } from '@ying/shared-react/hooks'
 import type { PaginationsProps } from '@/components/paginations'
 
 export const usePagination = <TParams extends ListDto, TData>(props: UsePaginationDataOptions<TParams, TData>) => {

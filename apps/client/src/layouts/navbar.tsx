@@ -20,7 +20,7 @@ import {
   SheetDescription,
   SheetContent,
   SheetTrigger
-} from '@ying/frontend/ui'
+} from '@ying/shared-react/ui'
 
 import { Link } from '@/components/link'
 import { useAuthStore, logout, useHasAuth, useUserAvatar } from '@/store/auth-store'

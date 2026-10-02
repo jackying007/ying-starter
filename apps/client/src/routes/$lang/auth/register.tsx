@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 
 import { clientRegisterDto, type ClientRegisterDto } from '@ying/shared'
-import { Input, Button } from '@ying/frontend/ui'
+import { Input, Button } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { TipError } from '@/components/tip-error'

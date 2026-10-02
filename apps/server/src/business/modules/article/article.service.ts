@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Like, Repository } from 'typeorm'
 
 import type { CreateOrUpdateArticleDto, ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
-import { ArticleEntity, FileEntity } from '@ying/shared'
+import { ArticleEntity, FileEntity } from '@ying/db-typeorm'
 
 import { BaseService } from '@/common/service/base.service'
 
@@ -48,14 +48,16 @@ export class ArticleService extends BaseService<ArticleEntity> {
     return this.articleRepository.countBy(where)
   }
 
-  detail(id: number) {
-    return this.articleRepository.findOne({
+  async detail(id: number) {
+    const article = await this.articleRepository.findOne({
       where: { id },
       relations: {
         cover: true,
         associatedFiles: true
       }
     })
+    if (!article) throw new Error('article is not exist')
+    return article
   }
 
   async view(id: number) {

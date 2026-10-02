@@ -1,19 +1,17 @@
 import type { Dispatch, Ref, SetStateAction } from 'react'
 import { useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
-
-import type { FileEntity } from '@ying/shared'
-
+import type { FileVo } from '@ying/server/types-admin'
 import { ImageList } from './image-list'
 
 export type ImageSelectorModalRefHandle = {
-  setSelectedFiles: Dispatch<SetStateAction<FileEntity[]>>
+  setSelectedFiles: Dispatch<SetStateAction<FileVo[]>>
 }
 
 export type ImageSelectorModalProps = {
-  defaultFiles?: FileEntity[]
+  defaultFiles?: FileVo[]
   open: boolean
-  onSelect: (files: FileEntity[]) => void
+  onSelect: (files: FileVo[]) => void
   onCancel: VoidFunction
   maxLength?: number
   ref?: Ref<ImageSelectorModalRefHandle>
@@ -27,7 +25,7 @@ export const ImageSelectorModal = ({
   maxLength = 1,
   ref
 }: ImageSelectorModalProps) => {
-  const [selectedFiles, setSelectedFiles] = useState<FileEntity[]>(defaultFiles ?? [])
+  const [selectedFiles, setSelectedFiles] = useState<FileVo[]>(defaultFiles ?? [])
 
   const onOk = () => {
     onSelect(selectedFiles)

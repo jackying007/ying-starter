@@ -15,7 +15,7 @@ export type ClientEvent<TData = any> = {
   listener: (client: ServerSocket, data: TData) => void
 }
 
-@WebSocketGateway()
+@WebSocketGateway({ path: '/admin-socket.io' })
 export class WSGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @Inject()
   private readonly authService: SysAuthService

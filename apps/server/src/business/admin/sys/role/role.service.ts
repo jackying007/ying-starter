@@ -3,8 +3,8 @@ import { Like, Repository, TreeRepository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Redis } from 'ioredis'
 import { createTreeFns } from '@ying/utils'
-import type { CreateRoleDto, ListRoleDto, UpdateRoleDto } from '@ying/shared'
-import { SysPermissionEntity, SysRoleEntity } from '@ying/shared'
+import type { CreateOrUpdateRoleDto, ListRoleDto } from '@ying/shared'
+import { SysPermissionEntity, SysRoleEntity } from '@ying/db-typeorm'
 import { RedisToken } from '@/common/modules/redis/constant'
 import { BaseService } from '@/common/service/base.service'
 import { CacheKey } from '@/business/admin/sys/auth/constant'
@@ -64,7 +64,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
     return createTreeFns(list, 'code', 'parentCode').toTree(null)
   }
 
-  create(createRoleDto: CreateRoleDto) {
+  create(createRoleDto: CreateOrUpdateRoleDto) {
     const role = this.sysRoleRepository.create(createRoleDto)
     role.permissions = createRoleDto.permissionCodes.map(code => {
       const permission = new SysPermissionEntity()
@@ -74,7 +74,7 @@ export class SysRoleService extends BaseService<SysRoleEntity> {
     return this.sysRoleRepository.save(role)
   }
 
-  async update(updateRoleDto: UpdateRoleDto) {
+  async update(updateRoleDto: CreateOrUpdateRoleDto) {
     const role = await this.sysRoleRepository.findOne({
       where: { id: updateRoleDto.id },
       relations: ['permissions', 'users']
