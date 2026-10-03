@@ -58,6 +58,7 @@ pnpm drizzle-kit migrate
 
 整体流程
 
+```
 schema.ts
     ↓
 drizzle-kit generate
@@ -69,3 +70,4 @@ git commit
 部署
     ↓
 drizzle-kit migrate
+```
