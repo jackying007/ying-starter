@@ -19,7 +19,7 @@ export const createOrUpdateSysUserDto = z
       .nonempty('帐号不能为空')
       .min(6, '帐号必须大于或等于6个字符')
       .max(32, '帐号必须小于或等于32个字符'),
-    email: z.email().optional(),
+    email: z.email('邮箱格式错误').nullable(),
     password: z
       .string()
       .regex(
@@ -28,7 +28,7 @@ export const createOrUpdateSysUserDto = z
       )
       .optional(),
     status: z.enum(BasicStatus),
-    remark: z.string().max(200).optional(),
+    remark: z.string().max(200).nullable(),
     roleIds: z.array(z.number())
   })
   .check(ctx => {

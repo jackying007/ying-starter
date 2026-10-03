@@ -3,7 +3,7 @@ import { Form, Drawer, Input, Button, App } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { createOrUpdatePushTemplateDto } from '@ying/shared'
+import { createOrUpdatePushTemplateDto, type CreateOrUpdatePushTemplateDto } from '@ying/shared'
 import type { PushTemplateListVo } from '@ying/server/types-admin'
 import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
 
@@ -12,19 +12,18 @@ import { ImageSelector } from '@/components/image'
 import { FormList } from '@/components/form/form-list'
 import { IntlInput, IntlTextArea } from '@/components/intl'
 
-type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<Partial<PushTemplateListVo[number]>>> & {
+export type PushTemplateDrawerFormValue = Partial<PushTemplateListVo[number]>
+const defaultValues: Partial<CreateOrUpdatePushTemplateDto> = {
+  name: '',
+  title: {},
+  link: null,
+  body: null,
+  imageId: null,
+  actions: null
+}
+type PushTemplateDrawerProps = ReturnType<typeof useDialogOpen<PushTemplateDrawerFormValue>> & {
   onSuccess?: VoidFunction
 }
-
-const defaultValue: Partial<PushTemplateListVo[number]> = {
-  name: undefined,
-  title: undefined,
-  link: undefined,
-  body: undefined,
-  imageId: undefined,
-  actions: []
-}
-
 export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: PushTemplateDrawerProps) {
   const title = `${formValue?.id ? '编辑' : '新增'}推送模板`
   const { message } = App.useApp()
@@ -42,7 +41,7 @@ export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: Push
     if (formValue) {
       reset(formValue)
     } else {
-      reset(defaultValue)
+      reset(defaultValues)
     }
   }, [formValue, reset])
 
@@ -102,7 +101,15 @@ export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: Push
           <Controller
             name="link"
             control={control}
-            render={({ field }) => <Input allowClear placeholder="请输入链接" {...field} />}
+            render={({ field }) => (
+              <Input
+                placeholder="请输入链接"
+                {...field}
+                value={field.value ?? ''}
+                allowClear
+                onClear={() => setValue('link', null)}
+              />
+            )}
           />
         </Form.Item>
         <Form.Item
@@ -130,7 +137,7 @@ export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: Push
             onChange={files => setValue('imageId', files[0]?.id ?? null, { shouldDirty: true })}
           />
         </Form.Item>
-        <FormList control={control} name="actions" label="按钮" defaultValue={{ title: {}, link: undefined }}>
+        <FormList control={control} name="actions" label="按钮" defaultValue={{ title: {}, link: null }}>
           {index => {
             return (
               <>
@@ -159,7 +166,7 @@ export function PushTemplateDrawer({ open, formValue, onSuccess, onClose }: Push
                       validateStatus={errors?.actions?.[index]?.link?.message ? 'error' : ''}
                       help={errors?.actions?.[index]?.link?.message}
                     >
-                      <Input placeholder="链接" value={field.value} onChange={field.onChange} />
+                      <Input placeholder="链接" value={field.value ?? ''} onChange={field.onChange} />
                     </Form.Item>
                   )}
                 />

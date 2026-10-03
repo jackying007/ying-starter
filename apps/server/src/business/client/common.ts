@@ -4,11 +4,11 @@ import { paramId, zValidator } from '@/business/base.validator'
 import { authValidator } from '@/business/modules/user/auth'
 import { feedbackService } from '@/business/modules/feedback'
 import { pushRecordService } from '@/business/modules/notification'
-import { fileMiddleware, fileService } from '@/common/modules/storage'
+import { fileMiddleware, fileService } from '@/business/modules/storage'
 
 export const common = new Hono()
   .post('/feedback', zValidator('json', createFeedbackDto), async c => {
-    await feedbackService.createOrUpdate(c.req.valid('json'))
+    await feedbackService.create(c.req.valid('json'))
     return c.json(null)
   })
   .post('/file/image', authValidator, fileMiddleware({ fileType: /^image\// }), async c => {
@@ -21,7 +21,7 @@ export const common = new Hono()
         fileType: FileType.Image,
         from: FileSourceType.Client,
         userId,
-        extra: typeof body.extra === 'string' ? (JSON.parse(body.extra) as object) : undefined
+        extra: typeof body.extra === 'string' ? JSON.parse(body.extra) : undefined
       })
     )
   })

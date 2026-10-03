@@ -11,3 +11,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+type Nullable<T> = {
+  [K in keyof T]: T[K] | null
+}

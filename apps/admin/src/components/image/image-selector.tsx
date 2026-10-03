@@ -9,7 +9,7 @@ import { ImageSelectorModal, type ImageSelectorModalRefHandle } from './image-se
 
 type ImageSelectorProps = {
   maxLength?: number
-  defaultValue?: FileVo[] | FileVo
+  defaultValue?: FileVo[] | FileVo | null
   onChange?: (files: FileVo[]) => void
 }
 

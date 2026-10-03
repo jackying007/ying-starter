@@ -3,17 +3,13 @@ import { Form, Modal, App, DatePicker } from 'antd'
 import { Controller, useController, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import dayjs from 'dayjs'
-
 import { setPushTaskDto } from '@ying/shared'
-import type { PushTaskListVo } from '@ying/server/types-admin'
 import { useDialogOpen } from '@ying/shared-react/hooks'
-
 import { notificationApi } from '@/api'
 
-export type PushTaskSetProps = ReturnType<typeof useDialogOpen<PushTaskListVo[number]>> & {
+export type PushTaskSetProps = ReturnType<typeof useDialogOpen<number>> & {
   onSuccess: VoidFunction
 }
-
 export function PushTaskSetModal({ open, formValue, onSuccess, onClose }: PushTaskSetProps) {
   const title = '设置任务'
   const { message } = App.useApp()
@@ -30,7 +26,7 @@ export function PushTaskSetModal({ open, formValue, onSuccess, onClose }: PushTa
 
   const updateForm = useCallback(async () => {
     if (formValue) {
-      reset({ id: formValue.id, time: undefined })
+      reset({ id: formValue, time: undefined })
     }
   }, [formValue, reset])
 

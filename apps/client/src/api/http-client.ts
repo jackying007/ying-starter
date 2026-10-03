@@ -1,5 +1,4 @@
 import { HttpRequest } from '@jying/http'
-import { nullToUndefined } from '@ying/utils'
 import { clearUserInfoAndAuthTokens } from '@/store/auth-store'
 import { HttpError } from './http-error'
 import { isRefreshRequest, refreshToken } from './refresh-token'
@@ -9,10 +8,6 @@ export const http = new HttpRequest({
 })
 
 http.addHooks({
-  afterResponse: ({ type, data }) => {
-    if (type === 'json') return nullToUndefined(data)
-    return data
-  },
   beforeError: async (fetchRes, options) => {
     if (fetchRes.status === 401 && !isRefreshRequest(options)) {
       await refreshToken(http)

@@ -2,18 +2,15 @@ import { App, Button, Input, Select, Space, Tag, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
-
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, CreateOrUpdateRoleDto } from '@ying/shared'
+import type { ListRoleDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/shared-react/hooks'
 import type { SysRoleListVo } from '@ying/server/types-admin'
-
 import { useTable } from '@/hooks'
 import { sysRoleApi } from '@/api'
 import { Page, PageQuery, PageOperations } from '@/layouts/page'
 import { BasicStatusOptions, type BasicStatusOption } from '@/constant'
-
-import { RoleDrawer } from './role-drawer'
+import { type RoleDrawerFormValue, RoleDrawer } from './role-drawer'
 
 export default function RolePage() {
   const { message } = App.useApp()
@@ -23,8 +20,7 @@ export default function RolePage() {
     getListCount: sysRoleApi.listCount
   })
 
-  const roleDrawerPros = useDialogOpen<CreateOrUpdateRoleDto>()
-
+  const roleDrawerPros = useDialogOpen<RoleDrawerFormValue>()
   const columns: ColumnsType<SysRoleListVo[number]> = [
     {
       title: '角色名称',
@@ -43,7 +39,6 @@ export default function RolePage() {
         return <Tag color={color}>{label}</Tag>
       }
     },
-    { title: '排序', dataIndex: 'sort', align: 'center', width: 80 },
     { title: '备注', dataIndex: 'remark', ellipsis: true, minWidth: 180 },
     {
       title: '创建时间',
@@ -59,12 +54,7 @@ export default function RolePage() {
       fixed: 'right',
       render: (_, record) => (
         <PageOperations
-          onEdit={() =>
-            roleDrawerPros.onOpen({
-              ...record,
-              permissionCodes: record.permissions.map(el => el.code)
-            })
-          }
+          onEdit={() => roleDrawerPros.onOpen(record)}
           editDisabled={record.systemic}
           deleteTitle={`确定删除[${record.name}]？`}
           onDelete={async () => {

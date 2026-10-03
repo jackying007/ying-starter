@@ -10,17 +10,14 @@ export const user = new Hono()
   .use(authValidator)
   .get('/info', async c => {
     const user = await userService.findById(c.get('userId'))
-    if (!user) throw new HTTPException(401, { message: 'Unauthorized.' })
+    if (!user) throw new HTTPException(500, { message: 'user is not exist' })
     return c.json({
       ...omit(user, 'password'),
       hasPassword: Boolean(user.password)
     })
   })
   .put('/', zValidator('json', updateUserInfoDto), async c => {
-    await userService.createOrUpdate({
-      id: c.get('userId'),
-      ...c.req.valid('json')
-    })
+    await userService.updateUserInfo(c.get('userId'), c.req.valid('json'))
     return c.json(null)
   })
   .put('/reset-password', zValidator('json', resetPasswordDto), async c => {

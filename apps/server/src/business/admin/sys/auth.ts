@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { adminLoginDto, updateSysUserSelfPasswordDto, updateSysUserSelfUserInfoDto } from '@ying/shared'
-import { omit } from '@ying/utils'
 import { zValidator } from '@/business/base.validator'
 import { requireAuth, sysAuthService } from '@/business/modules/sys'
 import { getRefreshTokenFromContext } from '@/common/utils'
@@ -18,16 +17,15 @@ export const sysAuth = new Hono<{ Variables: AuthVariables }>()
   })
   .get('/user-info', async c => {
     const { userId } = await requireAuth(c)
-    const user = await sysAuthService.getUserInfo(userId)
-    return c.json(omit(user, 'password'))
+    return c.json(await sysAuthService.getUserInfo(userId))
   })
   .put('/user-info', zValidator('json', updateSysUserSelfUserInfoDto), async c => {
     const { userId } = await requireAuth(c)
-    await sysAuthService.updateUserInfo(c.req.valid('json'), userId)
+    await sysAuthService.updateUserInfo(userId, c.req.valid('json'))
     return c.json(null)
   })
   .put('/user-password', zValidator('json', updateSysUserSelfPasswordDto), async c => {
     const { userId } = await requireAuth(c)
-    await sysAuthService.updateUserPassword(c.req.valid('json'), userId)
+    await sysAuthService.updateUserPassword(userId, c.req.valid('json'))
     return c.json(null)
   })

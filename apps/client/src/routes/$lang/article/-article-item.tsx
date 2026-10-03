@@ -26,7 +26,7 @@ export const ArticleItem = ({ article }: ArticleItemProps) => {
       onClick={() => navigate({ to: '/$lang/article/$id', params: { lang, id: article.id } })}
     >
       <div className="relative pb-[calc(5/9*100%)] w-auto sm:pb-0 sm:w-72.5">
-        <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />
+        {article.cover && <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />} 
       </div>
       <div className="flex-1 text-base p-3 gap-2 flex flex-col justify-between">
         <div>

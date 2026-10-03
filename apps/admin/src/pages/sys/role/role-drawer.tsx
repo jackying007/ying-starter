@@ -1,20 +1,25 @@
 import { useEffect } from 'react'
-import { Form, Drawer, Input, InputNumber, Button, App, Radio, TreeSelect } from 'antd'
+import { Form, Drawer, Input, Button, App, Radio, TreeSelect } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-
 import { BasicStatus } from '@ying/shared'
 import { createOrUpdateRoleDto, type CreateOrUpdateRoleDto } from '@ying/shared'
+import type { SysRoleListVo } from '@ying/server/types-admin'
 import { useDialogOpen } from '@ying/shared-react/hooks'
-
 import { sysRoleApi } from '@/api'
-import { defaultRoleValues } from './constant'
 
-export type RoleDrawerProps = ReturnType<typeof useDialogOpen<CreateOrUpdateRoleDto>> & {
+export type RoleDrawerFormValue = SysRoleListVo[number]
+const defaultValues: CreateOrUpdateRoleDto = {
+  id: undefined,
+  name: '',
+  status: BasicStatus.ENABLE,
+  permissionCodes: [],
+  remark: null
+}
+export type RoleDrawerProps = ReturnType<typeof useDialogOpen<RoleDrawerFormValue>> & {
   onSuccess?: VoidFunction
 }
-
 export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerProps) {
   const title = formValue ? '编辑系统角色' : '新增系统角色'
 
@@ -28,17 +33,17 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
-  } = useForm<CreateOrUpdateRoleDto>({
-    resolver: zodResolver(createOrUpdateRoleDto),
-    defaultValues: defaultRoleValues
+    reset,
+    setValue
+  } = useForm({
+    resolver: zodResolver(createOrUpdateRoleDto)
   })
 
   useEffect(() => {
     if (formValue) {
-      reset(formValue)
+      reset({ ...formValue, permissionCodes: formValue.permissions.map(el => el.code) })
     } else {
-      reset(defaultRoleValues)
+      reset(defaultValues)
     }
   }, [formValue, reset])
 
@@ -78,7 +83,6 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
             render={({ field }) => <Input allowClear placeholder="请输入名称" {...field} />}
           />
         </Form.Item>
-
         <Form.Item
           label="状态"
           required
@@ -96,7 +100,6 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
             )}
           />
         </Form.Item>
-
         <Form.Item
           label="权限"
           validateStatus={errors.permissionCodes ? 'error' : ''}
@@ -122,15 +125,6 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
             )}
           />
         </Form.Item>
-
-        <Form.Item label="排序" validateStatus={errors.sort ? 'error' : ''} help={errors.sort && errors.sort.message}>
-          <Controller
-            name="sort"
-            control={control}
-            render={({ field }) => <InputNumber style={{ width: '100%' }} placeholder="请输入排序" {...field} />}
-          />
-        </Form.Item>
-
         <Form.Item
           label="备注"
           validateStatus={errors.remark ? 'error' : ''}
@@ -139,7 +133,16 @@ export function RoleDrawer({ open, formValue, onSuccess, onClose }: RoleDrawerPr
           <Controller
             name="remark"
             control={control}
-            render={({ field }) => <Input.TextArea style={{ width: '100%' }} placeholder="请输入备注" {...field} />}
+            render={({ field }) => (
+              <Input.TextArea
+                style={{ width: '100%' }}
+                placeholder="请输入备注"
+                {...field}
+                value={field.value ?? ''}
+                allowClear
+                onClear={() => setValue('remark', null)}
+              />
+            )}
           />
         </Form.Item>
       </Form>

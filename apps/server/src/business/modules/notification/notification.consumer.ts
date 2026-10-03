@@ -1,22 +1,13 @@
-import { Repository } from 'typeorm'
+import { eq } from 'drizzle-orm'
 import { WebPushError } from 'web-push'
 import { PushRecordStatus, PushTaskStatus } from '@ying/shared'
-import { PushRecordEntity, PushTaskEntity, VisitorEntity } from '@ying/db-typeorm'
-import { dataSource } from '@/common/modules/db'
+import { visitorTable, pushTaskTable, pushRecordTable } from '@ying/db-drizzle/schema'
+import { db } from '@/common/modules/db'
 import { redis } from '@/common/modules/redis'
 import type { NotificationJobMap, NotificationJobs } from './notification.types'
 import { notificationService } from '.'
 
 export class NotificationConsumer {
-  private readonly visitorRepository: Repository<VisitorEntity>
-  private readonly pushTaskRepository: Repository<PushTaskEntity>
-  private readonly pushRecordRepository: Repository<PushRecordEntity>
-  constructor() {
-    this.visitorRepository = dataSource.getRepository(VisitorEntity)
-    this.pushTaskRepository = dataSource.getRepository(PushTaskEntity)
-    this.pushRecordRepository = dataSource.getRepository(PushRecordEntity)
-  }
-
   async process(job: NotificationJobs) {
     switch (job.name) {
       case 'pushTask':
@@ -36,64 +27,75 @@ export class NotificationConsumer {
 
   async handlePushRecord(data: NotificationJobMap['pushRecord']) {
     const { visitorId, pushTaskId } = data
-    let pushRecord: PushRecordEntity | undefined
+    let pushRecord: typeof pushRecordTable.$inferSelect | undefined
     try {
       const [visitor, pushTask] = await Promise.all([
-        this.visitorRepository.findOne({ where: { visitorId } }),
-        this.pushTaskRepository.findOne({
+        db.query.visitorTable.findFirst({ where: { id: visitorId } }),
+        db.query.pushTaskTable.findFirst({
           where: { id: pushTaskId },
-          relations: {
+          with: {
             pushTemplate: {
-              image: true
+              with: {
+                image: true
+              }
             }
           }
         })
       ])
-      if (!visitor?.pushSubscription || !pushTask) return
-      const pushData = notificationService.getPushData(visitor, pushTask.pushTemplate)
-      pushRecord = await this.pushRecordRepository.save(
-        this.pushRecordRepository.create({
+      if (!visitor?.pushSubscription || !pushTask?.pushTemplate) return
+      const pushData = notificationService.getPushData({ visitor, pushTemplate: pushTask.pushTemplate })
+      ;[pushRecord] = await db
+        .insert(pushRecordTable)
+        .values({
           visitorId,
           pushTaskId,
           pushData
         })
-      )
-      if (!pushRecord) return
+        .returning()
+
       await notificationService.sendPushData(visitor.pushSubscription, {
         pushRecordId: pushRecord.id,
         ...pushData
       })
-      pushRecord.status = PushRecordStatus.Success
-      await this.pushRecordRepository.save(pushRecord)
+
+      await db
+        .update(pushRecordTable)
+        .set({
+          status: PushRecordStatus.Success
+        })
+        .where(eq(pushRecordTable.id, pushRecord.id))
     } catch (error) {
       if (!pushRecord) return
+      let errorResult: string
       if (error instanceof WebPushError) {
-        pushRecord.pushResult = JSON.stringify(error)
+        errorResult = JSON.stringify(error)
         if (error.statusCode === 410) {
-          await this.visitorRepository.update(pushRecord.visitorId, { pushSubscription: null })
+          await db.update(visitorTable).set({ pushSubscription: null }).where(eq(visitorTable.id, pushRecord.visitorId))
         }
       } else {
-        pushRecord.pushResult = String(error)
+        errorResult = String(error)
       }
-      pushRecord.status = PushRecordStatus.Fail
-      await this.pushRecordRepository.save(pushRecord)
+      await db
+        .update(pushRecordTable)
+        .set({
+          pushResult: errorResult,
+          status: PushRecordStatus.Fail
+        })
+        .where(eq(pushRecordTable.id, pushRecord.id))
     } finally {
       let processLength = Number(await redis.get(`push_task_${pushTaskId}_process_length`))
-      if (processLength !== undefined || processLength !== null) {
-        processLength = processLength - 1
+      processLength = processLength - 1
+      if (processLength === 0) {
+        await db.update(pushTaskTable).set({ status: PushTaskStatus.Done }).where(eq(pushTaskTable.id, pushTaskId))
+        await redis.del(`push_task_${pushTaskId}_process_length`)
+      } else {
         await redis.set(`push_task_${pushTaskId}_process_length`, processLength)
-        if (processLength === 0) {
-          await this.pushTaskRepository.update(pushTaskId, { status: PushTaskStatus.Done })
-          await redis.del(`push_task_${pushTaskId}_process_length`)
-        }
       }
     }
-    return
   }
 
   async handlePushTask(data: NotificationJobMap['pushTask']) {
     const { pushTaskId } = data
     await notificationService.executePushTask(pushTaskId)
-    return
   }
 }

@@ -14,7 +14,7 @@ export type AdminLoginDto = z.infer<typeof adminLoginDto>
 
 export const updateSysUserSelfUserInfoDto = z.object({
   name: z.string().optional(),
-  avatarId: z.number().optional()
+  avatarId: z.number().nullable()
 })
 export type UpdateSysUserSelfUserInfoDto = z.infer<typeof updateSysUserSelfUserInfoDto>
 

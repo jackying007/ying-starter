@@ -1,5 +1,5 @@
 import { redis } from '@/common/modules/redis'
-import { fileService } from '@/common/modules/storage'
+import { fileService } from '@/business/modules/storage'
 import { CacheKey } from '@/business/modules/sys/auth'
 
 export class SysSettingService {

@@ -3,8 +3,7 @@ import { FileSourceType, FileType, listFileDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { zValidator, paramId } from '@/business/base.validator'
 import { authValidator, pmsValidator } from '@/business/modules/sys'
-import { fileService } from '@/common/modules/storage'
-import { fileMiddleware } from '@/common/modules/storage'
+import { fileMiddleware, fileService } from '@/business/modules/storage'
 
 export const file = new Hono()
   .use(authValidator, pmsValidator(pms.file))
@@ -26,7 +25,7 @@ export const file = new Hono()
         fileType: FileType.Image,
         from: FileSourceType.Admin,
         userId,
-        extra: typeof body.extra === 'string' ? (JSON.parse(body.extra) as object) : undefined
+        extra: typeof body.extra === 'string' ? JSON.parse(body.extra) : undefined
       })
     )
   })

@@ -68,7 +68,7 @@ export const oauth = new Hono()
       const { code, state } = c.req.valid('query')
       const googleUserInfo = await oauthService.validateGoogleCallback(code, state)
       const user = await oauthService.getOrCreateOAuthAccountAndUser(googleUserInfo, 'google')
-      const { accessToken, refreshToken } = await authService.sign(user)
+      const { accessToken, refreshToken } = await authService.signUser(user)
       return c.redirect(
         `${authConfig.authClientUrl}/${c.get('language')}/auth/login?accessToken=${accessToken}&refreshToken=${refreshToken}`
       )
@@ -86,7 +86,7 @@ export const oauth = new Hono()
     async c => {
       const githubUserInfo = await oauthService.validateGitHubCallback(c.req.valid('query').code)
       const user = await oauthService.getOrCreateOAuthAccountAndUser(githubUserInfo, 'github')
-      const { accessToken, refreshToken } = await authService.sign(user)
+      const { accessToken, refreshToken } = await authService.signUser(user)
       return c.redirect(
         `${authConfig.authClientUrl}/${c.get('language')}/auth/login?accessToken=${accessToken}&refreshToken=${refreshToken}`
       )

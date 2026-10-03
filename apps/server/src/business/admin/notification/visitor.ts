@@ -17,7 +17,7 @@ export const visitor = new Hono()
     pmsValidator(pms.notification.visitor.delete),
     zValidator('param', z.object({ visitorId: z.string() })),
     async c => {
-      await visitorService.delete(c.req.valid('param'))
+      await visitorService.delete(c.req.valid('param').visitorId)
       return c.json(null)
     }
   )

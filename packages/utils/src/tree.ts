@@ -1,17 +1,11 @@
-export function createTreeFns<T extends { children?: T[] }>(
-  array: T[] = [],
-  idField = 'id',
-  parentIdFiled = 'parentId'
-) {
-  function toTree(parentId: any): T[] {
+export function arrayToTree<T>(array: T[] = [], idField = 'id', parentIdFiled = 'parentId') {
+  function toTree(parentId: any): (T & { children?: T[] })[] {
     return array
       .filter(el => el[parentIdFiled as keyof T] === parentId)
       .map(el => ({ ...el, children: toTree(el[idField as keyof T]) }))
   }
 
-  return {
-    toTree
-  }
+  return toTree(null)
 }
 
 export function flattenTrees<T extends { children?: T[] }>(trees: T[] = []): T[] {

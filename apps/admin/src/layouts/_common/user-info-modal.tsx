@@ -4,15 +4,12 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useDialogOpen } from '@ying/shared-react/hooks'
 import { updateSysUserSelfUserInfoDto, updateSysUserSelfPasswordDto } from '@ying/shared'
-import type { UpdateSysUserSelfUserInfoDto, UpdateSysUserSelfPasswordDto } from '@ying/shared'
 import { commonApi, sysAuthApi } from '@/api'
 import { UploadImage } from '@/components/image'
 import { updateUserInfo, logout, useUserInfo } from '@/store'
 
-export type UserInfoModalProps = ReturnType<typeof useDialogOpen>
-
 type TSegmented = '修改信息' | '修改密码'
-
+export type UserInfoModalProps = ReturnType<typeof useDialogOpen>
 export function UserInfoModal({ open, onClose }: UserInfoModalProps) {
   const [segmented, setSegmented] = useState<TSegmented>('修改信息')
 
@@ -45,7 +42,7 @@ const ChangeUserInfoForm = () => {
     handleSubmit,
     formState: { isSubmitting, isDirty, errors },
     reset
-  } = useForm<UpdateSysUserSelfUserInfoDto>({
+  } = useForm({
     resolver: zodResolver(updateSysUserSelfUserInfoDto)
   })
   useEffect(() => {
@@ -57,14 +54,14 @@ const ChangeUserInfoForm = () => {
     }
   }, [userInfo, reset])
 
-  const handlePost = async (value: UpdateSysUserSelfUserInfoDto) => {
+  const submit = handleSubmit(async value => {
     await sysAuthApi.updateUserInfo(value)
     message.success('修改用户信息成功')
     updateUserInfo()
-  }
+  })
 
   return (
-    <Form layout="vertical" onFinish={handleSubmit(handlePost)}>
+    <Form layout="vertical" onFinish={submit}>
       <Form.Item
         label="昵称"
         required
@@ -114,7 +111,7 @@ const ChangePasswordForm = () => {
     control,
     handleSubmit,
     formState: { isSubmitting, errors }
-  } = useForm<UpdateSysUserSelfPasswordDto>({
+  } = useForm({
     resolver: zodResolver(updateSysUserSelfPasswordDto),
     defaultValues: {
       oldPass: '',
@@ -122,14 +119,14 @@ const ChangePasswordForm = () => {
     }
   })
 
-  const handlePost = async (value: UpdateSysUserSelfPasswordDto) => {
+  const submit = handleSubmit(async value => {
     await sysAuthApi.updateUserPassword(value)
     message.success(`修改密码成功`)
     logout()
-  }
+  })
 
   return (
-    <Form layout="vertical" onFinish={handleSubmit(handlePost)}>
+    <Form layout="vertical" onFinish={submit}>
       <Form.Item
         label="旧密码"
         required

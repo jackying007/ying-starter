@@ -41,7 +41,7 @@ export default function PushRecordPage() {
       width: 150,
       fixed: 'left',
       ellipsis: true,
-      render: (_, record) => record.pushTask.name
+      render: (_, record) => record.pushTask?.name
     },
     {
       title: '浏览用户ID',
@@ -79,10 +79,10 @@ export default function PushRecordPage() {
         let data = _
         try {
           data = JSON.parse(_)
+          return <Typography.Link onClick={() => jsonViewModalProps.onOpen(data)}>查看</Typography.Link>
         } catch {
-          //
+          return '-'
         }
-        return <Typography.Link onClick={() => jsonViewModalProps.onOpen(data)}>查看</Typography.Link>
       }
     },
     {

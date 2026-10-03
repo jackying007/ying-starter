@@ -10,7 +10,7 @@ import { cn } from '@ying/shared-react/ui'
 const { fallbackLng, languages } = clientLanguagesConfig
 
 type IntlTextAreaProps = Omit<TextAreaProps, 'defaultValue' | 'onChange'> & {
-  defaultValue?: TIntlText
+  defaultValue?: TIntlText | null
   onChange?: (val: TIntlText) => void
 }
 

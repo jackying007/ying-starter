@@ -2,16 +2,14 @@ import { useEffect } from 'react'
 import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { updateSysUserPasswordDto, type UpdateSysUserPasswordDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/shared-react/hooks'
-
 import { sysUserApi } from '@/api'
 
-type ChangePassModalProps = ReturnType<typeof useDialogOpen<UpdateSysUserPasswordDto>> & {
+export type ChangePassModalFormValue = UpdateSysUserPasswordDto
+export type ChangePassModalProps = ReturnType<typeof useDialogOpen<ChangePassModalFormValue>> & {
   onSuccess?: VoidFunction
 }
-
 export function ChangePassModal({ open, formValue, onSuccess, onClose }: ChangePassModalProps) {
   const { message } = App.useApp()
 
@@ -21,8 +19,7 @@ export function ChangePassModal({ open, formValue, onSuccess, onClose }: ChangeP
     formState: { errors, isSubmitting },
     reset
   } = useForm<UpdateSysUserPasswordDto>({
-    resolver: zodResolver(updateSysUserPasswordDto),
-    defaultValues: formValue
+    resolver: zodResolver(updateSysUserPasswordDto)
   })
 
   useEffect(() => {

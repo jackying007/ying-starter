@@ -1,99 +1,117 @@
-import { Like, TreeRepository } from 'typeorm'
-import { createTreeFns } from '@ying/utils'
+import { and, asc, eq, inArray, like } from 'drizzle-orm'
+import { arrayToTree } from '@ying/utils'
 import type { CreateOrUpdateRoleDto, ListRoleDto } from '@ying/shared'
-import { SysPermissionEntity, SysRoleEntity } from '@ying/db-typeorm'
-import { BaseService } from '@/common/service/base.service'
-import { dataSource } from '@/common/modules/db'
+import { sysPermissionTable, sysRoleTable, sysRoleToSysPermissionTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 import { redis } from '@/common/modules/redis'
 import { CacheKey } from '@/business/modules/sys/auth'
 
-export class SysRoleService extends BaseService<SysRoleEntity> {
-  private readonly sysPermissionRepository: TreeRepository<SysPermissionEntity>
+const config: DrizzleServiceConfig = {
+  table: sysRoleTable,
+  pk: sysRoleTable.id
+}
+export class SysRoleService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(SysRoleEntity))
-    this.sysPermissionRepository = dataSource.getTreeRepository(SysPermissionEntity)
+    super(config)
   }
 
   async list(dto: ListRoleDto) {
-    const { where, take, skip } = this.buildListQuery(dto)
-    const { name, status } = dto
-
-    Object.assign(where, {
-      name: name ? Like(`%${name}%`) : undefined,
-      status
-    })
-
-    return this.repository.find({
-      where,
-      skip,
-      take,
-      order: {
-        createAt: 'DESC'
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+    const { name, status, date } = dto
+    return db.query.sysRoleTable.findMany({
+      where: {
+        name: name ? { like: `%${name}%` } : undefined,
+        status,
+        createAt: this.buildQueryDateBetween(date)
       },
-      relations: ['permissions']
+      with: {
+        permissions: true
+      },
+      limit,
+      offset,
+      orderBy: {
+        createAt: 'desc'
+      }
     })
   }
 
   listCount(dto: ListRoleDto) {
-    const { where } = this.buildListQuery(dto)
-    const { name, status } = dto
-
-    Object.assign(where, {
-      name: name ? Like(`%${name}%`) : undefined,
-      status
-    })
-
-    return this.repository.countBy(where)
+    const { name, status, date } = dto
+    return this.countBy(
+      and(
+        mapOptional(name, _ => like(sysRoleTable.name, `%${_}%`)),
+        mapOptional(status, _ => eq(sysRoleTable.status, _)),
+        this.buildDateBetween(sysRoleTable.createAt, date)
+      )
+    )
   }
 
   async listPermissions() {
-    const list = await this.sysPermissionRepository
-      .createQueryBuilder('sysPermission')
-      .addOrderBy('sysPermission.sortId is null', 'ASC')
-      .addOrderBy('sysPermission.sortId', 'ASC')
-      .getMany()
-
-    return createTreeFns(list, 'code', 'parentCode').toTree(null)
+    const list = await db.select().from(sysPermissionTable).orderBy(asc(sysPermissionTable.sort))
+    return arrayToTree(list, 'code', 'parentCode')
   }
 
-  create(createRoleDto: CreateOrUpdateRoleDto) {
-    const role = this.repository.create(createRoleDto)
-    role.permissions = createRoleDto.permissionCodes.map(code => {
-      const permission = new SysPermissionEntity()
-      permission.code = code
-      return permission
+  async create(dto: CreateOrUpdateRoleDto) {
+    await db.transaction(async tx => {
+      const [sysRole] = await tx.insert(sysRoleTable).values(dto).returning()
+      if (dto.permissionCodes.length) {
+        await tx.insert(sysRoleToSysPermissionTable).values(
+          dto.permissionCodes.map(code => ({
+            sysPermissionCode: code,
+            sysRoleId: sysRole.id
+          }))
+        )
+      }
     })
-    return this.repository.save(role)
   }
 
-  async update(updateRoleDto: CreateOrUpdateRoleDto) {
-    const role = await this.repository.findOne({
-      where: { id: updateRoleDto.id },
-      relations: ['permissions', 'users']
+  async update(dto: CreateOrUpdateRoleDto) {
+    const sysRole = await db.query.sysRoleTable.findFirst({
+      where: { id: dto.id },
+      with: {
+        permissions: true,
+        users: true
+      }
     })
-    if (!role) throw Error('role is not exist.')
+    if (!sysRole) throw Error('sysRole is not exist.')
 
-    if (role.permissions.map(el => el.code).toString() !== updateRoleDto.permissionCodes.toString()) {
-      role.permissions = updateRoleDto.permissionCodes.map(code => {
-        const permission = new SysPermissionEntity()
-        permission.code = code
-        return permission
-      })
-
-      role.users.forEach(el => {
-        void redis.del(`${CacheKey.AdminAuthPermission}:${el.id}`)
-      })
-    }
-
-    Object.assign(role, updateRoleDto)
-    return this.repository.save(role)
+    await db.transaction(async tx => {
+      await tx.update(sysRoleTable).set(dto).where(eq(sysRoleTable.id, sysRole.id))
+      const newPermissionCodes = dto.permissionCodes
+      if (newPermissionCodes?.length) {
+        const oldPermissionCodes = sysRole.permissions.map(el => el.code)
+        const waitDeleteCodes = oldPermissionCodes.filter(o => !newPermissionCodes.includes(o))
+        const waitCreateCodes = newPermissionCodes.filter(n => !oldPermissionCodes.includes(n))
+        if (waitDeleteCodes.length)
+          await tx
+            .delete(sysRoleToSysPermissionTable)
+            .where(
+              and(
+                eq(sysRoleToSysPermissionTable.sysRoleId, sysRole.id),
+                inArray(sysRoleToSysPermissionTable.sysPermissionCode, waitDeleteCodes)
+              )
+            )
+        if (waitCreateCodes.length)
+          await tx.insert(sysRoleToSysPermissionTable).values(
+            waitCreateCodes.map(sysPermissionCode => ({
+              sysRoleId: sysRole.id,
+              sysPermissionCode
+            }))
+          )
+        sysRole.users.forEach(el => {
+          void redis.del(`${CacheKey.AdminAuthPermission}:${el.id}`)
+        })
+      }
+    })
   }
 
-  createOrUpdate(dto: CreateOrUpdateRoleDto) {
+  async createOrUpdate(dto: CreateOrUpdateRoleDto) {
     if (dto.id) {
-      return this.update(dto)
+      await this.update(dto)
     } else {
-      return this.create(dto)
+      await this.create(dto)
     }
   }
 }

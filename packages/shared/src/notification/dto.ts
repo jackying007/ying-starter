@@ -1,6 +1,5 @@
 import { z } from 'zod'
-
-import { listDto, zIntlText, zRequiredString, zRequiredNumber } from '../base'
+import { listDto, zIntlText } from '../base'
 import { DeviceType } from './enum'
 
 export const listVisitorDto = listDto.extend({
@@ -10,7 +9,7 @@ export const listVisitorDto = listDto.extend({
 export type ListVisitorDto = z.infer<typeof listVisitorDto>
 
 export const createVisitorDto = z.object({
-  visitorId: z.string(),
+  id: z.string(),
   languages: z.array(z.string()).optional(),
   userAgent: z.string().optional(),
   deviceType: z.string().optional()
@@ -25,32 +24,32 @@ export type ListPushTemplateDto = z.infer<typeof listPushTemplateDto>
 
 export const pushActionDto = z.object({
   title: zIntlText({ minLength: 2, maxLength: 6 }).nonoptional(),
-  link: z.string().optional()
+  link: z.string().nullable()
 })
 export type PushActionDto = z.infer<typeof pushActionDto>
 
 export const createOrUpdatePushTemplateDto = z.object({
   id: z.number().optional(),
-  name: zRequiredString('模板名称不能为空'),
+  name: z.string().nonempty('模板名称不能为空'),
   title: zIntlText(),
-  link: z.string().optional(),
-  body: zIntlText({ canEmpty: true }),
-  imageId: z.number().nullish(),
-  actions: z.array(pushActionDto).optional()
+  link: z.string().nullable(),
+  body: zIntlText({ canEmpty: true }).nullable(),
+  imageId: z.number().nullable(),
+  actions: z.array(pushActionDto).nullable()
 })
 export type CreateOrUpdatePushTemplateDto = z.infer<typeof createOrUpdatePushTemplateDto>
 
 export const sendPushTemplateDto = z.object({
-  visitorId: z.string().nonempty(),
+  visitorId: z.string().nonempty('浏览用户ID不能为空'),
   pushTemplateId: z.number()
 })
 export type SendPushTemplateDto = z.infer<typeof sendPushTemplateDto>
 
 export const createOrUpdatePushTaskDto = z.object({
   id: z.number().optional(),
-  name: zRequiredString('任务名称不能为空'),
-  deviceType: z.string().optional(),
-  pushTemplateId: zRequiredNumber('推送模板不能为空')
+  name: z.string().nonempty('任务名称不能为空'),
+  deviceType: z.string().nullable(),
+  pushTemplateId: z.number().nonoptional('推送模板不能为空')
 })
 export type CreateOrUpdatePushTaskDto = z.infer<typeof createOrUpdatePushTaskDto>
 

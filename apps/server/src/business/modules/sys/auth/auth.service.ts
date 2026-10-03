@@ -1,26 +1,20 @@
-import { Repository } from 'typeorm'
 import { HTTPException } from 'hono/http-exception'
 import { sign, verify } from 'hono/jwt'
-import { unique } from '@ying/utils'
+import { eq } from 'drizzle-orm'
+import { uniqueBy } from '@ying/utils'
 import { BasicStatus } from '@ying/shared'
 import type { AdminLoginDto, UpdateSysUserSelfPasswordDto, UpdateSysUserSelfUserInfoDto } from '@ying/shared'
-import { SysPermissionEntity, SysUserEntity } from '@ying/db-typeorm'
+import { sysPermissionTable, sysUserTable } from '@ying/db-drizzle/schema'
 import { authConfig } from '@/config'
-import { dataSource } from '@/common/modules/db'
+import { db } from '@/common/modules/db'
 import { comparePass, generatePass, getExpTime } from '@/common/utils'
 import { redis } from '@/common/modules/redis'
 import { CacheKey } from '.'
 
+type TSysPermission = typeof sysPermissionTable.$inferSelect
+
 export class SysAuthService {
-  private readonly sysUserRepository: Repository<SysUserEntity>
-  private readonly sysPermissionRepository: Repository<SysPermissionEntity>
-
-  constructor() {
-    this.sysUserRepository = dataSource.getRepository(SysUserEntity)
-    this.sysPermissionRepository = dataSource.getRepository(SysPermissionEntity)
-  }
-
-  async sign(user: SysUserEntity) {
+  async signUser(user: typeof sysUserTable.$inferSelect) {
     const accessToken = await sign(
       {
         id: user.id,
@@ -45,24 +39,24 @@ export class SysAuthService {
     }
   }
 
-  async login(loginDto: AdminLoginDto) {
-    const user = await this.sysUserRepository.findOne({
-      where: [
-        {
-          account: loginDto.username
-        },
-        {
-          email: loginDto.username
-        }
-      ]
+  async login(dto: AdminLoginDto) {
+    const { username, password } = dto
+    const user = await db.query.sysUserTable.findFirst({
+      where: {
+        OR: [
+          {
+            account: username
+          },
+          {
+            email: username
+          }
+        ]
+      }
     })
-    if (!user) {
-      throw new HTTPException(406, { message: 'user is not exists!' })
-    }
-    if (!comparePass(loginDto.password, user.password)) {
-      throw new HTTPException(406, { message: 'wrong password!' })
-    }
-    return this.sign(user)
+    if (!user) throw new HTTPException(406, { message: 'user is not exists!' })
+    if (!comparePass(password, user.password)) throw new HTTPException(406, { message: 'wrong password!' })
+
+    return this.signUser(user)
   }
 
   verifyAccessToken(token: string) {
@@ -97,55 +91,58 @@ export class SysAuthService {
     await redis.del(`${CacheKey.AdminAuthRefreshToken}:${userId}:${refreshToken}`)
   }
 
-  async getUserInfo(uid: number) {
-    const sysUserEntity = await this.sysUserRepository.findOne({
-      where: {
-        id: uid
+  async getUserInfo(id: number) {
+    const sysUser = await db.query.sysUserTable.findFirst({
+      columns: {
+        password: false
       },
-      relations: ['roles', 'roles.permissions', 'avatar']
-    })
-
-    if (!sysUserEntity) throw new HTTPException(401)
-
-    const roles = sysUserEntity.roles.filter(role => role.status === BasicStatus.ENABLE)
-
-    sysUserEntity.permissions = unique(
-      roles.reduce((prev, cur) => [...prev, ...cur.permissions], [] as SysPermissionEntity[])
-    )
-
-    const isSuperAdmin = roles.some(el => el.systemic)
-    if (isSuperAdmin) {
-      sysUserEntity.permissions = await this.sysPermissionRepository.find()
-    }
-
-    sysUserEntity.permissions = sysUserEntity.permissions.sort((a, b) => {
-      if (!a.sortId || !b.sortId) {
-        return 0
+      where: {
+        id
+      },
+      with: {
+        roles: {
+          where: {
+            status: BasicStatus.ENABLE
+          },
+          with: {
+            permissions: true
+          }
+        },
+        avatar: true
       }
-      return a.sortId - b.sortId
     })
+    if (!sysUser) throw new HTTPException(500, { message: 'user is not exist' })
 
-    return sysUserEntity
-  }
-
-  async updateUserInfo(dto: UpdateSysUserSelfUserInfoDto, id: number) {
-    return this.sysUserRepository.update({ id }, dto)
-  }
-
-  async updateUserPassword(dto: UpdateSysUserSelfPasswordDto, id: number) {
-    const user = await this.sysUserRepository.findOne({
-      where: { id }
-    })
-    if (!user) {
-      throw new HTTPException(406, { message: 'User does not exist!' })
+    let permissions: TSysPermission[] = uniqueBy(
+      sysUser.roles.reduce((prev, cur) => [...prev, ...cur.permissions], [] as TSysPermission[]),
+      'code'
+    )
+    const isSuperAdmin = sysUser.roles.some(el => el.systemic)
+    if (isSuperAdmin) {
+      permissions = await db.query.sysPermissionTable.findMany()
     }
-    if (!comparePass(dto.oldPass, user.password)) {
+    permissions = permissions.sort((a, b) => a.sort - b.sort)
+    return {
+      ...sysUser,
+      permissions
+    }
+  }
+
+  async updateUserInfo(id: number, dto: UpdateSysUserSelfUserInfoDto) {
+    await db.update(sysUserTable).set(dto).where(eq(sysUserTable.id, id))
+  }
+
+  async updateUserPassword(id: number, dto: UpdateSysUserSelfPasswordDto) {
+    const user = await db.query.sysUserTable.findFirst({ where: { id } })
+    if (!user) throw new HTTPException(406, { message: 'User does not exist!' })
+    if (!comparePass(dto.oldPass, user.password))
       throw new HTTPException(406, { message: 'The password is incorrect!' })
-    }
 
-    const sysUser = this.sysUserRepository.create({ id })
-    sysUser.password = generatePass(dto.newPass)
-
-    return this.sysUserRepository.save(sysUser)
+    await db
+      .update(sysUserTable)
+      .set({
+        password: generatePass(dto.newPass)
+      })
+      .where(eq(sysUserTable.id, id))
   }
 }

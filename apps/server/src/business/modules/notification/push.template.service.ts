@@ -1,50 +1,65 @@
-import type { ListPushTemplateDto } from '@ying/shared'
-import { PushTemplateEntity } from '@ying/db-typeorm'
-import { BaseService } from '@/common/service/base.service'
-import { dataSource } from '@/common/modules/db'
+import { and, like, eq, sql, desc } from 'drizzle-orm'
+import type { ListPushTemplateDto, CreateOrUpdatePushTemplateDto } from '@ying/shared'
+import { pushTemplateTable, fileTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 
-export class PushTemplateService extends BaseService<PushTemplateEntity> {
+const config: DrizzleServiceConfig = {
+  table: pushTemplateTable,
+  pk: pushTemplateTable.id
+}
+export class PushTemplateService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(PushTemplateEntity))
+    super(config)
   }
 
-  buildQb(dto: ListPushTemplateDto) {
+  buildWhere(dto: ListPushTemplateDto) {
     const { name, title, date } = dto
-    const qb = this.repository.createQueryBuilder('pushTemplate').leftJoinAndSelect('pushTemplate.image', 'image')
-
-    if (name) {
-      qb.andWhere('pushTemplate.name LIKE :name', { name: `%${name}%` })
-    }
-    if (title) {
-      qb.andWhere('"pushTemplate"."title"::text LIKE :title', { title: `%${title}%` })
-    }
-    if (date) {
-      const startDate = new Date(date[0])
-      const endDate = new Date(date[1])
-      qb.andWhere('pushTemplate.createAt BETWEEN :startDate AND :endDate', {
-        startDate,
-        endDate
-      })
-    }
-    return qb
+    return and(
+      mapOptional(name, _ => like(pushTemplateTable.name, `%${_}%`)),
+      mapOptional(title, _ => sql`${pushTemplateTable.title}::text LIKE %${_}%`),
+      this.buildDateBetween(pushTemplateTable.createAt, date)
+    )
   }
 
   async list(dto: ListPushTemplateDto) {
-    const qb = this.buildQb(dto)
-    qb.orderBy('pushTemplate.createAt', 'DESC')
-    this.qbPostProcess(qb, dto)
-    return qb.getMany()
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+
+    const list = await db
+      .select({
+        pushTemplate: pushTemplateTable,
+        image: fileTable
+      })
+      .from(pushTemplateTable)
+      .leftJoin(fileTable, eq(pushTemplateTable.imageId, fileTable.id))
+      .where(this.buildWhere(dto))
+      .orderBy(desc(pushTemplateTable.createAt))
+      .limit(limit)
+      .offset(offset)
+
+    return list.map(el => ({
+      ...el.pushTemplate,
+      image: el.image
+    }))
   }
 
   listCount(dto: ListPushTemplateDto) {
-    const qb = this.buildQb(dto)
-    return qb.getCount()
+    return this.countBy(this.buildWhere(dto))
+  }
+
+  async createOrUpdate(dto: CreateOrUpdatePushTemplateDto) {
+    if (dto.id) {
+      await db.update(pushTemplateTable).set(dto).where(eq(pushTemplateTable.id, dto.id))
+    } else {
+      await db.insert(pushTemplateTable).values(dto)
+    }
   }
 
   detail(id: number) {
-    return this.repository.findOne({
+    return db.query.pushTemplateTable.findFirst({
       where: { id },
-      relations: {
+      with: {
         image: true
       }
     })

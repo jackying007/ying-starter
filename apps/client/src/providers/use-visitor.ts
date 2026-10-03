@@ -18,7 +18,7 @@ async function initVisitor() {
   const parser = new UAParser()
   const deviceType = parser.getOS().name?.toLowerCase() || 'others'
   await commonAPI.createVisitor({
-    visitorId,
+    id: visitorId,
     languages: Array.from(navigator.languages),
     userAgent: navigator.userAgent,
     deviceType: DeviceTypes.includes(deviceType) ? deviceType : 'others'
@@ -31,7 +31,7 @@ async function bindUser(visitorId: string) {
 }
 
 function isUserNewDevice(user: UserInfoVo, visitorId: string) {
-  return !user.visitors?.some(el => el.visitorId === visitorId)
+  return !user.visitors?.some(el => el.id === visitorId)
 }
 
 export const useVisitor = () => {

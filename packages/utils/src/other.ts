@@ -11,7 +11,7 @@ export function debounce<T extends (...args: any[]) => void>(
   }
 }
 
-export function getOption<T extends { label: string; value: string | number }>(arr: T[], value: number): T | undefined {
+export function getOption<T extends { label: string; value: any }>(arr: T[], value: any): T | undefined {
   return arr.find(el => el.value === value)
 }
 
@@ -181,19 +181,6 @@ export function omitArray<T extends Record<string, any>, K extends keyof T>(arr:
   return arr.map(obj => omit(obj, ...keys))
 }
 
-export function nullToUndefined<T>(value: T): T {
-  if (value === null) {
-    return undefined as T
-  }
-  if (Array.isArray(value)) {
-    return value.map(nullToUndefined) as T
-  }
-  if (typeof value === 'object') {
-    const result = {} as Record<string, unknown>
-    for (const [key, val] of Object.entries(value as object)) {
-      result[key] = nullToUndefined(val)
-    }
-    return result as T
-  }
-  return value
+export function mapOptional<T, R>(value: T | undefined | '', fn: (value: T) => R): R | undefined {
+  return value === undefined || value === '' ? undefined : fn(value)
 }

@@ -2,21 +2,28 @@ import { useEffect } from 'react'
 import { Form, Drawer, Input, Button, Radio, Select, App, type SelectProps } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { BasicStatus } from '@ying/shared'
 import { createOrUpdateSysUserDto } from '@ying/shared'
 import type { CreateOrUpdateSysUserDto, ListRoleDto } from '@ying/shared'
+import type { SysUserListVo } from '@ying/server/types-admin'
 import { useDialogOpen } from '@ying/shared-react/hooks'
-
 import { useQueryWithRequery } from '@/hooks'
 import { sysRoleApi, sysUserApi } from '@/api'
 
-import { defaultUserValues } from './constant'
-
-export type UserDrawerProps = ReturnType<typeof useDialogOpen<CreateOrUpdateSysUserDto>> & {
+export type UserDrawerFormValue = SysUserListVo[number]
+const defaultValues: CreateOrUpdateSysUserDto = {
+  id: undefined,
+  name: '',
+  account: '',
+  password: undefined,
+  email: null,
+  status: BasicStatus.ENABLE,
+  roleIds: [],
+  remark: null
+}
+export type UserDrawerProps = ReturnType<typeof useDialogOpen<UserDrawerFormValue>> & {
   onSuccess?: VoidFunction
 }
-
 export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerProps) {
   const title = formValue ? '编辑系统用户' : '新增系统用户'
   const { message } = App.useApp()
@@ -33,17 +40,17 @@ export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerPr
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
+    setValue
   } = useForm({
-    resolver: zodResolver(createOrUpdateSysUserDto),
-    defaultValues: defaultUserValues
+    resolver: zodResolver(createOrUpdateSysUserDto)
   })
 
   useEffect(() => {
     if (formValue) {
-      reset(formValue)
+      reset({ ...formValue, roleIds: formValue.roles.map(el => el.id) })
     } else {
-      reset(defaultUserValues)
+      reset(defaultValues)
     }
   }, [formValue, reset])
 
@@ -106,7 +113,14 @@ export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerPr
               name="password"
               control={control}
               render={({ field }) => (
-                <Input.Password allowClear placeholder="请输入密码" {...field} autoComplete="new-password" />
+                <Input.Password
+                  placeholder="请输入密码"
+                  {...field}
+                  value={field.value ?? undefined}
+                  autoComplete="new-password"
+                  allowClear
+                  onClear={() => setValue('password', undefined)}
+                />
               )}
             />
           </Form.Item>
@@ -119,7 +133,16 @@ export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerPr
           <Controller
             name="email"
             control={control}
-            render={({ field }) => <Input allowClear placeholder="请输入邮箱" {...field} autoComplete="new-password" />}
+            render={({ field }) => (
+              <Input
+                placeholder="请输入邮箱"
+                {...field}
+                value={field.value ?? ''}
+                autoComplete="new-email"
+                allowClear
+                onClear={() => setValue('email', null)}
+              />
+            )}
           />
         </Form.Item>
         <Form.Item
@@ -170,7 +193,16 @@ export function UserDrawer({ open, formValue, onSuccess, onClose }: UserDrawerPr
           <Controller
             name="remark"
             control={control}
-            render={({ field }) => <Input.TextArea style={{ width: '100%' }} placeholder="请输入备注" {...field} />}
+            render={({ field }) => (
+              <Input.TextArea
+                style={{ width: '100%' }}
+                placeholder="请输入备注"
+                {...field}
+                value={field.value ?? ''}
+                allowClear
+                onClear={() => setValue('remark', null)}
+              />
+            )}
           />
         </Form.Item>
       </Form>

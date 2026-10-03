@@ -1,11 +1,12 @@
-import { Like } from 'typeorm'
 import type { Column } from 'exceljs'
 import dayjs from 'dayjs'
 import { HTTPException } from 'hono/http-exception'
-import type { ListUserDto, ResetPasswordDto } from '@ying/shared'
-import { UserEntity } from '@ying/db-typeorm'
-import { BaseService } from '@/common/service/base.service'
-import { dataSource } from '@/common/modules/db'
+import { and, like, eq } from 'drizzle-orm'
+import type { ListUserDto, UpdateUserInfoDto, ResetPasswordDto } from '@ying/shared'
+import { userTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 import { dataToXLSXDefaultSheetAndGetBuffer, generatePass } from '@/common/utils'
 
 const columns: Partial<Column>[] = [
@@ -17,50 +18,52 @@ const columns: Partial<Column>[] = [
   { key: 'createAt', header: '创建时间', width: 30 }
 ]
 
-export class UserService extends BaseService<UserEntity> {
+const config: DrizzleServiceConfig = {
+  table: userTable,
+  pk: userTable.id
+}
+export class UserService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(UserEntity))
+    super(config)
   }
 
-  list(listUserDto: ListUserDto) {
-    const { take, skip, where } = this.buildListQuery(listUserDto)
-    const { name, email } = listUserDto
+  list(dto: ListUserDto) {
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+    const { name, email, date } = dto
 
-    Object.assign(where, {
-      name: name ? Like(`%${name}%`) : undefined,
-      email: email ? Like(`%${email}%`) : undefined
-    })
-
-    return this.repository.find({
-      where,
-      skip,
-      take,
-      relations: {
+    return db.query.userTable.findMany({
+      where: {
+        name: name ? { like: `%${name}%` } : undefined,
+        email: email ? { like: `%${email}%` } : undefined,
+        createAt: this.buildQueryDateBetween(date)
+      },
+      limit,
+      offset,
+      with: {
         avatar: true,
         oauthAccounts: true
       },
-      order: {
-        createAt: 'DESC'
+      orderBy: {
+        createAt: 'desc'
       }
     })
   }
 
-  listCount(listUserDto: ListUserDto) {
-    const { where } = this.buildListQuery(listUserDto)
-    const { name, email } = listUserDto
-
-    Object.assign(where, {
-      name: name ? Like(`%${name}%`) : undefined,
-      email: email ? Like(`%${email}%`) : undefined
-    })
-
-    return this.repository.countBy(where)
+  async listCount(dto: ListUserDto) {
+    const { name, email, date } = dto
+    return this.countBy(
+      and(
+        mapOptional(name, name => like(userTable.name, `%${name}%`)),
+        mapOptional(email, email => like(userTable.email, `%${email}%`)),
+        this.buildDateBetween(userTable.createAt, date)
+      )
+    )
   }
 
   findById(id: number) {
-    return this.repository.findOne({
+    return db.query.userTable.findFirst({
       where: { id },
-      relations: {
+      with: {
         avatar: true,
         oauthAccounts: true,
         visitors: true
@@ -68,20 +71,21 @@ export class UserService extends BaseService<UserEntity> {
     })
   }
 
-  async resetPassword(id: number, dto: ResetPasswordDto) {
-    const existingUser = await this.repository.findOne({
-      where: { id }
-    })
+  updateUserInfo(userId: number, dto: UpdateUserInfoDto) {
+    return db.update(userTable).set(dto).where(eq(userTable.id, userId))
+  }
 
+  async resetPassword(id: number, dto: ResetPasswordDto) {
+    const existingUser = await db.query.userTable.findFirst({ where: { id } })
     if (!existingUser) throw new HTTPException(500, { message: 'error.user_not_exists' })
 
     if (existingUser.password && (!dto.oldPassword || existingUser.password !== generatePass(dto.oldPassword))) {
       throw new HTTPException(500, { message: 'error.old_password_error' })
     }
-
-    existingUser.password = generatePass(dto.newPassword)
-
-    await this.repository.save(existingUser)
+    await db
+      .update(userTable)
+      .set({ password: generatePass(dto.newPassword) })
+      .where(eq(userTable.id, id))
   }
 
   async export(dto: ListUserDto) {

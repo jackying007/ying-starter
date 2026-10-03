@@ -1,11 +1,11 @@
 import { Hono } from 'hono'
+import { HTTPException } from 'hono/http-exception'
 import { listUserDto } from '@ying/shared'
 import { pms } from '@ying/shared/permission'
 import { omitArray } from '@ying/utils'
 import { zValidator } from '@/business/base.validator'
 import { authValidator, pmsValidator } from '@/business/modules/sys/auth'
 import { userService } from '@/business/modules/user'
-import { HTTPException } from 'hono/http-exception'
 
 export const user = new Hono()
   .use(authValidator, pmsValidator(pms.user))

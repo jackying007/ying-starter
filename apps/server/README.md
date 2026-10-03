@@ -2,7 +2,7 @@
 
 ### 1. 数据库设置
 
-请参考 `packages/db-typeorm` 的 [README.md](../../packages/db-typeorm/README.md) 完成初始化。
+请参考 `packages/db-drizzle` 的 [README.md](../../packages/db-typeorm/README.md) 完成初始化。
 
 参考 `.env` 文件，添加一个 `.env.local` (已被git忽略)文件并自行修改环境变量。
 

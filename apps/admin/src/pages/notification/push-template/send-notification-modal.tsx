@@ -2,15 +2,11 @@ import { useEffect } from 'react'
 import { App, Form, Modal, Input } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { useDialogOpen } from '@ying/shared-react/hooks'
 import { sendPushTemplateDto } from '@ying/shared'
-import type { PushTemplateListVo } from '@ying/server/types-admin'
-
 import { notificationApi } from '@/api'
 
-export type SendNotificationProps = ReturnType<typeof useDialogOpen<PushTemplateListVo[number]>>
-
+export type SendNotificationProps = ReturnType<typeof useDialogOpen<number>>
 export function SendNotificationModal({ open, formValue, onClose }: SendNotificationProps) {
   const { message } = App.useApp()
 
@@ -18,16 +14,16 @@ export function SendNotificationModal({ open, formValue, onClose }: SendNotifica
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setValue
+    reset
   } = useForm({
     resolver: zodResolver(sendPushTemplateDto)
   })
 
   useEffect(() => {
-    if (formValue?.id) {
-      setValue('pushTemplateId', formValue.id)
+    if (formValue) {
+      reset({ visitorId: '', pushTemplateId: formValue })
     }
-  }, [formValue, setValue])
+  }, [formValue, reset])
 
   const submit = handleSubmit(async value => {
     await notificationApi.sendPushTemplate(value)

@@ -15,7 +15,7 @@ import { Page, PageQuery, PageOperations } from '@/layouts/page'
 import { IconButton, Iconify } from '@/components/icon'
 import { IntlShow } from '@/components/intl'
 
-import { PushTemplateDrawer } from './push-template-drawer'
+import { type PushTemplateDrawerFormValue, PushTemplateDrawer } from './push-template-drawer'
 import { SendNotificationModal } from './send-notification-modal'
 
 export default function PushTemplatePage() {
@@ -30,8 +30,8 @@ export default function PushTemplatePage() {
     getListCount: notificationApi.listPushTemplateCount
   })
 
-  const pushTemplateDrawerProps = useDialogOpen<Partial<PushTemplateListVo[number]>>()
-  const sendNotificationModalProps = useDialogOpen<PushTemplateListVo[number]>()
+  const pushTemplateDrawerProps = useDialogOpen<PushTemplateDrawerFormValue>()
+  const sendNotificationModalProps = useDialogOpen<number>()
 
   const location = useLocation()
   const { onOpen: openPushTemplateDrawer } = pushTemplateDrawerProps
@@ -43,8 +43,11 @@ export default function PushTemplatePage() {
         openPushTemplateDrawer({
           name: record.name,
           title: record.title,
-          link: `${import.meta.env.VITE_APP_CLIENT_URL}/article/${record.id}`,
-          image: record.cover
+          link: `${import.meta.env.APP_CLIENT_URL}/article/${record.id}`,
+          body: null,
+          imageId: record.cover?.id ?? null,
+          image: record.cover,
+          actions: null
         })
       }
     }
@@ -95,7 +98,7 @@ export default function PushTemplatePage() {
       render: (_, record) => (
         <PageOperations
           extra={
-            <IconButton onClick={() => sendNotificationModalProps.onOpen(record)}>
+            <IconButton onClick={() => sendNotificationModalProps.onOpen(record.id)}>
               <Iconify icon="solar:card-send-bold-duotone" size={18} />
             </IconButton>
           }

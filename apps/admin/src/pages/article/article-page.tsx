@@ -17,7 +17,7 @@ import { articleApi } from '@/api'
 import { useRouter } from '@/router/hooks'
 import { type BasicStatusOption, BasicStatusOptions } from '@/constant'
 
-import { ArticleModal } from './article-modal'
+import { ArticleModal, type ArticleModalFormValue } from './article-modal'
 import { ArticleContentDrawer } from './article-content-drawer'
 
 export default function ArticlePage() {
@@ -41,7 +41,7 @@ export default function ArticlePage() {
     getListCount: articleApi.listCount
   })
 
-  const articleModalProps = useDialogOpen<ArticleListVo[number]>()
+  const articleModalProps = useDialogOpen<ArticleModalFormValue>()
   const articleDrawerProps = useDialogOpen<number>()
   const articlePromotionModalProps = useDialogOpen<TPromotionData>()
 
@@ -58,7 +58,7 @@ export default function ArticlePage() {
       dataIndex: 'cover',
       align: 'center',
       width: 120,
-      render: (_, record) => <Image src={record.cover.url} className="rounded-sm w-13! h-13! object-cover" />
+      render: (_, record) => <Image src={record.cover?.url} className="rounded-sm w-13! h-13! object-cover" />
     },
     {
       title: '文章标题',

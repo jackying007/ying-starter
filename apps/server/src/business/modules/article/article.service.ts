@@ -1,50 +1,67 @@
-import { Like } from 'typeorm'
-import type { ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
-import { ArticleEntity, FileEntity } from '@ying/db-typeorm'
-import { dataSource } from '@/common/modules/db'
-import { BaseService } from '@/common/service/base.service'
+import { and, eq, inArray, like, sql } from 'drizzle-orm'
+import type { CreateOrUpdateArticleDto, ListArticleDto, UpdateArticleContentDto } from '@ying/shared'
+import { articleTable, articleToFileTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 
-export class ArticleService extends BaseService<ArticleEntity> {
+const config: DrizzleServiceConfig = {
+  table: articleTable,
+  pk: articleTable.id
+}
+export class ArticleService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(ArticleEntity))
-  }
-
-  buildListQuery(dto: ListArticleDto) {
-    const listQuery = super.buildListQuery(dto)
-    const { name, status } = dto
-    Object.assign(listQuery.where, {
-      name: name ? Like(`%${name}%`) : undefined,
-      status
-    })
-    return listQuery
+    super(config)
   }
 
   list(dto: ListArticleDto) {
-    const { where, skip, take } = this.buildListQuery(dto)
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+    const { name, status, date } = dto
 
-    return this.repository.find({
-      where,
-      skip,
-      take,
-      select: this.excludeColumns(['content', 'associatedFiles']),
-      order: {
-        createAt: 'DESC'
+    return db.query.articleTable.findMany({
+      columns: {
+        content: false
       },
-      relations: {
+      where: {
+        name: name ? { like: `%${name}%` } : undefined,
+        status,
+        createAt: this.buildQueryDateBetween(date)
+      },
+      limit,
+      offset,
+      with: {
         cover: true
+      },
+      orderBy: {
+        createAt: 'desc',
+        id: 'desc'
       }
     })
   }
 
   listCount(dto: ListArticleDto) {
-    const { where } = this.buildListQuery(dto)
-    return this.repository.countBy(where)
+    const { name, status, date } = dto
+    return this.countBy(
+      and(
+        mapOptional(name, name => like(articleTable.name, `%${name}%`)),
+        mapOptional(status, status => eq(articleTable.status, status)),
+        this.buildDateBetween(articleTable.createAt, date)
+      )
+    )
+  }
+
+  async createOrUpdate(dto: CreateOrUpdateArticleDto) {
+    if (dto.id) {
+      await db.update(articleTable).set(dto).where(eq(articleTable.id, dto.id))
+    } else {
+      await db.insert(articleTable).values(dto)
+    }
   }
 
   async detail(id: number) {
-    const article = await this.repository.findOne({
+    const article = await db.query.articleTable.findFirst({
       where: { id },
-      relations: {
+      with: {
         cover: true,
         associatedFiles: true
       }
@@ -54,20 +71,37 @@ export class ArticleService extends BaseService<ArticleEntity> {
   }
 
   async view(id: number) {
-    await this.repository.increment({ id }, 'view', 1)
+    await db
+      .update(articleTable)
+      .set({
+        view: sql`${articleTable.view} + 1`
+      })
+      .where(eq(articleTable.id, id))
   }
 
   async updateContent(dto: UpdateArticleContentDto) {
-    const article = await this.repository.findOneBy({ id: dto.id })
+    const article = await db.query.articleTable.findFirst({ where: { id: dto.id }, with: { associatedFiles: true } })
     if (!article) throw new Error('article is not exist')
 
-    article.content = dto.content
-    article.associatedFiles = dto.associatedFileIds?.map(id => {
-      const file = new FileEntity()
-      file.id = id
-      return file
+    await db.transaction(async tx => {
+      await tx.update(articleTable).set({ content: dto.content }).where(eq(articleTable.id, article.id))
+      const newAssociatedFileIds = dto.associatedFileIds
+      if (newAssociatedFileIds?.length) {
+        const oldAssociatedFileIds = article.associatedFiles.map(el => el.id)
+        const waitDeleteIds = oldAssociatedFileIds.filter(o => !newAssociatedFileIds.includes(o))
+        const waitCreateIds = newAssociatedFileIds.filter(n => !oldAssociatedFileIds.includes(n))
+        if (waitDeleteIds.length)
+          await tx
+            .delete(articleToFileTable)
+            .where(and(eq(articleToFileTable.articleId, article.id), inArray(articleToFileTable.fileId, waitDeleteIds)))
+        if (waitCreateIds.length)
+          await tx.insert(articleToFileTable).values(
+            waitCreateIds.map(fileId => ({
+              articleId: article.id,
+              fileId
+            }))
+          )
+      }
     })
-
-    return this.repository.save(article)
   }
 }

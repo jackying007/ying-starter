@@ -12,16 +12,15 @@ import { notificationApi } from '@/api'
 
 import { DeviceTypeOptions } from './constant'
 
+export type PushTaskModalFormValue = PushTaskListVo[number]
 const defaultValues: Partial<CreateOrUpdatePushTaskDto> = {
-  name: undefined,
-  deviceType: undefined,
+  name: '',
+  deviceType: null,
   pushTemplateId: undefined
 }
-
-export type PushTaskModalProps = ReturnType<typeof useDialogOpen<PushTaskListVo[number]>> & {
+export type PushTaskModalProps = ReturnType<typeof useDialogOpen<PushTaskModalFormValue>> & {
   onSuccess: VoidFunction
 }
-
 export function PushTaskModal({ open, formValue, onSuccess, onClose }: PushTaskModalProps) {
   const title = `${formValue ? '编辑' : '新增'}推送任务`
   const { message } = App.useApp()
@@ -70,8 +69,8 @@ export function PushTaskModal({ open, formValue, onSuccess, onClose }: PushTaskM
     <Modal title={title} width={660} open={open} onCancel={onClose} confirmLoading={isSubmitting} onOk={submit}>
       <Form layout="vertical">
         <Form.Item
-          label="任务名称"
           required
+          label="任务名称"
           validateStatus={errors.name ? 'error' : ''}
           help={errors.name && errors.name.message}
         >
@@ -81,11 +80,15 @@ export function PushTaskModal({ open, formValue, onSuccess, onClose }: PushTaskM
             render={({ field }) => <Input allowClear placeholder="请输入任务名称" {...field} />}
           />
         </Form.Item>
-        <Form.Item label="触达设备">
+        <Form.Item
+          label="触达设备"
+          validateStatus={errors.deviceType ? 'error' : ''}
+          help={errors.deviceType && errors.deviceType.message}
+        >
           <Controller
             control={control}
             name="deviceType"
-            render={({ field }) => <Select placeholder="全部" allowClear options={DeviceTypeOptions} {...field} />}
+            render={({ field }) => <Select placeholder="全部" options={DeviceTypeOptions} {...field} />}
           />
         </Form.Item>
         <Form.Item
@@ -99,7 +102,7 @@ export function PushTaskModal({ open, formValue, onSuccess, onClose }: PushTaskM
             control={control}
             render={({ field }) => (
               <Select
-                placeholder="请选择推送模板"
+                placeholder={formValue?.pushTemplate?.name ?? '请选择推送模板'}
                 showSearch={{
                   filterOption: false,
                   onSearch: name => requery({ name })

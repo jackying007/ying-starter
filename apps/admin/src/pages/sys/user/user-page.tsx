@@ -2,21 +2,18 @@ import { App, Button, Input, Select, Space, Tag, Typography, type SelectProps } 
 import type { ColumnsType } from 'antd/es/table'
 import { Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
-
 import { getOption } from '@ying/utils'
-import type { ListRoleDto, ListSysUserDto, CreateOrUpdateSysUserDto, UpdateSysUserPasswordDto } from '@ying/shared'
+import type { ListRoleDto, ListSysUserDto } from '@ying/shared'
 import { useDialogOpen } from '@ying/shared-react/hooks'
 import type { SysUserListVo } from '@ying/server/types-admin'
-
 import { useThemeToken } from '@/hooks'
 import { useQueryWithRequery, useTable } from '@/hooks'
 import { sysRoleApi, sysUserApi } from '@/api'
 import { Page, PageQuery, PageOperations } from '@/layouts/page'
 import { IconButton, Iconify } from '@/components/icon'
 import { BasicStatusOptions, type BasicStatusOption } from '@/constant'
-
-import { UserDrawer } from './user-drawer'
-import { ChangePassModal } from './change-pass-modal'
+import { type ChangePassModalFormValue, ChangePassModal } from './change-pass-modal'
+import { type UserDrawerFormValue, UserDrawer } from './user-drawer'
 
 export default function UserPage() {
   const { message } = App.useApp()
@@ -37,8 +34,8 @@ export default function UserPage() {
     getListCount: sysUserApi.listCount
   })
 
-  const changePassModalPros = useDialogOpen<UpdateSysUserPasswordDto>()
-  const userDrawerProps = useDialogOpen<CreateOrUpdateSysUserDto>()
+  const changePassModalPros = useDialogOpen<ChangePassModalFormValue>()
+  const userDrawerProps = useDialogOpen<UserDrawerFormValue>()
 
   const { colorTextSecondary } = useThemeToken()
   const columns: ColumnsType<SysUserListVo[number]> = [
@@ -75,13 +72,13 @@ export default function UserPage() {
       dataIndex: 'role',
       minWidth: 240,
       render: (_, record) => (
-        <>
+        <div className="flex gap-1">
           {record.roles.map(el => (
             <Tag color="cyan" key={el.id}>
               {el.name}
             </Tag>
           ))}
-        </>
+        </div>
       )
     },
     { title: '备注', dataIndex: 'remark', minWidth: 240 },
@@ -112,7 +109,7 @@ export default function UserPage() {
               <Iconify icon="icon-park-outline:change" size={18} />
             </IconButton>
           }
-          onEdit={() => userDrawerProps.onOpen({ ...record, roleIds: record.roles.map(el => el.id) })}
+          onEdit={() => userDrawerProps.onOpen(record)}
           editDisabled={record.roles.some(el => el.systemic)}
           deleteTitle={`确定删除[${record.account}]？`}
           onDelete={async () => {

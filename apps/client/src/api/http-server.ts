@@ -1,6 +1,5 @@
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { HttpRequest } from '@jying/http'
-import { nullToUndefined } from '@ying/utils'
 import { HttpError } from './http-error'
 
 const getBaseURL = createIsomorphicFn()
@@ -12,10 +11,6 @@ export const http = new HttpRequest({
 })
 
 http.addHooks({
-  afterResponse: ({ type, data }) => {
-    if (type === 'json') return nullToUndefined(data)
-    return data
-  },
   afterError: async fetchRes => {
     return fetchRes.text().then(
       msg =>

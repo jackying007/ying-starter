@@ -1,7 +1,7 @@
 import { sign, verify } from 'hono/jwt'
 import { HTTPException } from 'hono/http-exception'
-import { Repository } from 'typeorm'
 import { customAlphabet } from 'nanoid'
+import { eq } from 'drizzle-orm'
 import type {
   ClientLoginDto,
   ClientRegisterDto,
@@ -9,12 +9,12 @@ import type {
   ForgotPasswordDto,
   ResetPasswordWithCodeDto
 } from '@ying/shared'
-import { UserEntity } from '@ying/db-typeorm'
+import { userTable } from '@ying/db-drizzle/schema'
 import { authConfig } from '@/config'
 import { redis } from '@/common/modules/redis'
 import { mailService } from '@/common/modules/mail'
 import { generatePass, getExpTime } from '@/common/utils'
-import { dataSource } from '@/common/modules/db'
+import { db } from '@/common/modules/db'
 import type { I18nVariables } from '@/business/i18n'
 import { wrapBaseVo } from '@/business/base.vo'
 import { CacheKey } from '.'
@@ -22,11 +22,6 @@ import { CacheKey } from '.'
 const randomCode = customAlphabet('0123456789', 6)
 
 export class AuthService {
-  private readonly userRepository: Repository<UserEntity>
-  constructor() {
-    this.userRepository = dataSource.getRepository(UserEntity)
-  }
-
   async generateEmailVerificationCode(email: string) {
     const key = `${CacheKey.EmailVerificationCode}:${email}`
     const existingCode = await redis.get(key)
@@ -47,33 +42,32 @@ export class AuthService {
   }
 
   async register(dto: ClientRegisterDto, t: I18nVariables['t']) {
-    await dataSource.transaction(async transaction => {
-      const existingUser = await transaction.findOne(UserEntity, {
+    await db.transaction(async tx => {
+      const existingUser = await tx.query.userTable.findFirst({
         where: { email: dto.email }
       })
-
       if (existingUser && existingUser.emailVerified) {
         throw new HTTPException(500, { message: 'error.the_email_has_been_registered' })
       }
 
       if (existingUser) {
-        existingUser.password = generatePass(dto.password)
-        existingUser.name = dto.name
-        existingUser.emailVerified = false
-
-        await transaction.save(existingUser)
+        await tx
+          .update(userTable)
+          .set({
+            name: dto.name,
+            emailVerified: false,
+            password: generatePass(dto.password)
+          })
+          .where(eq(userTable.email, dto.email))
       } else {
-        const newUser = transaction.create(UserEntity, {
+        await tx.insert(userTable).values({
           ...dto,
           emailVerified: false,
           password: generatePass(dto.password)
         })
-
-        await transaction.save(newUser)
       }
 
       const code = await this.generateEmailVerificationCode(dto.email)
-
       const title = t('emailVerificationTitle')
       const content = t('emailVerificationContent', { code })
       await mailService.sendMail(dto.email, title, content)
@@ -83,10 +77,10 @@ export class AuthService {
   async verifyEmail(dto: VerifyEmailDto) {
     const isValid = await this.verifyEmailVerificationCode(dto)
     if (!isValid) throw new HTTPException(500, { message: 'error.code_is_invalid' })
-    await this.userRepository.update({ email: dto.email }, { emailVerified: true })
+    await db.update(userTable).set({ emailVerified: true }).where(eq(userTable.email, dto.email))
   }
 
-  async sign(user: UserEntity) {
+  async signUser(user: typeof userTable.$inferSelect) {
     const accessToken = await sign(
       {
         id: user.id,
@@ -112,7 +106,7 @@ export class AuthService {
   }
 
   async login(dto: ClientLoginDto, t: I18nVariables['t']) {
-    const user = await this.userRepository.findOne({
+    const user = await db.query.userTable.findFirst({
       where: {
         email: dto.email
       }
@@ -126,7 +120,7 @@ export class AuthService {
       await mailService.sendMail(dto.email, title, content)
       return wrapBaseVo('emailNotVerified', undefined)
     }
-    return wrapBaseVo(0, await this.sign(user))
+    return wrapBaseVo(0, await this.signUser(user))
   }
 
   verifyAccessToken(token: string) {
@@ -162,7 +156,7 @@ export class AuthService {
   }
 
   async forgotPassword(dto: ForgotPasswordDto, t: I18nVariables['t']) {
-    const existingUser = await this.userRepository.findOne({
+    const existingUser = await db.query.userTable.findFirst({
       where: { email: dto.email }
     })
     if (!existingUser) throw new HTTPException(500, { message: 'error.email_does_not_exist' })
@@ -176,6 +170,10 @@ export class AuthService {
   async resetPassword(dto: ResetPasswordWithCodeDto) {
     const isValid = await this.verifyEmailVerificationCode(dto)
     if (!isValid) throw new HTTPException(500, { message: 'error.code_is_invalid' })
-    await this.userRepository.update({ email: dto.email }, { password: generatePass(dto.password) })
+
+    await db
+      .update(userTable)
+      .set({ password: generatePass(dto.password) })
+      .where(eq(userTable.email, dto.email))
   }
 }

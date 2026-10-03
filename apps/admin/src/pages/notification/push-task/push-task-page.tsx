@@ -16,7 +16,7 @@ import { Page, PageQuery, PageOperations } from '@/layouts/page'
 import { IconButton, Iconify } from '@/components/icon'
 
 import { type DeviceTypeOption, DeviceTypeOptions, type PushTaskStatusOption, PushTaskStatusOptions } from './constant'
-import { PushTaskModal } from './push-task-modal'
+import { type PushTaskModalFormValue, PushTaskModal } from './push-task-modal'
 import { PushTaskSetModal } from './push-task-set-modal'
 
 export default function PushTaskPage() {
@@ -30,8 +30,8 @@ export default function PushTaskPage() {
     getListCount: notificationApi.listPushTaskCount
   })
 
-  const pushTaskModalProps = useDialogOpen<PushTaskListVo[number]>()
-  const pushTaskSetModalProps = useDialogOpen<PushTaskListVo[number]>()
+  const pushTaskModalProps = useDialogOpen<PushTaskModalFormValue>()
+  const pushTaskSetModalProps = useDialogOpen<number>()
 
   const columns: ColumnsType<PushTaskListVo[number]> = [
     {
@@ -46,7 +46,7 @@ export default function PushTaskPage() {
       width: 200,
       ellipsis: true,
       dataIndex: 'pushTemplate',
-      render: (_, record) => record.pushTemplate.name
+      render: (_, record) => record.pushTemplate?.name
     },
     {
       title: '设备类型',
@@ -126,7 +126,7 @@ export default function PushTaskPage() {
         <PageOperations
           extra={
             <IconButton
-              onClick={() => pushTaskSetModalProps.onOpen(record)}
+              onClick={() => pushTaskSetModalProps.onOpen(record.id)}
               disabled={record.status >= PushTaskStatus.WaitExecute}
             >
               <Iconify icon="solar:upload-twice-square-bold-duotone" size={18} />

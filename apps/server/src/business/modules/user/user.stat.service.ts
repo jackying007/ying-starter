@@ -1,20 +1,10 @@
-import { Repository } from 'typeorm'
+import { and, between, count, eq, isNull } from 'drizzle-orm'
 import { type StatDto, UserStatType } from '@ying/shared'
-import { UserEntity } from '@ying/db-typeorm'
+import { userTable, oauthAccountTable } from '@ying/db-drizzle/schema'
 import { StatService } from '@/common/service/stat.service'
-import { dataSource } from '@/common/modules/db'
+import { db } from '@/common/modules/db'
 
 export class UserStatService extends StatService {
-  private readonly userRepository: Repository<UserEntity>
-  constructor() {
-    super()
-    this.userRepository = dataSource.getRepository(UserEntity)
-  }
-
-  async getUserGrowthTotal() {
-    return this.userRepository.count()
-  }
-
   async getUserGrowthTrendByType(
     betweens: {
       start: Date
@@ -23,22 +13,24 @@ export class UserStatService extends StatService {
     name?: UserStatType
   ) {
     const data = await Promise.all(
-      betweens.map(between => {
-        const builder = this.userRepository
-          .createQueryBuilder('user')
-          .leftJoinAndSelect('user.oauthAccounts', 'oauthAccounts')
-
-        builder.where('user.createAt BETWEEN :start AND :end', { start: between.start, end: between.end })
-
+      betweens.map(async bt => {
+        const conditions = [between(userTable.createAt, bt.start, bt.end)]
         if (name) {
           if (name === UserStatType.Register) {
-            builder.andWhere('oauthAccounts.id IS NULL')
+            conditions.push(isNull(oauthAccountTable.id))
           } else {
-            builder.andWhere('oauthAccounts.provider = :provider', { provider: name })
+            conditions.push(eq(oauthAccountTable.provider, name))
           }
         }
 
-        return builder.getCount()
+        const [result] = await db
+          .select({
+            count: count()
+          })
+          .from(userTable)
+          .leftJoin(oauthAccountTable, eq(oauthAccountTable.userId, userTable.id))
+          .where(and(...conditions))
+        return result.count
       })
     )
 

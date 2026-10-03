@@ -1,10 +1,10 @@
 import { generateCodeVerifier, decodeIdToken, Google, GitHub } from 'arctic'
 import { nanoid } from 'nanoid'
 import type { OAuthProvider } from '@ying/shared'
-import { OAuthAccountEntity, UserEntity } from '@ying/db-typeorm'
+import { userTable, oauthAccountTable } from '@ying/db-drizzle/schema'
 import { authConfig } from '@/config'
 import { redis } from '@/common/modules/redis'
-import { dataSource } from '@/common/modules/db'
+import { db } from '@/common/modules/db'
 import { CacheKey } from '.'
 
 export type OAuthAccountInfo = {
@@ -41,38 +41,45 @@ export class OAuthService {
 
   async getOrCreateOAuthAccountAndUser(oauthAccountInfo: OAuthAccountInfo, provider: OAuthProvider) {
     const { providerAccountId, name, email, emailVerified, avatar } = oauthAccountInfo
-    const user = await dataSource.transaction(async transaction => {
-      const existOAuthAccount = await dataSource.getRepository(OAuthAccountEntity).findOne({
+
+    const user = await db.transaction(async tx => {
+      const existOAuthAccount = await tx.query.oauthAccountTable.findFirst({
         where: { providerAccountId, provider },
-        relations: ['user']
+        with: {
+          user: true
+        }
       })
 
-      if (existOAuthAccount && existOAuthAccount.user) {
-        return existOAuthAccount.user
-      }
+      if (existOAuthAccount?.user) return existOAuthAccount.user
 
-      let user = await dataSource.getRepository(UserEntity).findOne({
-        where: { email }
+      let user = await tx.query.userTable.findFirst({
+        where: {
+          email
+        }
       })
+
       if (!user) {
-        user = transaction.create(UserEntity, {
-          name,
-          email,
-          emailVerified
-        })
-        await transaction.save(user)
+        ;[user] = await tx
+          .insert(userTable)
+          .values({
+            name,
+            email,
+            emailVerified
+          })
+          .returning()
       }
 
-      const newOAuthAccount = transaction.create(OAuthAccountEntity, {
+      await tx.insert(oauthAccountTable).values({
         provider,
         providerAccountId,
         name,
         avatar,
         userId: user.id
       })
-      await transaction.save(newOAuthAccount)
+
       return user
     })
+
     return user
   }
 

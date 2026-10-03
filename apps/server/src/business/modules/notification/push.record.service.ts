@@ -1,52 +1,60 @@
+import { and, eq } from 'drizzle-orm'
 import type { ListPushRecordDto } from '@ying/shared'
-import { PushRecordEntity } from '@ying/db-typeorm'
-import { BaseService } from '@/common/service/base.service'
-import { dataSource } from '@/common/modules/db'
+import { pushRecordTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 
-export class PushRecordService extends BaseService<PushRecordEntity> {
+const config: DrizzleServiceConfig = {
+  table: pushRecordTable,
+  pk: pushRecordTable.id
+}
+export class PushRecordService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(PushRecordEntity))
+    super(config)
   }
 
   detail(id: number) {
-    return this.repository.findOne({
+    return db.query.pushRecordTable.findMany({
       where: { id }
     })
   }
 
-  buildListQuery(dto: ListPushRecordDto) {
-    const listQuery = super.buildListQuery(dto)
-    const { visitorId, pushTaskId, status } = dto
-
-    Object.assign(listQuery.where, {
-      visitorId: visitorId ? visitorId : undefined,
-      pushTaskId,
-      status
-    })
-    return listQuery
-  }
-
   list(dto: ListPushRecordDto) {
-    const { where, take, skip } = this.buildListQuery(dto)
-    return this.repository.find({
-      where,
-      relations: {
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+    const { visitorId, pushTaskId, status, date } = dto
+
+    return db.query.pushRecordTable.findMany({
+      where: {
+        visitorId: mapOptional(visitorId, _ => _),
+        pushTaskId: mapOptional(pushTaskId, _ => _),
+        status: mapOptional(status, _ => _),
+        createAt: this.buildQueryDateBetween(date)
+      },
+      with: {
         pushTask: true
       },
-      skip,
-      take,
-      order: {
-        createAt: 'DESC'
+      limit,
+      offset,
+      orderBy: {
+        createAt: 'desc'
       }
     })
   }
 
   listCount(dto: ListPushRecordDto) {
-    const { where } = this.buildListQuery(dto)
-    return this.repository.countBy(where)
+    const { visitorId, pushTaskId, status, date } = dto
+    return this.countBy(
+      and(
+        mapOptional(visitorId, _ => eq(pushRecordTable.visitorId, _)),
+        mapOptional(pushTaskId, _ => eq(pushRecordTable.pushTaskId, _)),
+        mapOptional(status, _ => eq(pushRecordTable.status, _)),
+        this.buildDateBetween(pushRecordTable.createAt, date)
+      )
+    )
   }
 
-  click(id: number) {
-    return this.repository.update(id, { clicked: 1 })
+  async click(id: number) {
+    await db.update(pushRecordTable).set({ clicked: 1 }).where(eq(pushRecordTable.id, id))
   }
 }

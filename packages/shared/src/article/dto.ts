@@ -11,16 +11,15 @@ export const createOrUpdateArticleDto = z.object({
   id: z.number().optional(),
   name: z.string().nonempty('名称不能为空'),
   title: zIntlText(),
-  keywords: z.array(z.string()).optional(),
   coverId: z.number('封面不能为空'),
-  sort: z.number().optional(),
-  status: z.number().pipe(z.enum(BasicStatus))
+  status: z.enum(BasicStatus),
+  keywords: z.array(z.string()).nullable()
 })
 export type CreateOrUpdateArticleDto = z.infer<typeof createOrUpdateArticleDto>
 
 export const updateArticleContentDto = z.object({
   id: z.number(),
-  content: zIntlText({ canEmpty: true }),
+  content: zIntlText({ canEmpty: true }).nullable(),
   associatedFileIds: z.array(z.number()).optional()
 })
 export type UpdateArticleContentDto = z.infer<typeof updateArticleContentDto>

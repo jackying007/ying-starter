@@ -32,7 +32,7 @@ export default function VisitorPage() {
       title: '浏览用户ID',
       width: 280,
       ellipsis: true,
-      dataIndex: 'visitorId'
+      dataIndex: 'id'
     },
     {
       title: '语言',
@@ -104,7 +104,7 @@ export default function VisitorPage() {
         <PageOperations
           deleteTitle="确定删除？"
           onDelete={async () => {
-            await notificationApi.deleteVisitor(record.visitorId)
+            await notificationApi.deleteVisitor(record.id)
             message.success('删除成功！')
             reload()
           }}

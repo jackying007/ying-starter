@@ -36,7 +36,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
     <MaxWidthWrapper className="py-4 md:px-4 max-w-3xl">
       <div className="bg-background rounded-md overflow-hidden transition-all duration-300 shadow-sm flex flex-col text-gray-500">
         <div className="relative pb-[calc(5/9*100%)]">
-          <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />
+         {article.cover && <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />} 
         </div>
         <div className="flex-1 text-base p-4 gap-2 flex flex-col justify-between">
           <div>

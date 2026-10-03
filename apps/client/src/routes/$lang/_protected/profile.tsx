@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
-import { updateUserInfoDto, type UpdateUserInfoDto } from '@ying/shared'
+import { updateUserInfoDto } from '@ying/shared'
 import { Input, Button } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
@@ -23,12 +23,8 @@ function RouteComponent() {
 
   const userInfo = useAuthStore(state => state.userInfo)
 
-  const form = useForm<UpdateUserInfoDto>({
-    resolver: zodResolver(updateUserInfoDto),
-    defaultValues: {
-      name: '',
-      avatarId: -1
-    }
+  const form = useForm({
+    resolver: zodResolver(updateUserInfoDto)
   })
   const {
     control,
@@ -36,7 +32,7 @@ function RouteComponent() {
     handleSubmit
   } = form
 
-  const onSubmit = async (values: UpdateUserInfoDto) => {
+  const submit = handleSubmit(async values => {
     try {
       userAPI.updateUserInfo(values)
       toast.success(t('success.successfully_modified_user_information'))
@@ -44,12 +40,12 @@ function RouteComponent() {
     } catch (err) {
       if (err instanceof HttpError) toast.error(t(err.message))
     }
-  }
+  })
 
   useEffect(() => {
     if (userInfo) {
       form.reset({
-        name: userInfo.name,
+        name: userInfo.name ?? undefined,
         avatarId: userInfo.avatarId
       })
     }
@@ -58,7 +54,7 @@ function RouteComponent() {
   return (
     <div className="w-full h-full p-4">
       {userInfo && (
-        <Form className="flex flex-col gap-4" t={t} onSubmit={handleSubmit(onSubmit)} {...form}>
+        <Form className="flex flex-col gap-4" t={t} onSubmit={submit} {...form}>
           <FormItem>
             <FormLabel>OAuth {t('text.account')}</FormLabel>
             <div className="flex gap-2">

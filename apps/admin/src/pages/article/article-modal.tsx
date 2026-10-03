@@ -1,21 +1,27 @@
 import { useEffect } from 'react'
-import { Form, Input, App, InputNumber, Select, Modal } from 'antd'
+import { Form, Input, App, Select, Modal } from 'antd'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createOrUpdateArticleDto } from '@ying/shared'
-import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
+import { BasicStatus, createOrUpdateArticleDto, type CreateOrUpdateArticleDto } from '@ying/shared'
 import type { ArticleListVo } from '@ying/server/types-admin'
+import { useDialogOpen, useRemount } from '@ying/shared-react/hooks'
 import { Tags } from '@/components/tags'
 import { ImageSelector } from '@/components/image'
 import { IntlInput } from '@/components/intl'
 import { articleApi } from '@/api'
 import { BasicStatusOptions } from '@/constant'
-import { defaultValues } from './constant'
 
-type ArticleModalProps = ReturnType<typeof useDialogOpen<ArticleListVo[number]>> & {
+export type ArticleModalFormValue = ArticleListVo[number]
+const defaultValues: Partial<CreateOrUpdateArticleDto> = {
+  name: '',
+  title: {},
+  coverId: undefined,
+  status: BasicStatus.ENABLE,
+  keywords: null
+}
+export type ArticleModalProps = ReturnType<typeof useDialogOpen<ArticleModalFormValue>> & {
   onSuccess?: VoidFunction
 }
-
 export function ArticleModal({ open, formValue, onSuccess, onClose }: ArticleModalProps) {
   const title = `${formValue ? '编辑' : '新增'}文章`
   const { message } = App.useApp()
@@ -129,14 +135,6 @@ export function ArticleModal({ open, formValue, onSuccess, onClose }: ArticleMod
           help={errors.keywords && errors.keywords.message}
         >
           <Controller control={control} name="keywords" render={({ field }) => <Tags {...field} />} />
-        </Form.Item>
-
-        <Form.Item label="排序" validateStatus={errors.sort ? 'error' : ''} help={errors.sort && errors.sort.message}>
-          <Controller
-            control={control}
-            name="sort"
-            render={({ field }) => <InputNumber style={{ width: '100%' }} placeholder="请输入排序" {...field} />}
-          />
         </Form.Item>
       </Form>
     </Modal>

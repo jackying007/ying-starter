@@ -1,8 +1,12 @@
 import { DeviceType, PushTaskStatus } from '@ying/shared'
 
-export type DeviceTypeOption = { value: DeviceType; label: string }
+export type DeviceTypeOption = { value: DeviceType | null; label: string }
 
 export const DeviceTypeOptions: DeviceTypeOption[] = [
+  {
+    value: null,
+    label: '全部'
+  },
   {
     value: DeviceType.Windows,
     label: 'windows'

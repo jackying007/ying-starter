@@ -8,7 +8,7 @@ import { IntlSwitch } from './intl-switch'
 const { fallbackLng, languages } = clientLanguagesConfig
 
 type IntlShowProps = {
-  value?: TIntlText
+  value?: TIntlText | null
 }
 
 export const IntlShow = ({ value }: IntlShowProps) => {

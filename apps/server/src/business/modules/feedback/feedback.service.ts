@@ -1,37 +1,47 @@
-import { Like } from 'typeorm'
-import type { ListFeedbackDto } from '@ying/shared'
-import { FeedbackEntity } from '@ying/db-typeorm'
-import { dataSource } from '@/common/modules/db'
-import { BaseService } from '@/common/service/base.service'
+import { and, like } from 'drizzle-orm'
+import type { CreateFeedbackDto, ListFeedbackDto } from '@ying/shared'
+import { feedbackTable } from '@ying/db-drizzle/schema'
+import { mapOptional } from '@ying/utils'
+import { DrizzleService, type DrizzleServiceConfig } from '@/common/service/drizzle.service'
+import { db } from '@/common/modules/db'
 
-export class FeedbackService extends BaseService<FeedbackEntity> {
+const config: DrizzleServiceConfig = {
+  table: feedbackTable,
+  pk: feedbackTable.id
+}
+export class FeedbackService extends DrizzleService<typeof config> {
   constructor() {
-    super(dataSource.getRepository(FeedbackEntity))
-  }
-
-  buildListQuery(dto: ListFeedbackDto) {
-    const listQuery = super.buildListQuery(dto)
-    const { email } = dto
-    Object.assign(listQuery.where, {
-      email: email ? Like(`%${email}%`) : undefined
-    })
-    return listQuery
+    super(config)
   }
 
   list(dto: ListFeedbackDto) {
-    const { where, skip, take } = this.buildListQuery(dto)
-    return this.repository.find({
-      where,
-      skip,
-      take,
-      order: {
-        createAt: 'DESC'
+    const { limit, offset } = this.buildLimitAndOffset(dto)
+    const { email, date } = dto
+
+    return db.query.feedbackTable.findMany({
+      where: {
+        email: email ? { like: `%${email}%` } : undefined,
+        ccreateAt: this.buildQueryDateBetween(date)
+      },
+      limit,
+      offset,
+      orderBy: {
+        createAt: 'desc'
       }
     })
   }
 
   listCount(dto: ListFeedbackDto) {
-    const { where } = this.buildListQuery(dto)
-    return this.repository.countBy(where)
+    const { email, date } = dto
+    return this.countBy(
+      and(
+        mapOptional(email, email => like(feedbackTable.email, `%${email}%`)),
+        this.buildDateBetween(feedbackTable.createAt, date)
+      )
+    )
+  }
+
+  async create(dto: CreateFeedbackDto) {
+    await db.insert(feedbackTable).values(dto)
   }
 }
