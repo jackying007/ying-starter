@@ -26,7 +26,7 @@
 服务端
 
 - Hono
-- TypeORM
+- Drizzle
 - Postgres
 - Redis
 

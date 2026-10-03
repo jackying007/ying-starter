@@ -24,6 +24,12 @@ pnpm tsx scripts/sync-permission
 
 后面每次修改 `packages/shared/src/permission` 模块都需要打包并重新执行脚本同步权限进数据库
 
+### 4. 启动 Drizzle Studio (drizzle自带的数据库可视化管理)
+
+```bash
+pnpm drizzle-kit studio
+```
+
 ## 数据库迁移同步
 
 如果是本地开发模式下，可以直接执行同步命令
