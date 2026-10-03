@@ -45,7 +45,7 @@ pnpm drizzle-kit push
 当修改了schema后，可以使用自动生成命令来比较当前schema与数据库实际结构的差异，然后生成相应的迁移文件
 
 ```bash
-pnpm drizzle-kit generate
+pnpm drizzle-kit generate --name=变更名称
 ```
 
 ### 2. 执行迁移
@@ -53,6 +53,15 @@ pnpm drizzle-kit generate
 生成好迁移文件后，就可以把这些变更应用到数据库中。使用以下命令来运行所有尚未执行的迁移：
 
 ```bash
+pnpm drizzle-kit migrate
+```
+
+### 3. 初次生成
+
+不要使用 `push`, 先生成迁移文件，可以给个名称为 `init`，然后执行迁移，这个时候就有记录了，后面产生变更就重复这两个操作即可。
+
+```bash
+pnpm drizzle-kit generate --name=init
 pnpm drizzle-kit migrate
 ```
 
