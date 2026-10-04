@@ -1,4 +1,4 @@
-FROM oven/bun:latest AS base
+FROM oven/bun:alpine AS base
 
 FROM base AS server
 WORKDIR /app
