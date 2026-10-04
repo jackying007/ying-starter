@@ -43,7 +43,7 @@ export default function PushTemplatePage() {
         openPushTemplateDrawer({
           name: record.name,
           title: record.title,
-          link: `${import.meta.env.VITE_APP_CLIENT_URL}/article/${record.id}`,
+          link: `${import.meta.env.APP_CLIENT_URL}/article/${record.id}`,
           image: record.cover
         })
       }
