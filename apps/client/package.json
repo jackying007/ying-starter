@@ -12,7 +12,7 @@
     "build:sw": "vite build --config vite.sw.config.ts"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "pnpm lint"
+    "*.{ts,tsx}": "bun lint"
   },
   "dependencies": {
     "@better-scroll/core": "^2.5.1",

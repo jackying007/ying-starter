@@ -32,16 +32,15 @@
 
 ## 开发环境版本
 
-- node v24.18.1
-- pnpm v10.33.4
+- bun v1.4.2
 
 ## 开发环境启动
 
 安装依赖并打包所有子包
 
 ```bash
-pnpm i
-pnpm build:pkgs
+bun i
+bun build:pkgs
 ```
 
 根据[服务端README](./apps/server/README.md)的初始化操作配置好服务端环境
@@ -49,16 +48,14 @@ pnpm build:pkgs
 启动应用
 
 ```bash
-pnpm dev:apps
+bun dev:apps
 ```
 
 ## docker 部署
 
-先使用 turbo 生成干净的依赖项文件用于 docker 缓存。
-
 ```bash
-rm -rf out
-pnpm turbo-prune
+cd apps/server
+bun compile
 ```
 
 项目根目录写了 Dockerfile 文件，可使用 docker 的打包命令打包服务端镜像。

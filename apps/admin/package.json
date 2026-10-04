@@ -11,7 +11,7 @@
     "lint": "oxlint"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "pnpm lint"
+    "*.{ts,tsx}": "bun lint"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.1.2",
