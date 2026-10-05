@@ -27,6 +27,3 @@ node_modules
 # Misc
 .DS_Store
 *.pem
-
-# server
-logs
