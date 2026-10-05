@@ -27,7 +27,7 @@ export class AppLogger {
     return this.saveLogLevels.includes(level)
   }
   async saveLog(time: Dayjs, ...messages: any[]) {
-    const logFilePath = join(import.meta.dirname, `../logs`, `${time.format('YYYY-MM-DD')}.log`)
+    const logFilePath = join(process.cwd(), `logs/${time.format('YYYY-MM-DD')}.log`)
     const logDir = dirname(logFilePath)
 
     let logMessage = `${messages

@@ -49,13 +49,13 @@ bun build:pkgs
 
 ```bash
 bun dev:apps
+bun proxy
 ```
 
 ## docker 部署
 
 ```bash
-cd apps/server
-bun compile
+bun compile:server
 ```
 
 项目根目录写了 Dockerfile 文件，可使用 docker 的打包命令打包服务端镜像。

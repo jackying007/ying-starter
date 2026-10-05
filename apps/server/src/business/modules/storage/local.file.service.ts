@@ -36,7 +36,7 @@ export class LocalFileService extends AbstractFileService {
     const fileName = nanoid()
     const objectName = `${fileType}/${fileName}.${ext}`
 
-    const filePath = join(import.meta.dirname, `../../../../storage/${objectName}`)
+    const filePath = join(process.cwd(), `storage/${objectName}`)
 
     await this.checkDirExistAndCreate(filePath)
     const buffer = Buffer.from(await file.arrayBuffer())
@@ -71,7 +71,7 @@ export class LocalFileService extends AbstractFileService {
           files.map(el => el.id)
         )
       )
-      await Promise.all(files.map(el => unlink(join(import.meta.dirname, `../../../../storage/${el.path}`))))
+      await Promise.all(files.map(el => unlink(join(process.cwd(), `storage/${el.path}`))))
     })
   }
 }

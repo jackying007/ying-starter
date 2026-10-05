@@ -2,6 +2,10 @@
   "$schema": "https://turborepo.com/schema.json",
   "ui": "stream",
   "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -9,9 +13,6 @@
     },
     "lint": {},
     "check": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
+    "compile": {}
   }
 }

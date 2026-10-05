@@ -12,7 +12,13 @@ import { appErrorHandler } from './app.error.handler'
 import { appLogger } from './app.logger'
 
 const app = new Hono()
-app.use('/storage/*', serveStatic({ root: './storage', rewriteRequestPath: path => path.replace(/^\/storage/, '') }))
+app.use(
+  '/storage/*',
+  serveStatic({
+    root: './storage', // 相对启动路径
+    rewriteRequestPath: path => path.replace(/^\/storage/, '')
+  })
+)
 
 const appAPI = new Hono()
 appAPI.use(processTimeMiddleware)
