@@ -23,7 +23,8 @@ import {
 } from '@ying/shared-react/ui'
 
 import { Link } from '@/components/link'
-import { useAuthStore, logout, useHasAuth, useUserAvatar } from '@/store/auth-store'
+import { useAuthStore, logout, useUserAvatar } from '@/store/auth-store'
+import { useHasAuth } from '@/hooks/use-has-auth'
 
 import { MaxWidthWrapper } from './max-width-wrapper'
 import { Brand } from './brand'

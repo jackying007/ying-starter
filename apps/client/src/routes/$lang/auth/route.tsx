@@ -1,9 +1,8 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { hasAuth } from '@/store/auth-store'
 
 export const Route = createFileRoute('/$lang/auth')({
-  beforeLoad: ({ params }) => {
-    if (hasAuth()) {
+  beforeLoad: ({ context: { auth }, params }) => {
+    if (auth.accessToken) {
       throw redirect({
         to: '/$lang',
         params

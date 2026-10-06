@@ -5,6 +5,10 @@ import type { LngKeys } from '@ying/shared'
 import { languagesWithSlashes, languages, fallbackLng } from '@/i18n/config'
 
 const langMiddleware = createMiddleware({ type: 'request' }).server(({ request, next }) => {
+  // 不是浏览器页面导航，直接放行
+  if (request.headers.get('Sec-Fetch-Mode') !== 'navigate' || request.headers.get('Sec-Fetch-Dest') !== 'document')
+    return next()
+
   const url = new URL(request.url)
   const hasLang = languagesWithSlashes.some(el => url.pathname.startsWith(el))
   if (!hasLang) {

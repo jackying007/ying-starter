@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useMounted } from '@ying/shared-react/hooks'
 import {
   type EditorRootContextValue,
   EditorRootContext,
@@ -10,25 +9,24 @@ import {
 
 type RichContentProps = Pick<EditorRootContextValue, 'associatedFiles'> & {
   htmlText?: string
+  onReady?: () => void
 }
 
-export const RichContent = ({ htmlText, associatedFiles }: RichContentProps) => {
+export const RichContent = ({ htmlText, associatedFiles, onReady }: RichContentProps) => {
   const editor = useEditor({
     extensions: defaultExtensions,
     editable: false
   })
 
   useEffect(() => {
-    if (htmlText && editor) setTimeout(() => editor.commands.setContent(htmlText))
-  }, [htmlText, editor])
+    if (!htmlText || !editor) return
+    editor.commands.setContent(htmlText)
+    onReady?.()
+  }, [htmlText, editor, onReady])
 
-  const mounted = useMounted()
-
-  if (mounted)
-    return (
-      <EditorRootContext.Provider value={{ editor, associatedFiles }}>
-        <EditorContent editor={editor} />
-      </EditorRootContext.Provider>
-    )
-  return <div dangerouslySetInnerHTML={{ __html: htmlText ?? '' }} />
+  return (
+    <EditorRootContext.Provider value={{ editor, associatedFiles }}>
+      <EditorContent editor={editor} />
+    </EditorRootContext.Provider>
+  )
 }

@@ -17,9 +17,9 @@ http.addHooks({
   },
   afterError: async fetchRes => {
     if (fetchRes.status === 401) clearUserInfoAndAuthTokens()
-    return fetchRes.json().then(
-      res =>
-        new HttpError(res, {
+    return fetchRes.text().then(
+      msg =>
+        new HttpError(msg, {
           status: fetchRes.status,
           statusText: fetchRes.statusText
         })

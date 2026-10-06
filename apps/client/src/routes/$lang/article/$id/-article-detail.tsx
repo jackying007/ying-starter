@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { LuEye } from 'react-icons/lu'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
 import type { LngKeys } from '@ying/shared'
 import type { ArticleVo } from '@ying/server/types-client'
-import { Badge } from '@ying/shared-react/ui'
+import { Badge, Skeleton } from '@ying/shared-react/ui'
 import { LazyImage } from '@ying/shared-react/components'
+import { useInView, useMounted } from '@ying/shared-react/hooks'
 
 import { MaxWidthWrapper } from '@/layouts/max-width-wrapper'
 import { RichContent } from '@/components/rich-content'
@@ -18,6 +18,17 @@ type ArticleDetailProps = {
   article: ArticleVo
 }
 
+function LoadingSkeleton() {
+  return (
+    <>
+      <Skeleton className="h-8" />
+      {Array.from({ length: 20 }).map((_, i) => (
+        <Skeleton key={i} className="h-5" />
+      ))}
+    </>
+  )
+}
+
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const { i18n } = useTranslation()
   const lang = i18n.language as LngKeys
@@ -25,18 +36,18 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
 
   const bottomRef = useRef(null)
   const inView = useInView(bottomRef, { once: true })
-
   useEffect(() => {
-    if (inView) {
-      articleAPI.view(article.id)
-    }
+    if (inView) articleAPI.view(article.id)
   }, [inView, article])
+
+  const mounted = useMounted()
+  const [contentReady, setContentReady] = useState(false)
 
   return (
     <MaxWidthWrapper className="py-4 md:px-4 max-w-3xl">
       <div className="bg-background rounded-md overflow-hidden transition-all duration-300 shadow-sm flex flex-col text-gray-500">
         <div className="relative pb-[calc(5/9*100%)]">
-         {article.cover && <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />} 
+          {article.cover && <LazyImage classNames={{ wrap: 'absolute' }} src={article.cover.url} />}
         </div>
         <div className="flex-1 text-base p-4 gap-2 flex flex-col justify-between">
           <div>
@@ -56,9 +67,22 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
             </div>
             <div>{dayjs(article.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
-          <RichContent htmlText={htmlText} associatedFiles={article.associatedFiles} />
+
+          {mounted && (
+            <RichContent
+              htmlText={htmlText}
+              associatedFiles={article.associatedFiles}
+              onReady={() => setContentReady(true)}
+            />
+          )}
+          {!contentReady && (
+            <>
+              <LoadingSkeleton />
+              <div className="tiptap ProseMirror" dangerouslySetInnerHTML={{ __html: htmlText ?? '' }} />
+            </>
+          )}
         </div>
-        <motion.div ref={bottomRef} className="opacity-0" />
+        <div ref={bottomRef} className="opacity-0" />
       </div>
     </MaxWidthWrapper>
   )

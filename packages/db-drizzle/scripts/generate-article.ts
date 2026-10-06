@@ -13,14 +13,12 @@ function generateBlogPost() {
   const list = `<ul>\n${listItems}\n</ul>`
   const image = `<img src="${faker.image.url()}" alt="${faker.lorem.words(3)}" />`
 
-  return `<article>
-  ${title}
+  return `${title}
   ${paragraph1}
   <h3>Our Advantages：</h3>
   ${list}
   <p>${faker.lorem.paragraph()}</p>
-  ${image}
-</article>`.trim()
+  ${image}`.trim()
 }
 
 void (async function () {

@@ -9,4 +9,8 @@ export type PropsWithClassAndChild = PropsWithChildren & PropsWithClassName
 
 export type AppRouterContext = {
   i18n: i18n
+  auth: {
+    accessToken?: string
+    refreshToken?: string
+  }
 }

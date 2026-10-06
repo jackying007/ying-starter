@@ -1,11 +1,10 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { hasAuth } from '@/store/auth-store'
 
 import { CardWrapper } from './-components/card-wrapper'
 
 export const Route = createFileRoute('/$lang/_protected')({
-  beforeLoad: ({ params }) => {
-    if (!hasAuth()) {
+  beforeLoad: ({ context: { auth }, params }) => {
+    if (!auth.accessToken) {
       throw redirect({
         to: '/$lang/auth/login',
         params

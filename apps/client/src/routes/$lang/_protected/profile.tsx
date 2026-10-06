@@ -10,7 +10,7 @@ import { Input, Button } from '@ying/shared-react/ui'
 
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/form'
 import { UploadImage } from '@/components/image/upload-image'
-import { useAuthStore, updateUserInfo } from '@/store/auth-store'
+import { useAuthStore, refreshUserInfo } from '@/store/auth-store'
 
 import { commonAPI, HttpError, userAPI } from '@/api'
 
@@ -34,9 +34,9 @@ function RouteComponent() {
 
   const submit = handleSubmit(async values => {
     try {
-      userAPI.updateUserInfo(values)
+      await userAPI.updateUserInfo(values)
       toast.success(t('success.successfully_modified_user_information'))
-      updateUserInfo()
+      refreshUserInfo()
     } catch (err) {
       if (err instanceof HttpError) toast.error(t(err.message))
     }

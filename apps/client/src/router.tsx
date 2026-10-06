@@ -1,5 +1,7 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { createI18nInstance, getLang } from '@/i18n'
+import { getCookie } from '@/cookie'
+import { CookieEnum } from '@/enum'
 import { NotFound } from '@/layouts/not-found'
 import { Error } from '@/layouts/error'
 import { routeTree } from './routeTree.gen'
@@ -10,7 +12,11 @@ export async function getRouter() {
     routeTree,
     scrollRestoration: true,
     context: {
-      i18n
+      i18n,
+      auth: {
+        accessToken: getCookie(CookieEnum.AccessToken),
+        refreshToken: getCookie(CookieEnum.RefreshToken)
+      }
     },
     defaultNotFoundComponent: NotFound,
     // 这个组件写在 route 内还是会显示默认的

@@ -1,9 +1,9 @@
+import { useMemo } from 'react'
 import { create } from 'zustand'
 import type { UserInfoVo } from '@ying/server/types-client'
 import { authAPI, userAPI } from '@/api'
 import { CookieEnum } from '@/enum'
-import { getCookie, setCookie, removeCookie } from '@/cookie'
-import { useMemo } from 'react'
+import { setCookie, removeCookie } from '@/cookie'
 
 type AuthStore = {
   userInfo?: UserInfoVo
@@ -13,14 +13,9 @@ type AuthStore = {
 
 export const useAuthStore = create<AuthStore>(() => ({
   userInfo: undefined,
-  accessToken: getCookie(CookieEnum.AccessToken),
-  refreshToken: getCookie(CookieEnum.RefreshToken)
+  accessToken: undefined,
+  refreshToken: undefined
 }))
-
-export const useHasAuth = () => {
-  const accessToken = useAuthStore(state => state.accessToken)
-  return !!accessToken
-}
 
 export const useUserAvatar = () => {
   const userInfo = useAuthStore(state => state.userInfo)
@@ -31,10 +26,6 @@ export const useUserAvatar = () => {
     if (oauthAvatar) return oauthAvatar
   }, [userInfo])
   return avatar
-}
-
-export const hasAuth = () => {
-  return !!getCookie(CookieEnum.AccessToken)
 }
 
 export function setUserInfo(userInfo: UserInfoVo) {
@@ -62,7 +53,7 @@ export const updateAccessToken = (accessToken: string) => {
   useAuthStore.setState({ accessToken })
 }
 
-export const updateUserInfo = async () => {
+export const refreshUserInfo = async () => {
   const userInfo = await userAPI.getInfo()
   setUserInfo(userInfo)
 }
