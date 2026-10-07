@@ -58,7 +58,9 @@ bun proxy
 bun compile:server
 ```
 
-项目根目录写了 Dockerfile 文件，可使用 docker 的打包命令打包服务端镜像。
+项目根目录写了 Dockerfile 文件，可使用 docker 的打包命令打包服务端镜像和客户端镜像。
+
+### 服务端
 
 ```bash
 docker build --platform=linux/amd64 --target server -t ying-server:1.0.0 .
@@ -70,6 +72,7 @@ docker build --platform=linux/amd64 --target server -t ying-server:1.0.0 .
 docker run --name ying-server -d \
   -p 5090:5090 \
   -e SERVER_PORT=5090 \
+  -e ENABLE_CONSUMER=1 \
   -e REDIS_HOST=host.docker.internal \
   -e REDIS_PORT=6379 \
   -e REDIS_PASSWORD=ying123456 \
@@ -85,3 +88,21 @@ docker run --name ying-server -d \
 ```
 
 如果对象存储使用本地模式，并需要保存容器内的文件，可以添加映射到容器内的 `/app/storage`。
+
+### 客户端
+
+打包
+
+```bash
+bun build:client
+```
+
+```bash
+docker build --platform=linux/amd64 --target client -t ying-client:1.0.0 .
+```
+
+启动
+
+```bash
+docker run --name ying-client -d -p 3000:3000 -e PROXY_API_URL=http://host.docker.internal:5090 ying-client:1.0.0
+```

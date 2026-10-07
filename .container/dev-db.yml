@@ -1,0 +1,32 @@
+version: '3'
+
+# networks:
+#   xx:
+#     external: true
+
+services:
+  redis:
+    container_name: redis-test
+    image: redis
+    volumes:
+      - /redis-data:/data
+    restart: always
+    command: --requirepass ying123456
+    ports:
+      - '6379:6379'
+    # networks:
+    #   - xx
+
+  postgres:
+    container_name: postgres-test
+    image: postgres
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_PASSWORD: ying123456
+    restart: always
+    volumes:
+      - /postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    # networks:
+    #   - xx

@@ -15,6 +15,7 @@
     "dev:apps": "turbo run dev --filter=./apps/*",
     "build:apps": "turbo run build --filter=\"./apps/*\"",
     "build:pkgs": "turbo run build --filter=\"./packages/*\"",
+    "build:client": "turbo run build --filter=@ying/client",
     "compile:server": "turbo run compile --filter=@ying/server",
     "lint": "turbo run lint",
     "check": "turbo run check",

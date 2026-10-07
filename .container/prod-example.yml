@@ -1,0 +1,62 @@
+version: '3'
+
+# networks:
+#   xx:
+#     external: true
+
+services:
+  ying-server:
+    container_name: ying-server-test
+    image: ying-server:1.0.0
+    environment:
+      SERVER_PORT: 5090
+      ENABLE_CONSUMER: 1
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ying123456
+      REDIS_DB: 0
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: ying123456
+      DB_NAME: ying
+      STORAGE_MODE: local
+      AUTH_ADMIN_ACCESS_TOKEN_SECRET: f83b06336d8ccc603950639fcc84a2de
+      AUTH_ADMIN_ACCESS_TOKEN_EXPIRES_IN: 10m
+      AUTH_ADMIN_REFRESH_TOKEN_SECRET: ff28819b2d20ba4b943cfcc2709f8ae7
+      AUTH_ADMIN_REFRESH_TOKEN_EXPIRES_IN: 30d
+      AUTH_CLIENT_ACCESS_TOKEN_SECRET: 3e09b72e49ec4b36e45eefc5ada536b0
+      AUTH_CLIENT_ACCESS_TOKEN_EXPIRES_IN: 10m
+      AUTH_CLIENT_REFRESH_TOKEN_SECRET: cfbde33d869cebe20115ced57e83fd07
+      AUTH_CLIENT_REFRESH_TOKEN_EXPIRES_IN: 30d
+      AUTH_GOOGLE_ID:
+      AUTH_GOOGLE_SECRET:
+      AUTH_GITHUB_ID:
+      AUTH_GITHUB_SECRET:
+      AUTH_CLIENT_URL: http://client.localhost
+      OAUTH_CALLBACK_BASE_URL: http://localhost:5090
+      MAIL_HOST:
+      MAIL_PORT:
+      MAIL_USER:
+      MAIL_AUTH_CODE:
+      VAPID_SUBJECT:
+      VAPID_PUBLIC_KEY:
+      VAPID_PRIVATE_KEY:
+    # volumes:
+    #   - /ying-server-storage:/app/storage
+    ports:
+      - '5090:5090'
+    # networks:
+    #   - xx
+
+  ying-client:
+    container_name: ying-client-test
+    image: ying-client:1.0.0
+    environment:
+      PROXY_API_URL: http://host.docker.internal:5090
+    ports:
+      - '3000:3000'
+    # networks:
+    #   - xx
+    depends_on:
+      - ying-server

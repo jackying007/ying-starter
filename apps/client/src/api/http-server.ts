@@ -3,7 +3,11 @@ import { HttpRequest } from '@jying/http'
 import { HttpError } from './http-error'
 
 const getBaseURL = createIsomorphicFn()
-  .server(() => import.meta.env.APP_SERVER_URL + import.meta.env.APP_API_BASE)
+  .server(() => {
+    const proxyUrl = process.env.PROXY_API_URL
+    if (!proxyUrl) throw new Error('PROXY_API_URL is not set')
+    return proxyUrl + import.meta.env.APP_API_BASE
+  })
   .client(() => import.meta.env.APP_API_BASE)
 
 export const http = new HttpRequest({
