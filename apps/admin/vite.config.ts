@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
     envPrefix: 'APP_',
     resolve: { tsconfigPaths: true },
     server: {
-      host: true,
       proxy: {
         '/api': {
           target: env.APP_SERVER_URL

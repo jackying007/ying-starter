@@ -11,15 +11,8 @@ services:
     environment:
       SERVER_PORT: 5090
       ENABLE_CONSUMER: 1
-      REDIS_HOST: host.docker.internal
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ying123456
-      REDIS_DB: 0
-      DB_HOST: host.docker.internal
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: ying123456
-      DB_NAME: ying
+      REDIS_URL: redis://:ying123456@host.docker.internal:6379/0
+      POSTGRES_URL: postgresql://postgres:ying123456@host.docker.internal:5432/ying
       STORAGE_MODE: local
       AUTH_ADMIN_ACCESS_TOKEN_SECRET: f83b06336d8ccc603950639fcc84a2de
       AUTH_ADMIN_ACCESS_TOKEN_EXPIRES_IN: 10m

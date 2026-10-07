@@ -1,15 +1,9 @@
 import { Redis } from 'ioredis'
-import { redisConfig } from '@/config'
+import { dbConfig } from '@/config'
 import { appLogger } from '@/app.logger'
 
-export const redis = new Redis({
-  host: redisConfig.host,
-  port: redisConfig.port,
-  password: redisConfig.pass,
-  db: redisConfig.db,
+export const redis = new Redis(dbConfig.redisUrl, {
   maxRetriesPerRequest: null
 })
 
-redis.on('connect', () => {
-  appLogger.log('Redis connected.')
-})
+redis.on('connect', () => appLogger.log('Redis connected.'))

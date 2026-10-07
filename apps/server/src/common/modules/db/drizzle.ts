@@ -3,14 +3,7 @@ import { relations } from '@ying/db-drizzle/relations'
 import { dbConfig } from '@/config'
 import { appLogger } from '@/app.logger'
 
-export const db = drizzle({
-  connection: {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    user: dbConfig.username,
-    password: dbConfig.password,
-    database: dbConfig.database
-  },
+export const db = drizzle(dbConfig.postgresUrl, {
   relations
 })
 appLogger.log('Database initialized.')

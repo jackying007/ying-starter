@@ -73,15 +73,8 @@ docker run --name ying-server -d \
   -p 5090:5090 \
   -e SERVER_PORT=5090 \
   -e ENABLE_CONSUMER=1 \
-  -e REDIS_HOST=host.docker.internal \
-  -e REDIS_PORT=6379 \
-  -e REDIS_PASSWORD=ying123456 \
-  -e REDIS_DB=0 \
-  -e DB_HOST=host.docker.internal \
-  -e DB_PORT=5432 \
-  -e DB_USER=postgres \
-  -e DB_PASSWORD=ying123456 \
-  -e DB_NAME=ying \
+  -e REDIS_URL=redis://:ying123456@host.docker.internal:6379/0 \
+  -e POSTGRES_URL=postgresql://postgres:ying123456@host.docker.internal:5432/ying \
   -e STORAGE_MODE=local \
   ...
   ying-server:1.0.0
